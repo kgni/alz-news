@@ -71,4 +71,85 @@ async function scrapeTheGuardian(
 	}
 }
 
-scrapeTheGuardian();
+const bigThinkArticlesData = [];
+let articlesInTotal = 0;
+
+// TODO - go into every article and get the publishing date
+async function scrapeBigThink(baseUrl = 'https://bigthink.com/neuropsych/') {
+	try {
+		console.log(`Scraping... ${baseUrl}`);
+		const $ = await fetchArticles(baseUrl);
+		let articles = $('article article');
+
+		articles.each(async function () {
+			articlesInTotal++;
+			let title = $(this).find('.card-headline').text().trim();
+			let subtitle = $(this).find('.card-excerpt').text().trim();
+
+			// checking if the title or subtitle contains 'alz' or 'demen', if it doesn't contain either of the two, we just return and go to the next iteration
+			if (
+				!title.toLocaleLowerCase().includes('alz') &&
+				!title.toLocaleLowerCase().includes('demen') &&
+				!subtitle.toLocaleLowerCase().includes('alz') &&
+				!subtitle.toLocaleLowerCase().includes('demen')
+			) {
+				return;
+			}
+			let url = $(this).find('.card-headline a').attr('href');
+
+			// fetching a specific article to get the content of it
+			const article = await axios.get(url);
+			const cheerioArticle = await cheerio.load(article.data);
+			setTimeout(() => {
+				console.log(cheerioArticle(this).find('').text());
+			}, 2000);
+
+			let publisher = 'Big Think';
+			let publisherLink = 'https://bigthink.com/';
+			let publishedDate = cheerioArticle(this)
+				.find('time.entry-date.publised')
+				.text();
+
+			// cleaning up the publishedDate, removing published and trimming
+
+			// sometimes the publishedDate would be there twice, we remove this by using the new Set constructor while we split the published date into a new array
+			// we also turn the publishedDate into a date object, so we know it is formatted the same way.
+			// We will format it like this: Day Month Date Year
+
+			bigThinkArticlesData.push({
+				title,
+				subtitle,
+				url,
+				publisher,
+				publisherLink,
+				publishedDate,
+			});
+		});
+
+		// check if the pagination element exists (the one for going to the next page)
+		if ($('.next')) {
+			// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
+			baseUrl = 'https://bigthink.com/' + $('.next').attr('href');
+
+			// if the baseUrl is undefined, then we there are no next page and we want to just return
+			if (baseUrl.includes('undefined')) {
+				console.log(bigThinkArticlesData);
+				console.log('done scraping...');
+				console.log(
+					`${bigThinkArticlesData.length} / ${articlesInTotal} articles were scraped from https://bigthink.com/neuropsych/`
+				);
+				console.timeEnd('Scraping took');
+				articlesInTotal = 0;
+				return bigThinkArticlesData;
+			}
+			scrapeBigThink(baseUrl);
+		}
+
+		// console.log(theGuardianArticlesData);
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+// scrapeTheGuardian();
+scrapeBigThink();
