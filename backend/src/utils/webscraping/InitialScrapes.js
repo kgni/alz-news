@@ -1,7 +1,19 @@
+require('dotenv').config();
 const cheerio = require('cheerio');
 const axios = require('axios');
-const express = require('express');
 const parse = require('./scrape');
+const puppeteer = require('puppeteer');
+const mongoose = require('mongoose');
+
+const { AcceptedArticle } = require('../../models/article');
+
+// Connect to DB and start listening to incoming requests:
+const connectDB = async () => {
+	await mongoose.connect(
+		'mongodb+srv://kgni:EFYXbOvA0KVWiSiH@alznews.hx6pkov.mongodb.net/Articles?retryWrites=true&w=majority'
+	);
+	console.log('Connected to DB');
+};
 
 async function fetchArticles(url) {
 	const response = await axios.get(url);
@@ -33,8 +45,8 @@ async function firstTheGuardianAlzheimerScrape(
 			let subtitle = $(this).find('.fc-item__standfirst').text().trim();
 			let url = $(this).find('a').attr('href');
 			let publisher = 'The Guardian';
-			let publisherLink = 'https://www.theguardian.com';
-			let publishedDate = $(this).find('.fc-timestamp__text').text();
+			let publisherUrl = 'https://www.theguardian.com';
+			let publishDate = $(this).find('.fc-timestamp__text').text();
 			// If we already have an article with the same name, then we skip that article from being added
 			if (
 				theGuardianArticlesAlzheimer.find(
@@ -46,17 +58,21 @@ async function firstTheGuardianAlzheimerScrape(
 				return;
 			}
 
+			// TODO - Scrape article content, for now we will just link to articles instead
 			// scraping the contents of the individual article
-			articleContent = await parse.getArticleContent(url, '#maincontent');
+			// articleContent = await parse.getArticleContent(url, '#maincontent');
+			// if (!articleContent) {
+			// 	console.log('Article content could not be scraped');
+			// }
 
 			// cleaning up the publishedDate, removing published and trimming
-			publishedDate = publishedDate.split(' Published:').join('').trim();
+			publishDate = publishDate.split(' Published:').join('').trim();
 
 			// sometimes the publishedDate would be there twice, we remove this by using the new Set constructor while we split the published date into a new array
 			// we also turn the publishedDate into a date object, so we know it is formatted the same way.
 
-			publishedDate = new Date(
-				[...new Set(publishedDate.split(' '))].join(' ').trim()
+			publishDate = new Date(
+				[...new Set(publishDate.split(' '))].join(' ').trim()
 			);
 
 			const article = {
@@ -64,11 +80,12 @@ async function firstTheGuardianAlzheimerScrape(
 				subtitle,
 				url,
 				publisher,
-				publisherLink,
-				publishedDate,
-				articleContent,
+				publisherUrl,
+				publishDate,
+				categories: ['alzheimers'],
+				// articleContent,
 			};
-			console.log(article);
+			// console.log(article);
 			theGuardianArticlesAlzheimer.push(article);
 		});
 
@@ -84,7 +101,7 @@ async function firstTheGuardianAlzheimerScrape(
 					`${theGuardianArticlesAlzheimer.length} / ${theGuardianArticlesAlzheimerTotal} articles were scraped from https://www.theguardian.com/society/alzheimers`
 				);
 				theGuardianArticlesData.push(...theGuardianArticlesAlzheimer);
-				console.log(theGuardianArticlesData);
+				// console.log(theGuardianArticlesData);
 				return;
 			}
 			await firstTheGuardianAlzheimerScrape(baseUrl);
@@ -127,21 +144,23 @@ async function firstTheGuardianDementiaScrape(
 			let subtitle = $(this).find('.fc-item__standfirst').text().trim();
 			let url = $(this).find('a').attr('href');
 			let publisher = 'The Guardian';
-			let publisherLink = 'https://www.theguardian.com';
-			let publishedDate = $(this).find('.fc-timestamp__text').text();
+			let publisherUrl = 'https://www.theguardian.com';
+			let publishDate = $(this).find('.fc-timestamp__text').text();
 			// cleaning up the publishedDate, removing published and trimming
-			publishedDate = publishedDate.split(' Published:').join('').trim();
-			publishedDate = new Date(
-				[...new Set(publishedDate.split(' '))].join(' ').trim()
+			publishDate = publishDate.split(' Published:').join('').trim();
+			publishDate = new Date(
+				[...new Set(publishDate.split(' '))].join(' ').trim()
 			);
 			// getting the content of each individual article as HTML.
-			// TODO - if there is a modal that blocks us from geetting the main content, we should run puppeteer instead - click away the modal and get the content.
-			articleContent = await parse.getArticleContent(url, '#maincontent');
 
-			if (!articleContent) {
-				console.log('HEEEY!');
-				return;
-			}
+			// TODO - Scrape article content, for now we will just link to articles instead
+
+			// articleContent = await parse.getArticleContent(url, '#maincontent');
+
+			// // TODO - if there is a modal that blocks us from getting the main content, we should run puppeteer instead - click away the modal and get the content.
+			// if (!articleContent) {
+			// 	console.log('Article content could not be scraped');
+			// }
 
 			// sometimes the publishedDate would be there twice, we remove this by using the new Set constructor while we split the published date into a new array
 			// we also turn the publishedDate into a date object, so we know it is formatted the same way.
@@ -151,11 +170,12 @@ async function firstTheGuardianDementiaScrape(
 				subtitle,
 				url,
 				publisher,
-				publisherLink,
-				publishedDate,
-				articleContent,
+				publisherUrl,
+				publishDate,
+				categories: ['dementia'],
+				// articleContent,
 			};
-			console.log(article);
+			// console.log(article);
 			theGuardianArticlesDementia.push(article);
 		});
 
@@ -185,7 +205,8 @@ async function firstTheGuardianDementiaScrape(
 	}
 }
 
-async function firstScrape() {
+async function firstTheGuardianScrape() {
+	await connectDB();
 	await firstTheGuardianAlzheimerScrape();
 	console.log(theGuardianArticlesData.length);
 	await firstTheGuardianDementiaScrape();
@@ -194,12 +215,25 @@ async function firstScrape() {
 	// 		theGuardianArticlesAlzheimerTotal + theGuardianArticlesDementiaTotal
 	// 	} articles were scraped`
 	// );
-
+	console.log(theGuardianArticlesDementia);
 	console.log(`Alzheimer'z articles: ${theGuardianArticlesAlzheimer.length}`);
 	console.log(`Dementia articles: ${theGuardianArticlesDementia.length}`);
 	console.log(`Total articles: ${theGuardianArticlesData.length}`);
+
+	await AcceptedArticle.insertMany(theGuardianArticlesData, (err) => {
+		if (err) return handleError(err);
+		console.log('Added documents to database');
+		mongoose.connection.close();
+		return;
+	});
 }
 
-// firstScrape();
+// async function test() {
+// 	await connectDB();
+// 	const articles = await AcceptedArticle.find({});
+// 	console.log(articles);
+// }
+// test();
+firstTheGuardianScrape();
 
-firstTheGuardianDementiaScrape();
+// firstTheGuardianDementiaScrape();
