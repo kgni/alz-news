@@ -1,17 +1,17 @@
-require('dotenv').config();
 const cheerio = require('cheerio');
 const axios = require('axios');
 const parse = require('./scrape');
 const puppeteer = require('puppeteer');
 const mongoose = require('mongoose');
 
-const { AcceptedArticle } = require('../../models/article');
+const { MONGODB_URI } = require('../configs/config');
+
+// News Model
+const { News } = require('../models/article');
 
 // Connect to DB and start listening to incoming requests:
 const connectDB = async () => {
-	await mongoose.connect(
-		'mongodb+srv://kgni:EFYXbOvA0KVWiSiH@alznews.hx6pkov.mongodb.net/Articles?retryWrites=true&w=majority'
-	);
+	await mongoose.connect(MONGODB_URI);
 	console.log('Connected to DB');
 };
 
@@ -74,6 +74,22 @@ async function firstTheGuardianAlzheimerScrape(
 			publishDate = new Date(
 				[...new Set(publishDate.split(' '))].join(' ').trim()
 			);
+
+			// If date couldn't be created, we need to add it manually
+			let status = '';
+			if (publishDate == 'Invalid Date') {
+				publishDate = 'Date needs to be added manually';
+				status = 'pending';
+			} else {
+				publishDate = publishDate.toISOString();
+				status = 'approved';
+			}
+
+			// try {
+			// 	publishDate = publishDate.toISOString();
+			// } catch (e) {
+			// 	console.log('there was an error');
+			// }
 
 			const article = {
 				title,
@@ -151,6 +167,15 @@ async function firstTheGuardianDementiaScrape(
 			publishDate = new Date(
 				[...new Set(publishDate.split(' '))].join(' ').trim()
 			);
+
+			let status = '';
+			if (publishDate == 'Invalid Date') {
+				publishDate = 'Date needs to be added manually';
+				status = 'PENDING';
+			} else {
+				publishDate = publishDate.toISOString();
+				status = 'APPROVED';
+			}
 			// getting the content of each individual article as HTML.
 
 			// TODO - Scrape article content, for now we will just link to articles instead
@@ -173,6 +198,8 @@ async function firstTheGuardianDementiaScrape(
 				publisherUrl,
 				publishDate,
 				categories: ['dementia'],
+				newsType: '',
+				status,
 				// articleContent,
 			};
 			// console.log(article);
@@ -205,6 +232,7 @@ async function firstTheGuardianDementiaScrape(
 	}
 }
 
+// Add initial The Guardian Articles to DB
 async function firstTheGuardianScrape() {
 	await connectDB();
 	await firstTheGuardianAlzheimerScrape();
@@ -220,7 +248,7 @@ async function firstTheGuardianScrape() {
 	console.log(`Dementia articles: ${theGuardianArticlesDementia.length}`);
 	console.log(`Total articles: ${theGuardianArticlesData.length}`);
 
-	await AcceptedArticle.insertMany(theGuardianArticlesData, (err) => {
+	await News.insertMany(theGuardianArticlesData, (err) => {
 		if (err) return handleError(err);
 		console.log('Added documents to database');
 		mongoose.connection.close();
@@ -228,12 +256,48 @@ async function firstTheGuardianScrape() {
 	});
 }
 
-// async function test() {
-// 	await connectDB();
-// 	const articles = await AcceptedArticle.find({});
-// 	console.log(articles);
-// }
-// test();
+const alzOrgArticles = [];
+
+async function firstAlzOrgNewsScrape(
+	baseUrl = 'https://www.alz.org/news/browse-by-news-type?newstype=ExternalNews'
+) {
+	console.log('starting browser...');
+
+	const browser = await puppeteer.launch();
+	console.log('browser started...');
+	const page = await browser.newPage();
+	await page.goto(baseUrl);
+	const articles = await page.evaluate(() => {
+		const articles = Array.from(document.querySelectorAll('.card')).map(
+			(article) => {
+				// taking the date, turning into a date object which will be formatted toISOString and the to a string.
+				let date = article.querySelector('.card-date').textContent;
+				date = new Date(date).toISOString().toString();
+				return {
+					title: article.querySelector('.card-title').textContent,
+					subtitle: article.querySelector('.card-text').textContent,
+					url: article.querySelector('.card-title a').href,
+					publisher: ['alz.org', "alzheimer's association"],
+					publisherUrl: 'https://www.alz.org/',
+					publishedDate: date,
+					newsType: article.querySelector('.card-lead').textContent,
+					categories: article.querySelector('.card-lead').textContent,
+					status: 'APPROVED',
+				};
+			}
+		);
+		return articles;
+	});
+
+	console.log(articles);
+
+	console.log('closing browser...');
+	await browser.close();
+	console.log('browser closed...');
+}
+
 firstTheGuardianScrape();
+// firstAlzOrgNewsScrape();
+// firstTheGuardianAlzheimerScrape();
 
 // firstTheGuardianDementiaScrape();

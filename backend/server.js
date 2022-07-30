@@ -1,4 +1,3 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
@@ -26,9 +25,10 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/articles', articlesRouter);
+app.use('/api/articles', articlesRouter);
 // app.use('/api/users', usersRouter);
 // app.use('/api/login', loginRouter);
 
 app.use(middleware.unknownEndpoint);
 
-// module.exports = app;
+module.exports = app;

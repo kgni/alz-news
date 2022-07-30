@@ -9,6 +9,12 @@ const articleSchema = new mongoose.Schema(
 		publisherUrl: { type: String },
 		publishDate: { type: String },
 		categories: [String],
+		newsType: [String],
+		status: {
+			type: String,
+			enum: ['APPROVED', 'PENDING', 'REJECTED'],
+			default: 'PENDING',
+		},
 	},
 	{ timestamps: true }
 );
@@ -21,8 +27,6 @@ articleSchema.set('toJSON', {
 	},
 });
 
-const PendingArticle = mongoose.model('PendingArticle', articleSchema);
-const AcceptedArticle = mongoose.model('AcceptedArticle', articleSchema);
-const RejectedArticle = mongoose.model('RejectedArticle', articleSchema);
+const News = mongoose.model('News', articleSchema);
 
-module.exports = { PendingArticle, AcceptedArticle, RejectedArticle };
+module.exports = { News };
