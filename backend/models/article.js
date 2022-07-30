@@ -5,9 +5,9 @@ const articleSchema = new mongoose.Schema(
 		title: { type: String },
 		subtitle: { type: String },
 		url: { type: String },
-		publisher: { type: String },
+		publisher: [String],
 		publisherUrl: { type: String },
-		publishDate: { type: String },
+		publishDate: { type: mongoose.Schema.Types.Mixed },
 		categories: [String],
 		newsType: [String],
 		status: {

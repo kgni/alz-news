@@ -71,18 +71,16 @@ async function firstTheGuardianAlzheimerScrape(
 			// sometimes the publishedDate would be there twice, we remove this by using the new Set constructor while we split the published date into a new array
 			// we also turn the publishedDate into a date object, so we know it is formatted the same way.
 
-			publishDate = new Date(
-				[...new Set(publishDate.split(' '))].join(' ').trim()
-			);
+			publishDate = new Date([...new Set(publishDate.split(' '))]);
 
 			// If date couldn't be created, we need to add it manually
 			let status = '';
 			if (publishDate == 'Invalid Date') {
-				publishDate = 'Date needs to be added manually';
-				status = 'pending';
+				publishDate = null;
+				status = 'PENDING';
 			} else {
 				publishDate = publishDate.toISOString();
-				status = 'approved';
+				status = 'APPROVED';
 			}
 
 			// try {
@@ -98,7 +96,8 @@ async function firstTheGuardianAlzheimerScrape(
 				publisher,
 				publisherUrl,
 				publishDate,
-				categories: ['alzheimers'],
+				categories: ["alzheimer's"],
+				status,
 				// articleContent,
 			};
 			// console.log(article);
@@ -164,13 +163,11 @@ async function firstTheGuardianDementiaScrape(
 			let publishDate = $(this).find('.fc-timestamp__text').text();
 			// cleaning up the publishedDate, removing published and trimming
 			publishDate = publishDate.split(' Published:').join('').trim();
-			publishDate = new Date(
-				[...new Set(publishDate.split(' '))].join(' ').trim()
-			);
+			publishDate = new Date([...new Set(publishDate.split(' '))]);
 
 			let status = '';
 			if (publishDate == 'Invalid Date') {
-				publishDate = 'Date needs to be added manually';
+				publishDate = null;
 				status = 'PENDING';
 			} else {
 				publishDate = publishDate.toISOString();
@@ -279,21 +276,31 @@ async function firstAlzOrgNewsScrape(
 					url: article.querySelector('.card-title a').href,
 					publisher: ['alz.org', "alzheimer's association"],
 					publisherUrl: 'https://www.alz.org/',
-					publishedDate: date,
-					newsType: article.querySelector('.card-lead').textContent,
+					publishDate: date,
 					categories: article.querySelector('.card-lead').textContent,
-					status: 'APPROVED',
+					newsType: article.querySelector('.card-lead').textContent,
+					status: 'PENDING',
 				};
 			}
 		);
 		return articles;
 	});
 
-	console.log(articles);
+	await connectDB();
+
+	News.insertMany(articles, (err) => {
+		if (err) {
+			console.log(err);
+			return;
+		}
+		console.log('Added documents to database');
+		mongoose.connection.close();
+	});
 
 	console.log('closing browser...');
 	await browser.close();
 	console.log('browser closed...');
+	return;
 }
 
 firstTheGuardianScrape();
