@@ -15,6 +15,8 @@ const connectDB = async () => {
 	console.log('Connected to DB');
 };
 
+// TODO - FETCH ALL OF THE ARTICLE CONTENT AND PUT IT ON EACH ARTICLE (AS HTML PREFERABLY)
+// TODO - TAKE A SCREENSHOT OF EACH ARTICLE, HOST IT YOURSELF (CREATE LINK FOR EACH IMAGE? HOW TO SAVE A IMAGE TO MONGODB?) AND PUT THE LINK ON EACH ARTICLE
 async function fetchArticles(url) {
 	const response = await axios.get(url);
 	return cheerio.load(response.data);
