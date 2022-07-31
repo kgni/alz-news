@@ -302,39 +302,80 @@ async function firstAlzOrgNewsScrape(
 	console.log('browser closed...');
 	return;
 }
-// TODO - this needs to loop pressing a show more button and scraping all content
+
+// TODO - get Date for every article (look at the url, or click into every article and fetch it?)
 async function firstAlzheimersOrgUkScrape(
 	baseUrl = 'https://www.alzheimers.org.uk/about-us/news-and-media/latest-news'
 ) {
 	console.log('starting browser...');
 
-	const browser = await puppeteer.launch();
+	// launching browser
+	const browser = await puppeteer.launch({ headless: false });
 	console.log('browser started...');
+
+	// creating a new page
 	const page = await browser.newPage();
+	// go to the base url
 	await page.goto(baseUrl);
-	const articles = await page.evaluate(() => {
+
+	// waiting for cookie modal popup
+	await page.waitForSelector('#onetrust-accept-btn-handler');
+	// clicking cookie modal away
+	await page.click('#onetrust-accept-btn-handler');
+
+	// click on the see-more button insdie of our news content container, while it is present.
+	while (await page.$('#alz-mixed-content-news .see-more')) {
+		try {
+			// clicking the button see more button
+			page.click('#alz-mixed-content-news .see-more');
+			// waiting for our AJAX request to return OK
+			await page.waitForResponse((response) => response.status() === 200);
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	// evaluate will allow us to run JavaScript inside of the page, like we could do in the console.
+	const articles = await page.evaluate(async () => {
+		// while (document.querySelector('#alz-mixed-content-news .see-more')) {
+		// 	page.click('#alz-mixed-content-news .see-more');
+		// }
 		const articles = Array.from(
-			document.querySelectorAll('[data-content-type="article"]')
+			document.querySelectorAll(
+				'#alz-mixed-content-news [data-content-type="article"]'
+			)
 		).map((article) => {
 			// taking the date, turning into a date object which will be formatted toISOString and the to a string.
 			// let date = article.querySelector('.card-date').textContent;
 			// date = new Date(date).toISOString().toString();
+
+			// let subtitle;
+
+			// if (!article.querySelector('p')) {
+			// 	subtitle = article.querySelector('.field--field-summary');
+			// } else {
+			// 	subtitle = article.querySelector('p');
+			// }
+
 			return {
 				title: article.querySelector('.title').textContent.trim(),
 
-				// TODO - need to fix subtitle
-				subtitle: article.querySelector('p').textContent,
+				subtitle: article.querySelector('.pattern--teaser--summary')
+					.firstElementChild.textContent,
 				url: article.querySelector('a').href,
 				publisher: ['alzheimers.org.uk', "alzheimer's society"],
-				publisherUrl: 'https://www.alz.org/',
+				publisherUrl: 'https://www.alzheimers.org.uk/',
 				publishDate: 'test',
 				categories: ["dementia, alzheimer's"],
-				newsType: article.querySelector('span').textContent,
+				newsType: article.querySelector('span').textContent.toLowerCase(),
 				status: 'PENDING',
 			};
 		});
 		return articles;
 	});
+
+	console.log(articles);
+	console.log(articles.length);
 
 	// await connectDB();
 
@@ -347,7 +388,7 @@ async function firstAlzheimersOrgUkScrape(
 	// 	mongoose.connection.close();
 	// });
 
-	console.log(articles);
+	// console.log(articles);
 
 	console.log('closing browser...');
 	await browser.close();
@@ -355,8 +396,109 @@ async function firstAlzheimersOrgUkScrape(
 	return;
 }
 
+// all the guardian articles scraped (both dementia and alzheimer's) (without duplicates)
+let firstJAlzArticlesData = [];
+// alzheimer's articles scraped
+
+let firstJAlzArticlesTotal = 0;
+
+async function firstJAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
+	try {
+		console.log(`Scraping... ${baseUrl}`);
+		const $ = await fetchArticles(baseUrl);
+		let articles = $('article');
+
+		articles.each(async function () {
+			// increment articles scraped counter by 1 on every iteration
+			firstJAlzArticlesTotal++;
+
+			// creating the properties for the
+			let title = $(this).find('h2').text().trim();
+
+			// check if we have an article already with the title name, if we have skip this iteration.
+			if (
+				firstJAlzArticlesData.find(
+					(article) =>
+						article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+				)
+			) {
+				console.log(`article already exists: ${title}`);
+				return;
+			}
+
+			let subtitle = $(this).find('.field-items p').text().trim();
+			let url = $(this).find('h2 a').attr('href');
+			let publisher = "Journal Of Alzheimer's Disease";
+			let publisherUrl = 'https://www.j-alz.com/';
+			let publishDate = $(this).find('h3 span').text();
+			// cleaning up the publishedDate, removing published and trimming
+			publishDate = publishDate.split(' Published:').join('').trim();
+			publishDate = new Date([...new Set(publishDate.split(' '))]);
+
+			let status = '';
+			if (publishDate == 'Invalid Date') {
+				publishDate = null;
+				status = 'PENDING';
+			} else {
+				publishDate = publishDate.toISOString();
+				status = 'APPROVED';
+			}
+			// getting the content of each individual article as HTML.
+
+			// TODO - Scrape article content, for now we will just link to articles instead
+
+			// articleContent = await parse.getArticleContent(url, '#maincontent');
+
+			// // TODO - if there is a modal that blocks us from getting the main content, we should run puppeteer instead - click away the modal and get the content.
+			// if (!articleContent) {
+			// 	console.log('Article content could not be scraped');
+			// }
+
+			// sometimes the publishedDate would be there twice, we remove this by using the new Set constructor while we split the published date into a new array
+			// we also turn the publishedDate into a date object, so we know it is formatted the same way.
+
+			const article = {
+				title,
+				subtitle,
+				url,
+				publisher,
+				publisherUrl,
+				publishDate,
+				categories: ["alzheimer's"],
+				newsType: 'news',
+				status,
+				// articleContent,
+			};
+			// console.log(article);
+			firstJAlzArticlesData.push(article);
+		});
+
+		// check if the pagination element exists (the one for going to the next page)
+		if ($('.pager-next')) {
+			// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
+			baseUrl = 'https://www.j-alz.com/' + $('.pager-next a').attr('href');
+
+			// if the baseUrl is undefined, then we there are no next page and we want to just return
+			if (baseUrl === 'https://www.j-alz.com/undefined') {
+				console.log(firstJAlzArticlesData);
+				console.log('done scraping...');
+				console.log(
+					`${firstJAlzArticlesData.length} / ${firstJAlzArticlesTotal} articles were scraped from https://www.j-alz.com/latest-news`
+				);
+				return;
+			}
+			await firstJAlzScrape(baseUrl);
+		}
+
+		// console.log(theGuardianArticlesData);
+	} catch (error) {
+		console.error(error);
+	}
+}
+
 // firstTheGuardianScrape();
-firstAlzheimersOrgUkScrape();
+// firstAlzheimersOrgUkScrape();
+firstJAlzScrape();
 // firstAlzOrgNewsScrape();
 // firstTheGuardianAlzheimerScrape();
 
