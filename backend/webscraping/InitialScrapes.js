@@ -195,7 +195,7 @@ async function firstTheGuardianDementiaScrape(
 				publisherUrl,
 				publishDate,
 				categories: ['dementia'],
-				newsType: '',
+				type: '',
 				status,
 				// articleContent,
 			};
@@ -278,7 +278,7 @@ async function firstAlzOrgNewsScrape(
 					publisherUrl: 'https://www.alz.org/',
 					publishDate: date,
 					categories: article.querySelector('.card-lead').textContent,
-					newsType: article.querySelector('.card-lead').textContent,
+					type: article.querySelector('.card-lead').textContent,
 					status: 'PENDING',
 				};
 			}
@@ -367,7 +367,7 @@ async function firstAlzheimersOrgUkScrape(
 				publisherUrl: 'https://www.alzheimers.org.uk/',
 				publishDate: 'test',
 				categories: ["dementia, alzheimer's"],
-				newsType: article.querySelector('span').textContent.toLowerCase(),
+				type: article.querySelector('span').textContent.toLowerCase(),
 				status: 'PENDING',
 			};
 		});
@@ -396,10 +396,9 @@ async function firstAlzheimersOrgUkScrape(
 	return;
 }
 
-// all the guardian articles scraped (both dementia and alzheimer's) (without duplicates)
+// all the j-alz articles scraped (both dementia and alzheimer's) (without duplicates)
 let firstJAlzArticlesData = [];
 // alzheimer's articles scraped
-
 let firstJAlzArticlesTotal = 0;
 
 async function firstJAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
@@ -465,7 +464,7 @@ async function firstJAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
 				publisherUrl,
 				publishDate,
 				categories: ["alzheimer's"],
-				newsType: 'news',
+				type: 'news',
 				status,
 				// articleContent,
 			};
@@ -496,9 +495,113 @@ async function firstJAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
 	}
 }
 
+// all the j-alz articles scraped (both dementia and alzheimer's) (without duplicates)
+let firstNiaNihGovArticlesData = [];
+// alzheimer's articles scraped
+let firstNiaNihGovArticleTotal = 0;
+
+// all of the articles scraped here intially, will be set as pending, and we are manually going to sort the articles and set their status and their categories
+async function firstNiaNihGovScrape(
+	baseUrl = 'https://www.nia.nih.gov/news/all'
+) {
+	try {
+		console.log(`Scraping... ${baseUrl}`);
+		const $ = await fetchArticles(baseUrl);
+		let articles = $('article');
+
+		articles.each(async function () {
+			// increment articles scraped counter by 1 on every iteration
+			firstNiaNihGovArticleTotal++;
+
+			// creating the properties for the
+			let title = $(this).find('.news-title').text().trim();
+
+			// check if we have an article already with the title name, if we have skip this iteration.
+			// if (
+			// 	firstNiaNihGovArticlesData.find(
+			// 		(article) =>
+			// 			article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+			// 	)
+			// ) {
+			// 	console.log(`article already exists: ${title}`);
+			// 	return;
+			// }
+
+			let subtitle = null;
+			let url =
+				'https://www.nia.nih.gov' + $(this).find('.news-title a').attr('href');
+			let publisher = 'National Institute on Aging';
+			let publisherUrl = 'https://www.nia.nih.gov/';
+			let publishDate = $(this).find('.postdate').text();
+			let type = $(this).find('.news-type').text();
+			// cleaning up the publishedDate, removing published and trimming
+			publishDate = publishDate.split(' Published:').join('').trim();
+			publishDate = new Date([...new Set(publishDate.split(' '))]);
+
+			if (publishDate == 'Invalid Date') {
+				publishDate = null;
+			} else {
+				publishDate = publishDate.toISOString();
+			}
+			// getting the content of each individual article as HTML.
+
+			// TODO - Scrape article content, for now we will just link to articles instead
+
+			// articleContent = await parse.getArticleContent(url, '#maincontent');
+
+			// // TODO - if there is a modal that blocks us from getting the main content, we should run puppeteer instead - click away the modal and get the content.
+			// if (!articleContent) {
+			// 	console.log('Article content could not be scraped');
+			// }
+
+			// sometimes the publishedDate would be there twice, we remove this by using the new Set constructor while we split the published date into a new array
+			// we also turn the publishedDate into a date object, so we know it is formatted the same way.
+
+			const article = {
+				title,
+				subtitle,
+				url,
+				publisher,
+				publisherUrl,
+				publishDate,
+				categories: [],
+				type: ['news', type],
+				status: 'PENDING',
+				// articleContent,
+			};
+			// console.log(article);
+			firstNiaNihGovArticlesData.push(article);
+		});
+
+		// !PAGINATION
+		// check if the pagination element exists (the one for going to the next page)
+		if ($('.page-next')) {
+			// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
+			baseUrl =
+				'https://www.nia.nih.gov/news/all' + $('.page-next a').attr('href');
+
+			// if the baseUrl is undefined, then we there are no next page and we want to just return
+			if (baseUrl === 'https://www.nia.nih.gov/news/allundefined') {
+				console.log(firstNiaNihGovArticlesData);
+				console.log('done scraping...');
+				console.log(
+					`${firstNiaNihGovArticlesData.length} / ${firstNiaNihGovArticleTotal} articles were scraped from https://www.nia.nih.gov/news/all`
+				);
+				return;
+			}
+			await firstNiaNihGovScrape(baseUrl);
+		}
+
+		// console.log(theGuardianArticlesData);
+	} catch (error) {
+		console.error(error);
+	}
+}
+
 // firstTheGuardianScrape();
 // firstAlzheimersOrgUkScrape();
-firstJAlzScrape();
+// firstJAlzScrape();
+firstNiaNihGovScrape();
 // firstAlzOrgNewsScrape();
 // firstTheGuardianAlzheimerScrape();
 
