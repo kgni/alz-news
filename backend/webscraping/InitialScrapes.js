@@ -302,8 +302,61 @@ async function firstAlzOrgNewsScrape(
 	console.log('browser closed...');
 	return;
 }
+// TODO - this needs to loop pressing a show more button and scraping all content
+async function firstAlzheimersOrgUkScrape(
+	baseUrl = 'https://www.alzheimers.org.uk/about-us/news-and-media/latest-news'
+) {
+	console.log('starting browser...');
 
-firstTheGuardianScrape();
+	const browser = await puppeteer.launch();
+	console.log('browser started...');
+	const page = await browser.newPage();
+	await page.goto(baseUrl);
+	const articles = await page.evaluate(() => {
+		const articles = Array.from(
+			document.querySelectorAll('[data-content-type="article"]')
+		).map((article) => {
+			// taking the date, turning into a date object which will be formatted toISOString and the to a string.
+			// let date = article.querySelector('.card-date').textContent;
+			// date = new Date(date).toISOString().toString();
+			return {
+				title: article.querySelector('.title').textContent.trim(),
+
+				// TODO - need to fix subtitle
+				subtitle: article.querySelector('p').textContent,
+				url: article.querySelector('a').href,
+				publisher: ['alzheimers.org.uk', "alzheimer's society"],
+				publisherUrl: 'https://www.alz.org/',
+				publishDate: 'test',
+				categories: ["dementia, alzheimer's"],
+				newsType: article.querySelector('span').textContent,
+				status: 'PENDING',
+			};
+		});
+		return articles;
+	});
+
+	// await connectDB();
+
+	// News.insertMany(articles, (err) => {
+	// 	if (err) {
+	// 		console.log(err);
+	// 		return;
+	// 	}
+	// 	console.log('Added documents to database');
+	// 	mongoose.connection.close();
+	// });
+
+	console.log(articles);
+
+	console.log('closing browser...');
+	await browser.close();
+	console.log('browser closed...');
+	return;
+}
+
+// firstTheGuardianScrape();
+firstAlzheimersOrgUkScrape();
 // firstAlzOrgNewsScrape();
 // firstTheGuardianAlzheimerScrape();
 
