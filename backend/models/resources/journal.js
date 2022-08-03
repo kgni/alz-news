@@ -1,15 +1,21 @@
 const mongoose = require('mongoose');
 
-const articleSchema = new mongoose.Schema(
+// TODO - what should the schema look like?
+// TODO - how should we save PDF?
+
+const journalSchema = new mongoose.Schema(
 	{
-		title: { type: String },
-		subtitle: { type: String },
+		journalTitle: { type: String },
+		articleTitle: { type: String },
+		journalNumber: { type: String },
+		articleNumber: { type: String },
+		id: { type: String },
 		url: { type: String },
 		publisher: [String],
 		publisherUrl: { type: String },
 		publishDate: { type: mongoose.Schema.Types.Mixed },
 		categories: [String],
-		newsType: [String],
+		type: [String],
 		status: {
 			type: String,
 			enum: ['APPROVED', 'PENDING', 'REJECTED'],
@@ -27,6 +33,6 @@ articleSchema.set('toJSON', {
 	},
 });
 
-const News = mongoose.model('News', articleSchema);
+const Journal = mongoose.model('Journal', journalSchema);
 
-module.exports = { News };
+module.exports = { Journal };

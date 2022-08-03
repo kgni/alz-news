@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const { MONGODB_URI } = require('../configs/config');
 
 // News Model
-const { News } = require('../models/article');
+const { News } = require('../models/resources/newsArticle');
 
 // Connect to DB and start listening to incoming requests:
 const connectDB = async () => {
@@ -22,6 +22,7 @@ async function fetchArticles(url) {
 	return cheerio.load(response.data);
 }
 
+// * theguardian.com - TheGuardian
 // all the guardian articles scraped (both dementia and alzheimer's) (without duplicates)
 let theGuardianArticlesData = [];
 // alzheimer's articles scraped
@@ -175,19 +176,6 @@ async function firstTheGuardianDementiaScrape(
 				publishDate = publishDate.toISOString();
 				status = 'APPROVED';
 			}
-			// getting the content of each individual article as HTML.
-
-			// TODO - Scrape article content, for now we will just link to articles instead
-
-			// articleContent = await parse.getArticleContent(url, '#maincontent');
-
-			// // TODO - if there is a modal that blocks us from getting the main content, we should run puppeteer instead - click away the modal and get the content.
-			// if (!articleContent) {
-			// 	console.log('Article content could not be scraped');
-			// }
-
-			// sometimes the publishedDate would be there twice, we remove this by using the new Set constructor while we split the published date into a new array
-			// we also turn the publishedDate into a date object, so we know it is formatted the same way.
 
 			const article = {
 				title,
@@ -255,6 +243,7 @@ async function firstTheGuardianScrape() {
 	});
 }
 
+// * alz.org - Alzheimer's Association
 const alzOrgArticles = [];
 
 async function firstAlzOrgNewsScrape(
@@ -304,6 +293,8 @@ async function firstAlzOrgNewsScrape(
 	console.log('browser closed...');
 	return;
 }
+
+// * alzheimers.org.uk - Alzheimer's Society
 
 // TODO - get Date for every article (look at the url, or click into every article and fetch it?)
 async function firstAlzheimersOrgUkScrape(
@@ -398,9 +389,8 @@ async function firstAlzheimersOrgUkScrape(
 	return;
 }
 
-// all the j-alz articles scraped (both dementia and alzheimer's) (without duplicates)
+// * Nia Nih (National Institute on Aging - National Institute of Health)
 let firstJAlzArticlesData = [];
-// alzheimer's articles scraped
 let firstJAlzArticlesTotal = 0;
 
 async function firstJAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
@@ -497,12 +487,11 @@ async function firstJAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
 	}
 }
 
-// all the j-alz articles scraped (both dementia and alzheimer's) (without duplicates)
+// * Nia Nih (National Institute on Aging - National Institute of Health)
 let firstNiaNihGovArticlesData = [];
-// alzheimer's articles scraped
 let firstNiaNihGovArticleTotal = 0;
 
-// all of the articles scraped here intially, will be set as pending, and we are manually going to sort the articles and set their status and their categories
+// ! all of the articles scraped here intially, will be set as pending, and we are manually going to sort the articles and set their status and their categories
 async function firstNiaNihGovScrape(
 	baseUrl = 'https://www.nia.nih.gov/news/all'
 ) {
@@ -600,11 +589,92 @@ async function firstNiaNihGovScrape(
 	}
 }
 
-// firstTheGuardianScrape();
-// firstAlzheimersOrgUkScrape();
-// firstJAlzScrape();
-firstNiaNihGovScrape();
-// firstAlzOrgNewsScrape();
-// firstTheGuardianAlzheimerScrape();
+// * NeuroScience News
+let firstNeuroScienceNewsArticleData = [];
+let firstNeuroScienceNewsTotal = 0;
 
-// firstTheGuardianDementiaScrape();
+async function firstNeuroScienceNews(
+	baseUrl = 'https://neurosciencenews.com/neuroscience-terms/alzheimers-disease/'
+) {
+	try {
+		console.log(`Scraping... ${baseUrl}`);
+		const $ = await fetchArticles(baseUrl);
+		let articles = $('main article');
+		// console.log(articles);
+
+		articles.each(async function () {
+			// increment articles scraped counter by 1 on every iteration
+			firstNeuroScienceNewsTotal++;
+
+			// creating the properties for the
+			let title = $(this).find('.title').text().trim();
+
+			// check if we have an article already with the title name, if we have skip this iteration.
+			if (
+				firstNeuroScienceNewsArticleData.find(
+					(article) =>
+						article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+				)
+			) {
+				console.log(`article already exists: ${title}`);
+				return;
+			}
+
+			let subtitle = $(this).find('.excerpt').text().trim();
+			let url = $(this).find('.title a').attr('href');
+			let publisher = 'Neuroscience News';
+			let publisherUrl = 'https://neurosciencenews.com/';
+			let publishDate = $(this).find('.dateCreated').text();
+			// cleaning up the publishedDate, removing published and trimming
+			publishDate = publishDate.trim();
+			publishDate = new Date(publishDate);
+
+			if (publishDate == 'Invalid Date') {
+				publishDate = null;
+			} else {
+				publishDate = publishDate.toISOString();
+			}
+
+			const article = {
+				title,
+				subtitle,
+				url,
+				publisher,
+				publisherUrl,
+				publishDate,
+				categories: [],
+				type: ['news'],
+				status: 'PENDING',
+				// articleContent,
+			};
+
+			firstNeuroScienceNewsArticleData.push(article);
+		});
+
+		// !PAGINATION
+		// check if the pagination element exists (the one for going to the next page)
+		if ($('.page-next')) {
+			// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
+			baseUrl = $('.next').attr('href');
+
+			// if the baseUrl is undefined, then we there are no next page and we want to just return
+			if (baseUrl === undefined) {
+				console.log(firstNeuroScienceNewsArticleData);
+				console.log('done scraping...');
+				console.log(
+					`${firstNeuroScienceNewsArticleData.length} / ${firstNeuroScienceNewsTotal} articles were scraped from https://neurosciencenews.com/neuroscience-terms/alzheimers-disease/`
+				);
+				return;
+			}
+			await firstNeuroScienceNews(baseUrl);
+		}
+
+		// console.log(theGuardianArticlesData);
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+// INTIAL SCRAPE
+
+async function initialScrape() {}
