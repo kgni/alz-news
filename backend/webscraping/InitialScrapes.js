@@ -313,6 +313,7 @@ async function firstNeuroScienceNews(
 async function initialScrape() {
 	await connectDB();
 	const addedArticles = [];
+	console.log(addedArticles.length);
 
 	// * DECLARING functions
 
@@ -383,8 +384,6 @@ async function initialScrape() {
 
 	// alzheimers.org.uk - Alzheimer's Society
 
-	// TODO - get Date for every article (look at the url, or click into every article and fetch it?)
-	// TODO - MAKE THIS WORK, ARE WE CHECKING addedArticles currently?
 	async function alzheimersOrgUkScrape(
 		baseUrl = 'https://www.alzheimers.org.uk/about-us/news-and-media/latest-news'
 	) {
@@ -436,20 +435,15 @@ async function initialScrape() {
 					.querySelector('.pattern--teaser--summary')
 					.firstElementChild.textContent.trim();
 				let url = article.querySelector('a').href;
-				let publishDate = new Date(url.split('/')[1]);
-				publishDate = publishDate.toISOString().toString();
+				let publishDate = url.split('/')[4];
+				publishDate = new Date(publishDate);
 
 				if (
 					articlesScraped.find(
 						(article) =>
 							article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
-					) ||
-					addedArticles.find(
-						(article) =>
-							article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
 					)
 				) {
-					console.log(`article already exists: "${title}"`);
 					return;
 				}
 
@@ -466,20 +460,22 @@ async function initialScrape() {
 					publisher: ['alzheimers.org.uk', "alzheimer's society"],
 					publisherUrl: 'https://www.alzheimers.org.uk/',
 					publishDate,
-					categories: ["dementia, alzheimer's"],
+					categories: ['dementia', "alzheimer's"],
 					type: article.querySelector('span').textContent.toLowerCase(),
 					status: 'PENDING',
 				};
 				articlesScraped.push(articleData);
 			});
-			console.log('done scraping...');
-			console.log(
-				`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.theguardian.com/society/alzheimers`
-			);
 			return articlesScraped;
 		});
 
-		addedArticles.push(...newArticles);
+		// TODO - THIS DOES NOT WORK, WE NEED TO GO A LAYER DEEPER (LOOK AT REPEATINGSCRAPES AS WELL)
+		const filteredNewArticles = newArticles.filter(
+			(article) => !addedArticles.includes(article.title)
+		);
+		console.log(filteredNewArticles);
+
+		addedArticles.push(...filteredNewArticles);
 		console.log('closing browser...');
 		await browser.close();
 		console.log('browser closed...');
@@ -672,12 +668,12 @@ async function initialScrape() {
 	// await theGuardianDementiaScrape();
 	await alzheimersOrgUkScrape();
 	// console.log(`${addedArticles.length} articles added`);
-	// News.insertMany(addedArticles, (err) => {
-	// 	if (err) return handleError(err);
-	// 	console.log(`${addedArticles.length} articles added to DB`);
-	// 	mongoose.connection.close();
-	// 	return;
-	// });
+	News.insertMany(addedArticles, (err) => {
+		if (err) return handleError(err);
+		console.log(`${addedArticles.length} articles added to DB`);
+		mongoose.connection.close();
+		return;
+	});
 }
 
 initialScrape();

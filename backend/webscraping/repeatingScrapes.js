@@ -25,7 +25,7 @@ async function repeatingScrapes() {
 		const articlesDB = await News.find({});
 		const newArticles = [];
 
-		// * Declaring all the functions
+		// * DECLARING functions
 		async function theGuardianAlzheimerScrape(
 			baseUrl = 'https://www.theguardian.com/society/alzheimers'
 		) {
@@ -220,9 +220,124 @@ async function repeatingScrapes() {
 			await scrape(baseUrl);
 		}
 
+		async function alzheimersOrgUkScrape(
+			baseUrl = 'https://www.alzheimers.org.uk/about-us/news-and-media/latest-news'
+		) {
+			console.log('starting browser...');
+
+			// launching browser
+			const browser = await puppeteer.launch({ headless: false });
+			console.log('browser started...');
+
+			// creating a new page
+			const page = await browser.newPage();
+			// go to the base url
+			await page.goto(baseUrl);
+
+			// waiting for cookie modal popup
+			await page.waitForSelector('#onetrust-accept-btn-handler');
+			// clicking cookie modal away
+			await page.click('#onetrust-accept-btn-handler');
+
+			console.log(`started scraping... ${baseUrl}`);
+			// click on the see-more button insdie of our news content container, while it is present.
+
+			// TODO make this function click see more button 5 times.
+			async function clickSeeMore() {
+				for (let i = 1; i <= 5; i++) {
+					try {
+						// clicking the button see more button
+						await page.click('#alz-mixed-content-news .see-more');
+						// waiting for our AJAX request to return OK
+						await page.waitForResponse((response) => response.status() === 200);
+					} catch (e) {
+						console.log(e);
+					}
+				}
+			}
+
+			await clickSeeMore();
+
+			// evaluate will allow us to run JavaScript inside of the page, like we could do in the console.
+			const newFetchedArticles = await page.evaluate(async () => {
+				let articlesScrapedCount = 0;
+				let articlesScraped = [];
+				// while (document.querySelector('#alz-mixed-content-news .see-more')) {
+				// 	page.click('#alz-mixed-content-news .see-more');
+				// }
+				Array.from(
+					document.querySelectorAll(
+						'#alz-mixed-content-news [data-content-type="article"]'
+					)
+				).map((article) => {
+					articlesScrapedCount++;
+
+					let title = article.querySelector('.title').textContent.trim();
+					let subtitle = article
+						.querySelector('.pattern--teaser--summary')
+						.firstElementChild.textContent.trim();
+					let url = article.querySelector('a').href;
+					let publishDate = url.split('/')[4];
+					publishDate = new Date(publishDate);
+
+					// check if article was already scraped
+					if (
+						articlesScraped.find(
+							(article) =>
+								article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+						)
+					) {
+						return;
+					}
+
+					if (publishDate == 'Invalid Date') {
+						publishDate = null;
+					} else {
+						publishDate = publishDate.toISOString().toString();
+					}
+
+					let articleData = {
+						title,
+						subtitle,
+						url,
+						publisher: ['alzheimers.org.uk', "alzheimer's society"],
+						publisherUrl: 'https://www.alzheimers.org.uk/',
+						publishDate,
+						categories: ['dementia', "alzheimer's"],
+						type: article.querySelector('span').textContent.toLowerCase(),
+						status: 'PENDING',
+					};
+					articlesScraped.push(articleData);
+				});
+				return articlesScraped;
+			});
+
+			// TODO - fix so we are checking if the articlesDB already has the articles we have fetched (probably need to use filter and check if length is < 1)
+			// TODO - we need to check the newArticles array as well (this is the array that we put all of our articles into before added them to the DB (so that we don't need to fetch all the time))
+
+			// let filteredNewArticles = newFetchedArticles.filter(
+			// 	(article) => !newArticles.includes(article)
+			// );
+
+			let filteredNewArticles = newFetchedArticles.filter(
+				(article) =>
+					!articlesDB.forEach((articleDbArticle) =>
+						articleDbArticle.includes(article.title)
+					)
+			);
+			console.log(filteredNewArticles);
+
+			newArticles.push(...filteredNewArticles);
+			console.log('closing browser...');
+			await browser.close();
+			console.log('browser closed...');
+			return;
+		}
+
 		// * RUNNING all functions
-		await theGuardianAlzheimerScrape();
-		await theGuardianDementiaScrape();
+		// await theGuardianAlzheimerScrape();
+		// await theGuardianDementiaScrape();
+		await alzheimersOrgUkScrape();
 
 		News.insertMany(newArticles, (err) => {
 			if (err) return handleError(err);
