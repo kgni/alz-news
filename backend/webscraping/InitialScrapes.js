@@ -26,83 +26,7 @@ async function fetchArticles(url) {
 // * Nia Nih (National Institute on Aging - National Institute of Health)
 
 // ! all of the articles scraped here intially, will be set as pending, and we are manually going to sort the articles and set their status and their categories
-async function firstNiaNihGovScrape(
-	baseUrl = 'https://www.nia.nih.gov/news/all'
-) {
-	let articlesScrapedCount = 0;
-	let articlesScraped = [];
-	async function scrape() {
-		try {
-			console.log(`Scraping... ${baseUrl}`);
-			const $ = await fetchArticles(baseUrl);
-			let articles = $('article');
 
-			articles.each(async function () {
-				// increment articles scraped counter by 1 on every iteration
-				articlesScrapedCount++;
-
-				// creating the properties for the
-				let title = $(this).find('.news-title').text().trim();
-
-				let subtitle = null;
-				let url =
-					'https://www.nia.nih.gov' +
-					$(this).find('.news-title a').attr('href');
-				let publisher = 'National Institute on Aging';
-				let publisherUrl = 'https://www.nia.nih.gov/';
-				let publishDate = $(this).find('.postdate').text();
-				let type = $(this).find('.news-type').text().toLowerCase();
-				// cleaning up the publishedDate, removing published and trimming
-				publishDate = publishDate.split(' Published:').join('').trim();
-				publishDate = new Date([...new Set(publishDate.split(' '))]);
-
-				if (publishDate == 'Invalid Date') {
-					publishDate = null;
-				} else {
-					publishDate = publishDate.toISOString();
-				}
-
-				const article = {
-					title,
-					subtitle,
-					url,
-					publisher,
-					publisherUrl,
-					publishDate,
-					categories: [],
-					type: ['news', type],
-					status: 'PENDING',
-					// articleContent,
-				};
-				// console.log(article);
-				articlesScraped.push(article);
-			});
-
-			// !PAGINATION
-			// check if the pagination element exists (the one for going to the next page)
-			if ($('.page-next')) {
-				// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
-				baseUrl =
-					'https://www.nia.nih.gov/news/all' + $('.page-next a').attr('href');
-
-				// if the baseUrl is undefined, then we there are no next page and we want to just return
-				if (baseUrl === 'https://www.nia.nih.gov/news/allundefined') {
-					console.log(articlesScraped);
-					console.log('done scraping...');
-					console.log(
-						`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.nia.nih.gov/news/all`
-					);
-					return;
-				}
-				await scrape(baseUrl);
-			}
-			// console.log(theGuardianArticlesData);
-		} catch (error) {
-			console.error(error);
-		}
-	}
-	await scrape(baseUrl);
-}
 // * NeuroScience News
 
 async function firstNeuroScienceNews(
@@ -241,7 +165,7 @@ async function initialScrape() {
 					publisherUrl,
 					publishDate,
 					categories,
-					type,
+					type: ['news', type],
 					status,
 				};
 				articlesScraped.push(articleData);

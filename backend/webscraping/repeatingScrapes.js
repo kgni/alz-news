@@ -27,6 +27,104 @@ async function repeatingScrapes() {
 
 		// * DECLARING functions
 
+		async function alzOrgNewsScrape(
+			baseUrl = 'https://www.alz.org/news/browse-by-news-type?newstype=ExternalNews'
+		) {
+			console.log('starting browser...');
+			const browser = await puppeteer.launch();
+			console.log('browser started...');
+			console.log(`scraping... alz.org`);
+			const page = await browser.newPage();
+			await page.goto(baseUrl);
+			const newFetchedArticles = await page.evaluate(() => {
+				let articlesScrapedCount = 0;
+				let articlesScraped = [];
+				Array.from(document.querySelectorAll('.card')).map((article) => {
+					articlesScrapedCount++;
+					// taking the date, turning into a date object which will be formatted toISOString and the to a string.
+
+					let title = article.querySelector('.card-title').textContent.trim();
+					let subtitle = article.querySelector('.card-text').textContent.trim();
+					let url = article.querySelector('.card-title a').href;
+					let publisher = ['alz.org', "alzheimer's association"];
+					let publisherUrl = 'https://www.alz.org/';
+					let publishDate = article.querySelector('.card-date').textContent;
+					publishDate = new Date(publishDate);
+					let categories = ["alzheimer's"];
+					let type = article.querySelector('.card-lead').textContent;
+
+					if (
+						articlesScraped.find(
+							(article) => article.title.toLowerCase() === title.toLowerCase()
+						)
+					) {
+						return;
+					}
+
+					if (publishDate == 'Invalid Date') {
+						publishDate = null;
+					} else {
+						publishDate = publishDate.toISOString().toString();
+					}
+
+					let articleData = {
+						title,
+						subtitle,
+						url,
+						publisher,
+						publisherUrl,
+						publishDate,
+						categories,
+						type: ['news', type],
+						status: 'PENDING',
+					};
+					articlesScraped.push(articleData);
+				});
+				console.log('done scraping...');
+				console.log(
+					`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.theguardian.com/society/alzheimers`
+				);
+				return articlesScraped;
+			});
+
+			console.log(`done scraping...`);
+
+			console.log(`${newFetchedArticles.length} articles fetched`);
+
+			// filtering articles already fetched (but not added to db)
+
+			let filteredNewArticles = parse.filterPuppeteerArticlesTitle(
+				newFetchedArticles,
+				newArticles
+			);
+			// let filteredNewArticles = newFetchedArticles.filter(
+			// 	(article) => !newArticles.find(({ title }) => article.title === title)
+			// );
+
+			// filtering  articles already in DB
+
+			filteredNewArticles = parse.filterPuppeteerArticlesTitle(
+				filteredNewArticles,
+				articlesDB
+			);
+
+			// filteredNewArticles.filter(
+			// 	(article) => !articlesDB.find(({ title }) => article.title === title)
+			// );
+
+			console.log(`${filteredNewArticles.length} articles after filtering`);
+
+			// only if we have filteredNewArticles will we push them to the newArticles
+			if (filteredNewArticles.length > 1) {
+				newArticles.push(...filteredNewArticles);
+			}
+
+			console.log('closing browser...');
+			await browser.close();
+			console.log('browser closed...');
+			return;
+		}
+
 		async function alzheimersOrgUkScrape(
 			baseUrl = 'https://www.alzheimers.org.uk/about-us/news-and-media/latest-news'
 		) {
@@ -80,8 +178,7 @@ async function repeatingScrapes() {
 					// check if article was already scraped
 					if (
 						articlesScraped.find(
-							(article) =>
-								article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+							(article) => article.title.toLowerCase() === title.toLowerCase()
 						)
 					) {
 						return;
@@ -179,19 +276,13 @@ async function repeatingScrapes() {
 
 						if (
 							articlesDB.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
 							newArticles.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
 							articlesScraped.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							)
 						) {
 							// console.log(`article already exists: "${title}"`);
@@ -267,19 +358,13 @@ async function repeatingScrapes() {
 						// check if we have an article already with the title name, if we have skip this iteration.
 						if (
 							articlesDB.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
 							newArticles.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
 							articlesScraped.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							)
 						) {
 							// console.log(`article already exists: "${title}"`);
@@ -366,19 +451,13 @@ async function repeatingScrapes() {
 						// If we already have an article with the same name, then we skip that article from being added
 						if (
 							articlesDB.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
 							newArticles.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
 							articlesScraped.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							)
 						) {
 							// console.log(`article already exists: "${title}"`);
@@ -463,19 +542,13 @@ async function repeatingScrapes() {
 						// If we already have an article with the same name, then we skip that article from being added
 						if (
 							articlesDB.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
 							newArticles.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
 							articlesScraped.find(
-								(article) =>
-									article.title.toLocaleLowerCase() ===
-									title.toLocaleLowerCase()
+								(article) => article.title.toLowerCase() === title.toLowerCase()
 							)
 						) {
 							// console.log(`article already exists: "${title}"`);
@@ -538,11 +611,12 @@ async function repeatingScrapes() {
 		}
 
 		// * RUNNING all functions
+		await alzOrgNewsScrape();
 		// await theGuardianAlzheimerScrape();
 		// await theGuardianDementiaScrape();
 		// await alzheimersOrgUkScrape();
-		await niaNihGovScrape();
-		await jAlzScrape();
+		// await niaNihGovScrape();
+		// await jAlzScrape();
 
 		News.insertMany(newArticles, (err) => {
 			if (err) return handleError(err);
