@@ -358,11 +358,20 @@ async function repeatingScrapes() {
 
 						// check if we have an article already with the title name, if we have skip this iteration.
 						if (
-							articlesScraped.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
+							articlesDB.find(
+								(article) =>
+									article.title.toLocaleLowerCase() ===
+									title.toLocaleLowerCase()
 							) ||
-							addedArticles.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
+							newArticles.find(
+								(article) =>
+									article.title.toLocaleLowerCase() ===
+									title.toLocaleLowerCase()
+							) ||
+							articlesScraped.find(
+								(article) =>
+									article.title.toLocaleLowerCase() ===
+									title.toLocaleLowerCase()
 							)
 						) {
 							// console.log(`article already exists: "${title}"`);
@@ -378,13 +387,10 @@ async function repeatingScrapes() {
 						publishDate = publishDate.split(' Published:').join('').trim();
 						publishDate = new Date([...new Set(publishDate.split(' '))]);
 
-						let status = '';
 						if (publishDate == 'Invalid Date') {
 							publishDate = null;
-							status = 'PENDING';
 						} else {
 							publishDate = publishDate.toISOString();
-							status = 'APPROVED';
 						}
 
 						const article = {
@@ -396,7 +402,7 @@ async function repeatingScrapes() {
 							publishDate,
 							categories: ["alzheimer's"],
 							type: 'news',
-							status,
+							status: 'PENDING',
 							// articleContent,
 						};
 						// console.log(article);
@@ -406,17 +412,16 @@ async function repeatingScrapes() {
 					// check if the pagination element exists (the one for going to the next page)
 					if ($('.pager-next')) {
 						// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
-						baseUrl =
-							'https://www.j-alz.com/' + $('.pager-next a').attr('href');
+						baseUrl = 'https://www.j-alz.com' + $('.pager-next a').attr('href');
 
 						// if the baseUrl is undefined, then we there are no next page and we want to just return
-						if (baseUrl === 'https://www.j-alz.com/undefined') {
+						if (baseUrl === 'https://www.j-alz.com/latest-news?page=6') {
 							console.log(articlesScraped);
 							console.log('done scraping...');
 							console.log(
 								`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.j-alz.com/latest-news`
 							);
-							addedArticles.push(...articlesScraped);
+							newArticles.push(...articlesScraped);
 							return;
 						}
 						await scrape(baseUrl);
@@ -431,9 +436,10 @@ async function repeatingScrapes() {
 		}
 
 		// * RUNNING all functions
-		await theGuardianAlzheimerScrape();
-		await theGuardianDementiaScrape();
-		await alzheimersOrgUkScrape();
+		// await theGuardianAlzheimerScrape();
+		// await theGuardianDementiaScrape();
+		// await alzheimersOrgUkScrape();
+		await jAlzScrape();
 
 		News.insertMany(newArticles, (err) => {
 			if (err) return handleError(err);

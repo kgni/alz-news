@@ -628,10 +628,10 @@ async function initialScrape() {
 				// check if the pagination element exists (the one for going to the next page)
 				if ($('.pager-next')) {
 					// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
-					baseUrl = 'https://www.j-alz.com/' + $('.pager-next a').attr('href');
+					baseUrl = 'https://www.j-alz.com' + $('.pager-next a').attr('href');
 
 					// if the baseUrl is undefined, then we there are no next page and we want to just return
-					if (baseUrl === 'https://www.j-alz.com/undefined') {
+					if (baseUrl === 'https://www.j-alz.comundefined') {
 						console.log(articlesScraped);
 						console.log('done scraping...');
 						console.log(
