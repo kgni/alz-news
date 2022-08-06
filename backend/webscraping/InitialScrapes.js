@@ -23,93 +23,6 @@ async function fetchArticles(url) {
 	return cheerio.load(response.data);
 }
 
-// * Nia Nih (National Institute on Aging - National Institute of Health)
-
-// ! all of the articles scraped here intially, will be set as pending, and we are manually going to sort the articles and set their status and their categories
-
-// * NeuroScience News
-
-async function firstNeuroScienceNews(
-	baseUrl = 'https://neurosciencenews.com/neuroscience-terms/alzheimers-disease/'
-) {
-	try {
-		console.log(`Scraping... ${baseUrl}`);
-		const $ = await fetchArticles(baseUrl);
-		let articles = $('main article');
-		// console.log(articles);
-
-		articles.each(async function () {
-			// increment articles scraped counter by 1 on every iteration
-			firstNeuroScienceNewsTotal++;
-
-			// creating the properties for the
-			let title = $(this).find('.title').text().trim();
-
-			// check if we have an article already with the title name, if we have skip this iteration.
-			if (
-				firstNeuroScienceNewsArticleData.find(
-					(article) => article.title.toLowerCase() === title.toLowerCase()
-				)
-			) {
-				console.log(`article already exists: ${title}`);
-				return;
-			}
-
-			let subtitle = $(this).find('.excerpt').text().trim();
-			let url = $(this).find('.title a').attr('href');
-			let publisher = 'Neuroscience News';
-			let publisherUrl = 'https://neurosciencenews.com/';
-			let publishDate = $(this).find('.dateCreated').text();
-			// cleaning up the publishedDate, removing published and trimming
-			publishDate = publishDate.trim();
-			publishDate = new Date(publishDate);
-
-			if (publishDate == 'Invalid Date') {
-				publishDate = null;
-			} else {
-				publishDate = publishDate.toISOString();
-			}
-
-			const article = {
-				title,
-				subtitle,
-				url,
-				publisher,
-				publisherUrl,
-				publishDate,
-				categories: [],
-				type: ['news'],
-				status: 'PENDING',
-				// articleContent,
-			};
-
-			firstNeuroScienceNewsArticleData.push(article);
-		});
-
-		// !PAGINATION
-		// check if the pagination element exists (the one for going to the next page)
-		if ($('.page-next')) {
-			// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
-			baseUrl = $('.next').attr('href');
-
-			// if the baseUrl is undefined, then we there are no next page and we want to just return
-			if (baseUrl === undefined) {
-				console.log(firstNeuroScienceNewsArticleData);
-				console.log('done scraping...');
-				console.log(
-					`${firstNeuroScienceNewsArticleData.length} / ${firstNeuroScienceNewsTotal} articles were scraped from https://neurosciencenews.com/neuroscience-terms/alzheimers-disease/`
-				);
-				return;
-			}
-			await firstNeuroScienceNews(baseUrl);
-		}
-
-		// console.log(theGuardianArticlesData);
-	} catch (error) {
-		console.error(error);
-	}
-}
-
 // INTIAL SCRAPE
 
 async function initialScrape() {
@@ -273,7 +186,6 @@ async function initialScrape() {
 			return articlesScraped;
 		});
 
-		// TODO - THIS DOES NOT WORK, WE NEED TO GO A LAYER DEEPER (LOOK AT REPEATINGSCRAPES AS WELL)
 		const filteredNewArticles = parse.filterPuppeteerArticlesTitle(
 			newFetchedArticles,
 			newArticles
@@ -288,6 +200,9 @@ async function initialScrape() {
 		return;
 	}
 
+	// * Nia Nih (National Institute on Aging - National Institute of Health)
+
+	// ! all of the articles scraped here intially, will be set as pending, and we are manually going to sort the articles and set their status and their categories
 	async function niaNihGovScrape(baseUrl = 'https://www.nia.nih.gov/news/all') {
 		let articlesScrapedCount = 0;
 		let articlesScraped = [];
@@ -367,6 +282,95 @@ async function initialScrape() {
 					}
 					await scrape(baseUrl);
 				}
+				// console.log(theGuardianArticlesData);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		await scrape(baseUrl);
+	}
+
+	async function jAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
+		let articlesScrapedCount = 0;
+		let articlesScraped = [];
+		async function scrape() {
+			try {
+				console.log(`Scraping... ${baseUrl}`);
+				const $ = await fetchArticles(baseUrl);
+				let articles = $('article');
+
+				articles.each(async function () {
+					// increment articles scraped counter by 1 on every iteration
+					articlesScrapedCount++;
+
+					// creating the properties for the
+					let title = $(this).find('h2').text().trim();
+
+					// check if we have an article already with the title name, if we have skip this iteration.
+					if (
+						articlesScraped.find(
+							(article) => article.title.toLowerCase() === title.toLowerCase()
+						) ||
+						newArticles.find(
+							(article) => article.title.toLowerCase() === title.toLowerCase()
+						)
+					) {
+						// console.log(`article already exists: "${title}"`);
+						return;
+					}
+
+					let subtitle = $(this).find('.field-items p').text().trim();
+					let url = $(this).find('h2 a').attr('href');
+					let publisher = "Journal Of Alzheimer's Disease";
+					let publisherUrl = 'https://www.j-alz.com/';
+					let publishDate = $(this).find('h3 span').text();
+					// cleaning up the publishedDate, removing published and trimming
+					publishDate = publishDate.split(' Published:').join('').trim();
+					publishDate = new Date([...new Set(publishDate.split(' '))]);
+
+					let status = '';
+					if (publishDate == 'Invalid Date') {
+						publishDate = null;
+						status = 'PENDING';
+					} else {
+						publishDate = publishDate.toISOString();
+						status = 'APPROVED';
+					}
+
+					const article = {
+						title,
+						subtitle,
+						url,
+						publisher,
+						publisherUrl,
+						publishDate,
+						categories: ["alzheimer's"],
+						type: 'news',
+						status,
+						// articleContent,
+					};
+					// console.log(article);
+					articlesScraped.push(article);
+				});
+
+				// check if the pagination element exists (the one for going to the next page)
+				if ($('.pager-next')) {
+					// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
+					baseUrl = 'https://www.j-alz.com' + $('.pager-next a').attr('href');
+
+					// if the baseUrl is undefined, then we there are no next page and we want to just return
+					if (baseUrl === 'https://www.j-alz.comundefined') {
+						console.log(articlesScraped);
+						console.log('done scraping...');
+						console.log(
+							`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.j-alz.com/latest-news`
+						);
+						newArticles.push(...articlesScraped);
+						return;
+					}
+					await scrape(baseUrl);
+				}
+
 				// console.log(theGuardianArticlesData);
 			} catch (error) {
 				console.error(error);
@@ -551,23 +555,28 @@ async function initialScrape() {
 		await scrape(baseUrl);
 	}
 
-	async function jAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
+	// * NeuroScience News
+
+	async function neuroScienceNews(
+		baseUrl = 'https://neurosciencenews.com/neuroscience-terms/alzheimers-disease/'
+	) {
 		let articlesScrapedCount = 0;
 		let articlesScraped = [];
+
 		async function scrape() {
 			try {
 				console.log(`Scraping... ${baseUrl}`);
 				const $ = await fetchArticles(baseUrl);
-				let articles = $('article');
+				let articles = $('main article');
+				// console.log(articles);
 
 				articles.each(async function () {
 					// increment articles scraped counter by 1 on every iteration
 					articlesScrapedCount++;
 
 					// creating the properties for the
-					let title = $(this).find('h2').text().trim();
-
-					// check if we have an article already with the title name, if we have skip this iteration.
+					let title = $(this).find('.title').text().trim();
+					// If we already have an article with the same name, then we skip that article from being added
 					if (
 						articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
@@ -576,26 +585,21 @@ async function initialScrape() {
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						)
 					) {
-						// console.log(`article already exists: "${title}"`);
 						return;
 					}
-
-					let subtitle = $(this).find('.field-items p').text().trim();
-					let url = $(this).find('h2 a').attr('href');
-					let publisher = "Journal Of Alzheimer's Disease";
-					let publisherUrl = 'https://www.j-alz.com/';
-					let publishDate = $(this).find('h3 span').text();
+					let subtitle = $(this).find('.excerpt').text().trim();
+					let url = $(this).find('.title a').attr('href');
+					let publisher = 'Neuroscience News';
+					let publisherUrl = 'https://neurosciencenews.com/';
+					let publishDate = $(this).find('.dateCreated').text();
 					// cleaning up the publishedDate, removing published and trimming
-					publishDate = publishDate.split(' Published:').join('').trim();
-					publishDate = new Date([...new Set(publishDate.split(' '))]);
+					publishDate = publishDate.trim();
+					publishDate = new Date(publishDate);
 
-					let status = '';
 					if (publishDate == 'Invalid Date') {
 						publishDate = null;
-						status = 'PENDING';
 					} else {
 						publishDate = publishDate.toISOString();
-						status = 'APPROVED';
 					}
 
 					const article = {
@@ -605,26 +609,27 @@ async function initialScrape() {
 						publisher,
 						publisherUrl,
 						publishDate,
-						categories: ["alzheimer's"],
-						type: 'news',
-						status,
+						categories: [],
+						type: ['news'],
+						status: 'PENDING',
 						// articleContent,
 					};
-					// console.log(article);
+
 					articlesScraped.push(article);
 				});
 
+				// !PAGINATION
 				// check if the pagination element exists (the one for going to the next page)
-				if ($('.pager-next')) {
+				if ($('.page-next')) {
 					// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
-					baseUrl = 'https://www.j-alz.com' + $('.pager-next a').attr('href');
+					baseUrl = $('.next').attr('href');
 
 					// if the baseUrl is undefined, then we there are no next page and we want to just return
-					if (baseUrl === 'https://www.j-alz.comundefined') {
+					if (baseUrl === undefined) {
 						console.log(articlesScraped);
 						console.log('done scraping...');
 						console.log(
-							`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.j-alz.com/latest-news`
+							`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://neurosciencenews.com/neuroscience-terms/alzheimers-disease/`
 						);
 						newArticles.push(...articlesScraped);
 						return;
@@ -637,10 +642,12 @@ async function initialScrape() {
 				console.error(error);
 			}
 		}
+
 		await scrape(baseUrl);
 	}
 
-	await alzOrgNewsScrape();
+	// await alzOrgNewsScrape();
+	await neuroScienceNews();
 	// await niaNihGovScrape();
 	// await jAlzScrape();
 	// await theGuardianAlzheimerScrape();

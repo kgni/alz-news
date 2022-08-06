@@ -50,6 +50,7 @@ async function repeatingScrapes() {
 					let publisherUrl = 'https://www.alz.org/';
 					let publishDate = article.querySelector('.card-date').textContent;
 					publishDate = new Date(publishDate);
+
 					let categories = ["alzheimer's"];
 					let type = article.querySelector('.card-lead').textContent;
 
@@ -321,7 +322,6 @@ async function repeatingScrapes() {
 
 						// if the baseUrl is undefined, then we there are no next page and we want to just return
 						if (baseUrl === 'https://www.nia.nih.gov/news/all?page=6') {
-							console.log(articlesScraped);
 							console.log('done scraping...');
 							console.log(
 								`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.nia.nih.gov/news/all`
