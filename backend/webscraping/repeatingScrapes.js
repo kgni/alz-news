@@ -612,11 +612,11 @@ async function repeatingScrapes() {
 
 		// * RUNNING all functions
 		await alzOrgNewsScrape();
-		// await theGuardianAlzheimerScrape();
-		// await theGuardianDementiaScrape();
-		// await alzheimersOrgUkScrape();
-		// await niaNihGovScrape();
-		// await jAlzScrape();
+		await theGuardianAlzheimerScrape();
+		await theGuardianDementiaScrape();
+		await alzheimersOrgUkScrape();
+		await niaNihGovScrape();
+		await jAlzScrape();
 
 		News.insertMany(newArticles, (err) => {
 			if (err) return handleError(err);

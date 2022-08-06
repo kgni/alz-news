@@ -27,10 +27,16 @@ async function getArticleContent(url, articleClass) {
 	}
 }
 
+// Filtering function used for Puppeteer for filtering 2 arrays of objects against each other.
+// This can be reused for other properties than title
+// TODO - how do we make this a general function where we pass in an argument, that decides what is being filtered (like this is only filtering for a title at the moment)
+
 function filterPuppeteerArticlesTitle(newArticles, articlesAlreadyAdded) {
 	return newArticles.filter(
 		(article) =>
-			!articlesAlreadyAdded.find(({ title }) => article.title === title)
+			!articlesAlreadyAdded.find(
+				({ title }) => article.title.toLowerCase() === title.toLowerCase()
+			)
 	);
 }
 

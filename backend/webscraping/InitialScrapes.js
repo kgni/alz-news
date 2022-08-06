@@ -130,7 +130,7 @@ async function initialScrape() {
 		console.log(`scraping... alz.org`);
 		const page = await browser.newPage();
 		await page.goto(baseUrl);
-		const newArticles = await page.evaluate(() => {
+		const newFetchedArticles = await page.evaluate(() => {
 			let articlesScrapedCount = 0;
 			let articlesScraped = [];
 			Array.from(document.querySelectorAll('.card')).map((article) => {
@@ -177,7 +177,10 @@ async function initialScrape() {
 			return articlesScraped;
 		});
 
-		newArticles.push(...newArticles);
+		newArticles.push(...newFetchedArticles);
+		console.log(
+			`${newFetchedArticles.length} articles added from https://www.alz.org/news/browse-by-news-type?newstype=ExternalNewsr`
+		);
 		console.log('closing browser...');
 		await browser.close();
 		console.log('browser closed...');
@@ -219,7 +222,7 @@ async function initialScrape() {
 		}
 
 		// evaluate will allow us to run JavaScript inside of the page, like we could do in the console.
-		const newArticles = await page.evaluate(async () => {
+		const newFetchedArticles = await page.evaluate(async () => {
 			let articlesScrapedCount = 0;
 			let articlesScraped = [];
 			// while (document.querySelector('#alz-mixed-content-news .see-more')) {
@@ -272,7 +275,7 @@ async function initialScrape() {
 
 		// TODO - THIS DOES NOT WORK, WE NEED TO GO A LAYER DEEPER (LOOK AT REPEATINGSCRAPES AS WELL)
 		const filteredNewArticles = parse.filterPuppeteerArticlesTitle(
-			newArticles,
+			newFetchedArticles,
 			newArticles
 		);
 
@@ -637,8 +640,8 @@ async function initialScrape() {
 		await scrape(baseUrl);
 	}
 
-	// await alzOrgNewsScrape();
-	await niaNihGovScrape();
+	await alzOrgNewsScrape();
+	// await niaNihGovScrape();
 	// await jAlzScrape();
 	// await theGuardianAlzheimerScrape();
 	// await theGuardianDementiaScrape();
