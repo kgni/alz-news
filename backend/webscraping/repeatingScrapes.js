@@ -340,6 +340,96 @@ async function repeatingScrapes() {
 			return;
 		}
 
+		async function jAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
+			let articlesScrapedCount = 0;
+			let articlesScraped = [];
+			async function scrape() {
+				try {
+					console.log(`Scraping... ${baseUrl}`);
+					const $ = await fetchArticles(baseUrl);
+					let articles = $('article');
+
+					articles.each(async function () {
+						// increment articles scraped counter by 1 on every iteration
+						articlesScrapedCount++;
+
+						// creating the properties for the
+						let title = $(this).find('h2').text().trim();
+
+						// check if we have an article already with the title name, if we have skip this iteration.
+						if (
+							articlesScraped.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							) ||
+							addedArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)
+						) {
+							// console.log(`article already exists: "${title}"`);
+							return;
+						}
+
+						let subtitle = $(this).find('.field-items p').text().trim();
+						let url = $(this).find('h2 a').attr('href');
+						let publisher = "Journal Of Alzheimer's Disease";
+						let publisherUrl = 'https://www.j-alz.com/';
+						let publishDate = $(this).find('h3 span').text();
+						// cleaning up the publishedDate, removing published and trimming
+						publishDate = publishDate.split(' Published:').join('').trim();
+						publishDate = new Date([...new Set(publishDate.split(' '))]);
+
+						let status = '';
+						if (publishDate == 'Invalid Date') {
+							publishDate = null;
+							status = 'PENDING';
+						} else {
+							publishDate = publishDate.toISOString();
+							status = 'APPROVED';
+						}
+
+						const article = {
+							title,
+							subtitle,
+							url,
+							publisher,
+							publisherUrl,
+							publishDate,
+							categories: ["alzheimer's"],
+							type: 'news',
+							status,
+							// articleContent,
+						};
+						// console.log(article);
+						articlesScraped.push(article);
+					});
+
+					// check if the pagination element exists (the one for going to the next page)
+					if ($('.pager-next')) {
+						// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
+						baseUrl =
+							'https://www.j-alz.com/' + $('.pager-next a').attr('href');
+
+						// if the baseUrl is undefined, then we there are no next page and we want to just return
+						if (baseUrl === 'https://www.j-alz.com/undefined') {
+							console.log(articlesScraped);
+							console.log('done scraping...');
+							console.log(
+								`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.j-alz.com/latest-news`
+							);
+							addedArticles.push(...articlesScraped);
+							return;
+						}
+						await scrape(baseUrl);
+					}
+
+					// console.log(theGuardianArticlesData);
+				} catch (error) {
+					console.error(error);
+				}
+			}
+			await scrape(baseUrl);
+		}
+
 		// * RUNNING all functions
 		await theGuardianAlzheimerScrape();
 		await theGuardianDementiaScrape();

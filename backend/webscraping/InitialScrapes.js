@@ -17,106 +17,10 @@ const connectDB = async () => {
 
 // TODO - FETCH ALL OF THE ARTICLE CONTENT AND PUT IT ON EACH ARTICLE (AS HTML PREFERABLY)
 // TODO - TAKE A SCREENSHOT OF EACH ARTICLE, HOST IT YOURSELF (CREATE LINK FOR EACH IMAGE? HOW TO SAVE A IMAGE TO MONGODB?) AND PUT THE LINK ON EACH ARTICLE
+
 async function fetchArticles(url) {
 	const response = await axios.get(url);
 	return cheerio.load(response.data);
-}
-
-// * Nia Nih (National Institute on Aging - National Institute of Health)
-let firstJAlzArticlesData = [];
-let firstJAlzArticlesTotal = 0;
-
-async function firstJAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
-	try {
-		console.log(`Scraping... ${baseUrl}`);
-		const $ = await fetchArticles(baseUrl);
-		let articles = $('article');
-
-		articles.each(async function () {
-			// increment articles scraped counter by 1 on every iteration
-			firstJAlzArticlesTotal++;
-
-			// creating the properties for the
-			let title = $(this).find('h2').text().trim();
-
-			// check if we have an article already with the title name, if we have skip this iteration.
-			if (
-				firstJAlzArticlesData.find(
-					(article) => article.title.toLowerCase() === title.toLowerCase()
-				)
-			) {
-				console.log(`article already exists: ${title}`);
-				return;
-			}
-
-			let subtitle = $(this).find('.field-items p').text().trim();
-			let url = $(this).find('h2 a').attr('href');
-			let publisher = "Journal Of Alzheimer's Disease";
-			let publisherUrl = 'https://www.j-alz.com/';
-			let publishDate = $(this).find('h3 span').text();
-			// cleaning up the publishedDate, removing published and trimming
-			publishDate = publishDate.split(' Published:').join('').trim();
-			publishDate = new Date([...new Set(publishDate.split(' '))]);
-
-			let status = '';
-			if (publishDate == 'Invalid Date') {
-				publishDate = null;
-				status = 'PENDING';
-			} else {
-				publishDate = publishDate.toISOString();
-				status = 'APPROVED';
-			}
-			// getting the content of each individual article as HTML.
-
-			// TODO - Scrape article content, for now we will just link to articles instead
-
-			// articleContent = await parse.getArticleContent(url, '#maincontent');
-
-			// // TODO - if there is a modal that blocks us from getting the main content, we should run puppeteer instead - click away the modal and get the content.
-			// if (!articleContent) {
-			// 	console.log('Article content could not be scraped');
-			// }
-
-			// sometimes the publishedDate would be there twice, we remove this by using the new Set constructor while we split the published date into a new array
-			// we also turn the publishedDate into a date object, so we know it is formatted the same way.
-
-			const article = {
-				title,
-				subtitle,
-				url,
-				publisher,
-				publisherUrl,
-				publishDate,
-				categories: ["alzheimer's"],
-				type: 'news',
-				status,
-				// articleContent,
-			};
-			// console.log(article);
-			firstJAlzArticlesData.push(article);
-		});
-
-		// check if the pagination element exists (the one for going to the next page)
-		if ($('.pager-next')) {
-			// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
-			baseUrl = 'https://www.j-alz.com/' + $('.pager-next a').attr('href');
-
-			// if the baseUrl is undefined, then we there are no next page and we want to just return
-			if (baseUrl === 'https://www.j-alz.com/undefined') {
-				console.log(firstJAlzArticlesData);
-				console.log('done scraping...');
-				console.log(
-					`${firstJAlzArticlesData.length} / ${firstJAlzArticlesTotal} articles were scraped from https://www.j-alz.com/latest-news`
-				);
-				return;
-			}
-			await firstJAlzScrape(baseUrl);
-		}
-
-		// console.log(theGuardianArticlesData);
-	} catch (error) {
-		console.error(error);
-	}
 }
 
 // * Nia Nih (National Institute on Aging - National Institute of Health)
@@ -310,8 +214,8 @@ async function firstNeuroScienceNews(
 
 async function initialScrape() {
 	await connectDB();
-	const addedArticles = [];
-	console.log(addedArticles.length);
+	const articlesDB = await News.find({});
+	const newArticles = [];
 
 	// * DECLARING functions
 
@@ -373,7 +277,7 @@ async function initialScrape() {
 			return articlesScraped;
 		});
 
-		addedArticles.push(...newArticles);
+		newArticles.push(...newArticles);
 		console.log('closing browser...');
 		await browser.close();
 		console.log('browser closed...');
@@ -467,12 +371,14 @@ async function initialScrape() {
 		});
 
 		// TODO - THIS DOES NOT WORK, WE NEED TO GO A LAYER DEEPER (LOOK AT REPEATINGSCRAPES AS WELL)
-		const filteredNewArticles = newArticles.filter(
-			(article) => !addedArticles.includes(article.title)
+		const filteredNewArticles = parse.filterPuppeteerArticlesTitle(
+			newArticles,
+			newArticles
 		);
+
 		console.log(filteredNewArticles);
 
-		addedArticles.push(...filteredNewArticles);
+		newArticles.push(...filteredNewArticles);
 		console.log('closing browser...');
 		await browser.close();
 		console.log('browser closed...');
@@ -506,7 +412,7 @@ async function initialScrape() {
 						articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						addedArticles.find(
+						newArticles.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						)
 					) {
@@ -557,7 +463,7 @@ async function initialScrape() {
 						console.log(
 							`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.theguardian.com/society/alzheimers`
 						);
-						addedArticles.push(...articlesScraped);
+						newArticles.push(...articlesScraped);
 						return;
 					}
 					await scrape(baseUrl);
@@ -593,7 +499,7 @@ async function initialScrape() {
 						articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						addedArticles.find(
+						newArticles.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						)
 					) {
@@ -644,7 +550,7 @@ async function initialScrape() {
 						console.log(
 							`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.theguardian.com/society/alzheimers`
 						);
-						addedArticles.push(...articlesScraped);
+						newArticles.push(...articlesScraped);
 						return;
 					}
 					await scrape(baseUrl);
@@ -656,14 +562,104 @@ async function initialScrape() {
 		await scrape(baseUrl);
 	}
 
-	await alzOrgNewsScrape();
-	await theGuardianAlzheimerScrape();
-	await theGuardianDementiaScrape();
+	async function jAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
+		let articlesScrapedCount = 0;
+		let articlesScraped = [];
+		async function scrape() {
+			try {
+				console.log(`Scraping... ${baseUrl}`);
+				const $ = await fetchArticles(baseUrl);
+				let articles = $('article');
+
+				articles.each(async function () {
+					// increment articles scraped counter by 1 on every iteration
+					articlesScrapedCount++;
+
+					// creating the properties for the
+					let title = $(this).find('h2').text().trim();
+
+					// check if we have an article already with the title name, if we have skip this iteration.
+					if (
+						articlesScraped.find(
+							(article) => article.title.toLowerCase() === title.toLowerCase()
+						) ||
+						newArticles.find(
+							(article) => article.title.toLowerCase() === title.toLowerCase()
+						)
+					) {
+						// console.log(`article already exists: "${title}"`);
+						return;
+					}
+
+					let subtitle = $(this).find('.field-items p').text().trim();
+					let url = $(this).find('h2 a').attr('href');
+					let publisher = "Journal Of Alzheimer's Disease";
+					let publisherUrl = 'https://www.j-alz.com/';
+					let publishDate = $(this).find('h3 span').text();
+					// cleaning up the publishedDate, removing published and trimming
+					publishDate = publishDate.split(' Published:').join('').trim();
+					publishDate = new Date([...new Set(publishDate.split(' '))]);
+
+					let status = '';
+					if (publishDate == 'Invalid Date') {
+						publishDate = null;
+						status = 'PENDING';
+					} else {
+						publishDate = publishDate.toISOString();
+						status = 'APPROVED';
+					}
+
+					const article = {
+						title,
+						subtitle,
+						url,
+						publisher,
+						publisherUrl,
+						publishDate,
+						categories: ["alzheimer's"],
+						type: 'news',
+						status,
+						// articleContent,
+					};
+					// console.log(article);
+					articlesScraped.push(article);
+				});
+
+				// check if the pagination element exists (the one for going to the next page)
+				if ($('.pager-next')) {
+					// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
+					baseUrl = 'https://www.j-alz.com/' + $('.pager-next a').attr('href');
+
+					// if the baseUrl is undefined, then we there are no next page and we want to just return
+					if (baseUrl === 'https://www.j-alz.com/undefined') {
+						console.log(articlesScraped);
+						console.log('done scraping...');
+						console.log(
+							`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.j-alz.com/latest-news`
+						);
+						newArticles.push(...articlesScraped);
+						return;
+					}
+					await scrape(baseUrl);
+				}
+
+				// console.log(theGuardianArticlesData);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		await scrape(baseUrl);
+	}
+
+	// await alzOrgNewsScrape();
+	// await theGuardianAlzheimerScrape();
+	// await theGuardianDementiaScrape();
 	// await alzheimersOrgUkScrape();
-	// console.log(`${addedArticles.length} articles added`);
-	News.insertMany(addedArticles, (err) => {
+	await jAlzScrape();
+	// console.log(`${newArticles.length} articles added`);
+	News.insertMany(newArticles, (err) => {
 		if (err) return handleError(err);
-		console.log(`${addedArticles.length} articles added to DB`);
+		console.log(`${newArticles.length} articles added to DB`);
 		mongoose.connection.close();
 		return;
 	});

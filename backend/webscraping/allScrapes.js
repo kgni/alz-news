@@ -1,0 +1,1 @@
+// TODO - Fill this out when initialscrapes is done, this will be used to fetch all articles again, but it will check if the articles are already in the DB. Articles should also be set to PENDING instead of APPROVED, like they are in the initialScrapes
