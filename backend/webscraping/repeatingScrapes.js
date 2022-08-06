@@ -239,28 +239,20 @@ async function repeatingScrapes() {
 			// clicking cookie modal away
 			await page.click('#onetrust-accept-btn-handler');
 
-			console.log(`started scraping... ${baseUrl}`);
+			console.log(`Scraping... ${baseUrl}`);
 			// click on the see-more button insdie of our news content container, while it is present.
 
 			// TODO make this function click see more button 5 times.
-			async function clickSeeMore() {
-				for (let i = 1; i <= 5; i++) {
-					try {
-						// clicking the button see more button
-						await page.click('#alz-mixed-content-news .see-more');
-						// waiting for our AJAX request to return OK
-						await page.waitForResponse((response) => response.status() === 200);
-					} catch (e) {
-						console.log(e);
-					}
-				}
+			for (let i = 0; i < 6; i++) {
+				// clicking the button see more button
+				await page.click('#alz-mixed-content-news .see-more');
+				// waiting for our AJAX request to return OK
+				await page.waitForResponse((response) => response.status() === 200);
+				await page.waitForTimeout(500);
 			}
-
-			await clickSeeMore();
 
 			// evaluate will allow us to run JavaScript inside of the page, like we could do in the console.
 			const newFetchedArticles = await page.evaluate(async () => {
-				let articlesScrapedCount = 0;
 				let articlesScraped = [];
 				// while (document.querySelector('#alz-mixed-content-news .see-more')) {
 				// 	page.click('#alz-mixed-content-news .see-more');
@@ -270,8 +262,6 @@ async function repeatingScrapes() {
 						'#alz-mixed-content-news [data-content-type="article"]'
 					)
 				).map((article) => {
-					articlesScrapedCount++;
-
 					let title = article.querySelector('.title').textContent.trim();
 					let subtitle = article
 						.querySelector('.pattern--teaser--summary')
@@ -312,22 +302,38 @@ async function repeatingScrapes() {
 				return articlesScraped;
 			});
 
-			// TODO - fix so we are checking if the articlesDB already has the articles we have fetched (probably need to use filter and check if length is < 1)
-			// TODO - we need to check the newArticles array as well (this is the array that we put all of our articles into before added them to the DB (so that we don't need to fetch all the time))
+			console.log(`done scraping...`);
 
+			console.log(`${newFetchedArticles.length} articles fetched`);
+
+			// filtering articles already fetched (but not added to db)
+
+			let filteredNewArticles = parse.filterPuppeteerArticlesTitle(
+				newFetchedArticles,
+				newArticles
+			);
 			// let filteredNewArticles = newFetchedArticles.filter(
-			// 	(article) => !newArticles.includes(article)
+			// 	(article) => !newArticles.find(({ title }) => article.title === title)
 			// );
 
-			let filteredNewArticles = newFetchedArticles.filter(
-				(article) =>
-					!articlesDB.forEach((articleDbArticle) =>
-						articleDbArticle.includes(article.title)
-					)
-			);
-			console.log(filteredNewArticles);
+			// filtering  articles already in DB
 
-			newArticles.push(...filteredNewArticles);
+			filteredNewArticles = parse.filterPuppeteerArticlesTitle(
+				filteredNewArticles,
+				articlesDB
+			);
+
+			// filteredNewArticles.filter(
+			// 	(article) => !articlesDB.find(({ title }) => article.title === title)
+			// );
+
+			console.log(`${filteredNewArticles.length} articles after filtering`);
+
+			// only if we have filteredNewArticles will we push them to the newArticles
+			if (filteredNewArticles.length > 1) {
+				newArticles.push(...filteredNewArticles);
+			}
+
 			console.log('closing browser...');
 			await browser.close();
 			console.log('browser closed...');
@@ -335,8 +341,8 @@ async function repeatingScrapes() {
 		}
 
 		// * RUNNING all functions
-		// await theGuardianAlzheimerScrape();
-		// await theGuardianDementiaScrape();
+		await theGuardianAlzheimerScrape();
+		await theGuardianDementiaScrape();
 		await alzheimersOrgUkScrape();
 
 		News.insertMany(newArticles, (err) => {

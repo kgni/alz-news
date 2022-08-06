@@ -27,6 +27,14 @@ async function getArticleContent(url, articleClass) {
 	}
 }
 
+function filterPuppeteerArticlesTitle(newArticles, articlesAlreadyAdded) {
+	return newArticles.filter(
+		(article) =>
+			!articlesAlreadyAdded.find(({ title }) => article.title === title)
+	);
+}
+
 module.exports = {
 	getArticleContent,
+	filterPuppeteerArticlesTitle,
 };

@@ -42,8 +42,7 @@ async function firstJAlzScrape(baseUrl = 'https://www.j-alz.com/latest-news') {
 			// check if we have an article already with the title name, if we have skip this iteration.
 			if (
 				firstJAlzArticlesData.find(
-					(article) =>
-						article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+					(article) => article.title.toLowerCase() === title.toLowerCase()
 				)
 			) {
 				console.log(`article already exists: ${title}`);
@@ -144,7 +143,7 @@ async function firstNiaNihGovScrape(
 			// if (
 			// 	firstNiaNihGovArticlesData.find(
 			// 		(article) =>
-			// 			article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+			// 			article.title.toLowerCase() === title.toLowerCase()
 			// 	)
 			// ) {
 			// 	console.log(`article already exists: ${title}`);
@@ -245,8 +244,7 @@ async function firstNeuroScienceNews(
 			// check if we have an article already with the title name, if we have skip this iteration.
 			if (
 				firstNeuroScienceNewsArticleData.find(
-					(article) =>
-						article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+					(article) => article.title.toLowerCase() === title.toLowerCase()
 				)
 			) {
 				console.log(`article already exists: ${title}`);
@@ -440,8 +438,7 @@ async function initialScrape() {
 
 				if (
 					articlesScraped.find(
-						(article) =>
-							article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+						(article) => article.title.toLowerCase() === title.toLowerCase()
 					)
 				) {
 					return;
@@ -507,12 +504,10 @@ async function initialScrape() {
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
 						articlesScraped.find(
-							(article) =>
-								article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
 						addedArticles.find(
-							(article) =>
-								article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+							(article) => article.title.toLowerCase() === title.toLowerCase()
 						)
 					) {
 						console.log(`article already exists: "${title}"`);
@@ -596,12 +591,10 @@ async function initialScrape() {
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
 						articlesScraped.find(
-							(article) =>
-								article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
 						addedArticles.find(
-							(article) =>
-								article.title.toLocaleLowerCase() === title.toLocaleLowerCase()
+							(article) => article.title.toLowerCase() === title.toLowerCase()
 						)
 					) {
 						// console.log(`article already exists: "${title}"`);
@@ -663,10 +656,10 @@ async function initialScrape() {
 		await scrape(baseUrl);
 	}
 
-	// await alzOrgNewsScrape();
-	// await theGuardianAlzheimerScrape();
-	// await theGuardianDementiaScrape();
-	await alzheimersOrgUkScrape();
+	await alzOrgNewsScrape();
+	await theGuardianAlzheimerScrape();
+	await theGuardianDementiaScrape();
+	// await alzheimersOrgUkScrape();
 	// console.log(`${addedArticles.length} articles added`);
 	News.insertMany(addedArticles, (err) => {
 		if (err) return handleError(err);
