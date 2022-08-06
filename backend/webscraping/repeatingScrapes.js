@@ -98,9 +98,6 @@ async function repeatingScrapes() {
 				newFetchedArticles,
 				newArticles
 			);
-			// let filteredNewArticles = newFetchedArticles.filter(
-			// 	(article) => !newArticles.find(({ title }) => article.title === title)
-			// );
 
 			// filtering  articles already in DB
 
@@ -108,6 +105,9 @@ async function repeatingScrapes() {
 				filteredNewArticles,
 				articlesDB
 			);
+			// let filteredNewArticles = newFetchedArticles.filter(
+			// 	(article) => !newArticles.find(({ title }) => article.title === title)
+			// );
 
 			// filteredNewArticles.filter(
 			// 	(article) => !articlesDB.find(({ title }) => article.title === title)
@@ -148,7 +148,6 @@ async function repeatingScrapes() {
 			console.log(`Scraping... ${baseUrl}`);
 			// click on the see-more button insdie of our news content container, while it is present.
 
-			// TODO make this function click see more button 5 times.
 			for (let i = 0; i < 6; i++) {
 				// clicking the button see more button
 				await page.click('#alz-mixed-content-news .see-more');
