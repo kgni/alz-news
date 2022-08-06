@@ -610,13 +610,109 @@ async function repeatingScrapes() {
 			await scrape(baseUrl);
 		}
 
+		async function neuroScienceNews(
+			baseUrl = 'https://neurosciencenews.com/neuroscience-terms/alzheimers-disease/'
+		) {
+			let articlesScrapedCount = 0;
+			let articlesScraped = [];
+
+			async function scrape() {
+				try {
+					console.log(`Scraping... ${baseUrl}`);
+					const $ = await fetchArticles(baseUrl);
+					let articles = $('main article');
+					// console.log(articles);
+
+					articles.each(async function () {
+						// increment articles scraped counter by 1 on every iteration
+						articlesScrapedCount++;
+
+						// creating the properties for the
+						let title = $(this).find('.title').text().trim();
+						// If we already have an article with the same name, then we skip that article from being added
+						if (
+							articlesDB.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							) ||
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							) ||
+							articlesScraped.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)
+						) {
+							// console.log(`article already exists: "${title}"`);
+							return;
+						}
+						let subtitle = $(this).find('.excerpt').text().trim();
+						let url = $(this).find('.title a').attr('href');
+						let publisher = 'Neuroscience News';
+						let publisherUrl = 'https://neurosciencenews.com/';
+						let publishDate = $(this).find('.dateCreated').text();
+						// cleaning up the publishedDate, removing published and trimming
+						publishDate = publishDate.trim();
+						publishDate = new Date(publishDate);
+
+						if (publishDate == 'Invalid Date') {
+							publishDate = null;
+						} else {
+							publishDate = publishDate.toISOString();
+						}
+
+						const article = {
+							title,
+							subtitle,
+							url,
+							publisher,
+							publisherUrl,
+							publishDate,
+							categories: [],
+							type: ['news'],
+							status: 'PENDING',
+							// articleContent,
+						};
+
+						articlesScraped.push(article);
+					});
+
+					// !PAGINATION
+					// check if the pagination element exists (the one for going to the next page)
+					if ($('.page-next')) {
+						// we both have two elements with the class, here we are getting the one, with the rel attribute that is next, so we get the href attribute of the page.
+						baseUrl = $('.next').attr('href');
+
+						// if the baseUrl is undefined, then we there are no next page and we want to just return
+						if (
+							baseUrl ===
+							'https://neurosciencenews.com/neuroscience-terms/alzheimers-disease/page/6/'
+						) {
+							console.log(articlesScraped);
+							console.log('done scraping...');
+							console.log(
+								`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://neurosciencenews.com/neuroscience-terms/alzheimers-disease/`
+							);
+							newArticles.push(...articlesScraped);
+							return;
+						}
+						await scrape(baseUrl);
+					}
+
+					// console.log(theGuardianArticlesData);
+				} catch (error) {
+					console.error(error);
+				}
+			}
+			await scrape(baseUrl);
+		}
+
 		// * RUNNING all functions
-		await alzOrgNewsScrape();
-		await theGuardianAlzheimerScrape();
-		await theGuardianDementiaScrape();
-		await alzheimersOrgUkScrape();
-		await niaNihGovScrape();
-		await jAlzScrape();
+		// await alzOrgNewsScrape();
+		// await theGuardianAlzheimerScrape();
+		// await theGuardianDementiaScrape();
+		// await alzheimersOrgUkScrape();
+		// await niaNihGovScrape();
+		// await jAlzScrape();
+		await neuroScienceNews();
 
 		News.insertMany(newArticles, (err) => {
 			if (err) return handleError(err);

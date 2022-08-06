@@ -596,10 +596,13 @@ async function initialScrape() {
 					publishDate = publishDate.trim();
 					publishDate = new Date(publishDate);
 
+					let status = '';
 					if (publishDate == 'Invalid Date') {
 						publishDate = null;
+						status = 'PENDING';
 					} else {
 						publishDate = publishDate.toISOString();
+						status = 'APPROVED';
 					}
 
 					const article = {
@@ -611,7 +614,7 @@ async function initialScrape() {
 						publishDate,
 						categories: [],
 						type: ['news'],
-						status: 'PENDING',
+						status,
 						// articleContent,
 					};
 
