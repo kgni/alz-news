@@ -706,12 +706,12 @@ async function repeatingScrapes() {
 		}
 
 		// * RUNNING all functions
-		// await alzOrgNewsScrape();
-		// await theGuardianAlzheimerScrape();
-		// await theGuardianDementiaScrape();
-		// await alzheimersOrgUkScrape();
-		// await niaNihGovScrape();
-		// await jAlzScrape();
+		await alzOrgNewsScrape();
+		await theGuardianAlzheimerScrape();
+		await theGuardianDementiaScrape();
+		await alzheimersOrgUkScrape();
+		await niaNihGovScrape();
+		await jAlzScrape();
 		await neuroScienceNews();
 
 		News.insertMany(newArticles, (err) => {
@@ -724,5 +724,5 @@ async function repeatingScrapes() {
 		console.log(e.message);
 	}
 }
-
 repeatingScrapes();
+setInterval(repeatingScrapes, 30000);
