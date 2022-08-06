@@ -25,7 +25,7 @@ async function repeatingScrapes() {
 		const articlesDB = await News.find({});
 		const newArticles = [];
 
-		// * DECLARING functions
+		// * NEWS
 
 		async function alzOrgNewsScrape(
 			baseUrl = 'https://www.alz.org/news/browse-by-news-type?newstype=ExternalNews'
@@ -132,7 +132,7 @@ async function repeatingScrapes() {
 			console.log('starting browser...');
 
 			// launching browser
-			const browser = await puppeteer.launch({ headless: false });
+			const browser = await puppeteer.launch();
 			console.log('browser started...');
 
 			// creating a new page
@@ -725,4 +725,4 @@ async function repeatingScrapes() {
 	}
 }
 repeatingScrapes();
-setInterval(repeatingScrapes, 30000);
+setInterval(repeatingScrapes, 60000);
