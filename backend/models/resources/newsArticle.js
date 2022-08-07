@@ -27,6 +27,6 @@ newsArticleSchema.set('toJSON', {
 	},
 });
 
-const News = mongoose.model('News', newsArticleSchema);
+const NewsArticle = mongoose.model('NewsArticle', newsArticleSchema);
 
-module.exports = { News };
+module.exports = { NewsArticle };

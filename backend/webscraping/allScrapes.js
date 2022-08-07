@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const { MONGODB_URI } = require('../configs/config');
 
 // News Model
-const { News } = require('../models/resources/newsArticle');
+const { NewsArticle } = require('../models/resources/newsArticle');
 
 // Connect to DB and start listening to incoming requests:
 const connectDB = async () => {
@@ -29,7 +29,7 @@ async function fetchArticles(url) {
 
 async function allScrape() {
 	await connectDB();
-	const articlesDB = await News.find({});
+	const articlesDB = await NewsArticle.find({});
 	const newArticles = [];
 
 	// * DECLARING functions
@@ -688,7 +688,7 @@ async function allScrape() {
 	await theGuardianDementiaScrape();
 	await alzheimersOrgUkScrape();
 	// console.log(`${newArticles.length} articles added`);
-	News.insertMany(newArticles, (err) => {
+	NewsArticle.insertMany(newArticles, (err) => {
 		if (err) return handleError(err);
 		console.log(`${newArticles.length} articles added to DB`);
 		mongoose.connection.close();
