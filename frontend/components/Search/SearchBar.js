@@ -15,10 +15,10 @@ const SearchBar = ({ placeholder, data, id }) => {
 	const [inputValue, setInputValue] = useState('');
 
 	const handleFilter = (event) => {
-		const searchWord = event.target.value.toLowerCase().trim();
-		setInputValue(searchWord);
+		const searchWord = event.target.value.toLowerCase();
+		setInputValue(event.target.value);
 		const newFilter = data.filter((article) =>
-			article.title.toLowerCase().trim().includes(searchWord)
+			article.title.toLowerCase().includes(searchWord)
 		);
 		if (searchWord === '') {
 			setFilteredData([]);
@@ -38,11 +38,9 @@ const SearchBar = ({ placeholder, data, id }) => {
 					// whileFocus={{ width: '400px' }}
 					onFocus={(e) => {
 						e.target.placeholder = '';
-						handleFilter(event);
 					}}
 					onBlur={(e) => {
 						e.target.placeholder = placeholder;
-						setFilteredData([]);
 					}}
 					className="py-1 px-4 border-0 bg-gray-100 focus:bg-white rounded-md duration-600 w-[400px]"
 					placeholder={placeholder}
