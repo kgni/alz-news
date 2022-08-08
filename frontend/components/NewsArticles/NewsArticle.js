@@ -39,27 +39,34 @@ const NewsArticle = ({ article }) => {
 	}
 
 	return (
-		<article className={`p-4 shadow-md flex flex-col ${cardBgStyle} bg-white`}>
-			<div className="mb-4">
-				<a className="hover:underline" target="_blank" href={article.url}>
-					<h4 className="text-2xl mb-2 font-bold">{article.title}</h4>
-				</a>
-				<h6>{article.subtitle}</h6>
-			</div>
+		<motion.a
+			// whileHover={{ scale: 1.01 }}
+			className={`p-4 shadow-md flex  ${cardBgStyle} bg-white`}
+			target="_blank"
+			href={article.url}
+		>
+			<article className="flex flex-col">
+				<div className="mb-4">
+					<a className="hover:underline" target="_blank" href={article.url}>
+						<h4 className="text-2xl mb-2 font-bold">{article.title}</h4>
+					</a>
+					<h6>{article.subtitle}</h6>
+				</div>
 
-			<div className="flex items-center gap-x-4 mt-auto">
-				<p className="font-semibold">{publishDate}</p>
-				<motion.a
-					whileHover={{ scale: 1.02 }}
-					className=""
-					href={article.publisherUrl}
-				>
-					<p className={`${tagStyle} text-sm px-2 rounded-full`}>
-						{article.publisher[0]}
-					</p>
-				</motion.a>
-			</div>
-		</article>
+				<div className="flex items-center gap-x-4 mt-auto">
+					<p className="font-semibold">{publishDate}</p>
+					<motion.a
+						whileHover={{ scale: 1.02 }}
+						className=""
+						href={article.publisherUrl}
+					>
+						<p className={`${tagStyle} text-sm px-2 rounded-full`}>
+							{article.publisher[0]}
+						</p>
+					</motion.a>
+				</div>
+			</article>
+		</motion.a>
 	);
 };
 
