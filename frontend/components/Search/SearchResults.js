@@ -1,5 +1,6 @@
 import React from 'react';
 import format from 'date-fns/format';
+import { motion } from 'framer-motion';
 
 const SearchResults = ({ article, index }) => {
 	const publishDate = format(new Date(article.publishDate), 'PPP');
@@ -37,21 +38,27 @@ const SearchResults = ({ article, index }) => {
 
 	return (
 		<article className="flex flex-col">
-			<div className="px-2 py-1 shadow-md mb-2 bg-white">
-				<a
-					className="mb-2 block hover:underline font-bold"
-					target="_blank"
-					href={article.url}
-				>
-					{article.title}
-				</a>
-				<div className="flex items-center justify-between gap-x-2 mb-2 mt-auto">
-					<time className=" text-xs">{publishDate}</time>
-					<p className={`${tagStyle} rounded-full px-2 py-1 text-xs`}>
-						{article.publisher[0]}
-					</p>
+			<motion.a
+				className="bg-white shadow-md px-2 py-1 mb-2 hover:bg-gray-300"
+				target="_blank"
+				href={article.url}
+			>
+				<div className="">
+					<a
+						className="mb-2 block  font-bold"
+						target="_blank"
+						href={article.url}
+					>
+						{article.title}
+					</a>
+					<div className="flex items-center justify-between gap-x-2 mb-2 mt-auto">
+						<time className=" text-xs">{publishDate}</time>
+						<p className={`${tagStyle} rounded-full px-2 py-1 text-xs`}>
+							{article.publisher[0]}
+						</p>
+					</div>
 				</div>
-			</div>
+			</motion.a>
 		</article>
 	);
 };
