@@ -8,6 +8,8 @@ import SearchBar from '../components/Search/SearchBar';
 const news = () => {
 	const [articles, setArticles] = useState(null);
 
+	const [approvedArticles, setApprovedArticles] = useState([]);
+
 	const filteredArticles = [
 		{
 			title:
@@ -40,12 +42,38 @@ const news = () => {
 			updatedAt: '2022-08-07T19:30:13.694Z',
 			id: '62f012c5efcb56dcfa0e8667',
 		},
+		{
+			title:
+				'After my husband died, my life felt broken – so I planted a new tree',
+			subtitle: '',
+			url: 'https://www.theguardian.com/society/2022/apr/02/amy-bloom-after-my-husband-died-my-life-felt-broken-so-i-planted-a-new-tree',
+			publisher: ['alz.org'],
+			publisherUrl: 'https://www.theguardian.com',
+			publishDate: '2022-04-01T22:00:00.000Z',
+			categories: ["alzheimer's"],
+			type: [],
+			status: 'APPROVED',
+			createdAt: '2022-08-07T19:30:13.694Z',
+			updatedAt: '2022-08-07T19:30:13.694Z',
+			id: '62f012c5efcb56dcfa0e8667',
+		},
 	];
 
 	useEffect(() => {
-		axios.get('http://localhost:8000/api/news').then((response) => {
-			setArticles(response.data);
-		});
+		async function fetchArticles() {
+			const res = await axios.get('http://localhost:8000/api/news');
+
+			const data = await res.data;
+
+			setArticles(data);
+			const approvedArticles = data.filter(
+				(article) => article.status === 'APPROVED'
+			);
+
+			setApprovedArticles(approvedArticles);
+		}
+
+		fetchArticles();
 	}, []);
 
 	return (
@@ -58,7 +86,7 @@ const news = () => {
 			<div className="flex justify-center pt-8">
 				<SearchBar
 					placeholder="Enter Article Title..."
-					data={articles}
+					data={approvedArticles}
 					id="search"
 				/>
 			</div>

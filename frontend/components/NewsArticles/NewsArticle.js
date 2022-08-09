@@ -3,6 +3,7 @@ import format from 'date-fns/format';
 import { motion } from 'framer-motion';
 
 const NewsArticle = ({ article }) => {
+	// TODO - remove st, nd, rd when formatting (just show the date in number)
 	const publishDate = format(new Date(article.publishDate), 'PPP');
 
 	// create publisher tag:
@@ -12,29 +13,29 @@ const NewsArticle = ({ article }) => {
 	switch (article.publisher[0]) {
 		case 'The Guardian':
 			tagStyle = 'bg-blue-800 text-white';
-			cardBgStyle = 'bg-blue-50';
+			cardBgStyle = 'bg-blue-50 hover:bg-blue-100';
 			break;
 		case 'alz.org':
 			tagStyle = 'bg-purple-800 text-white';
-			cardBgStyle = 'bg-purple-50';
+			cardBgStyle = 'bg-purple-50 hover:bg-purple-100';
 			break;
 		case 'Neuroscience News':
 			tagStyle = 'bg-yellow-400 text-black';
-			cardBgStyle = 'bg-yellow-50';
+			cardBgStyle = 'bg-yellow-50 hover:bg-yellow-100';
 			break;
 
 		case "Journal Of Alzheimer's Disease":
 			tagStyle = 'bg-green-800 text-white';
-			cardBgStyle = 'bg-green-50';
+			cardBgStyle = 'bg-green-50 hover:bg-green-100';
 			break;
 		case 'alzheimers.org.uk':
 			tagStyle = 'bg-cyan-800 text-white';
-			cardBgStyle = 'bg-cyan-50';
+			cardBgStyle = 'bg-cyan-50 hover:bg-cyan-100';
 			break;
 
 		case 'National Institute on Aging':
 			tagStyle = 'bg-red-800 text-white';
-			cardBgStyle = 'bg-red-50';
+			cardBgStyle = 'bg-red-50 hover:bg-red-100';
 			break;
 	}
 

@@ -8,7 +8,12 @@ import { motion } from 'framer-motion';
 import SearchResults from './SearchResults';
 import styles from './SearchBar.module.css';
 
+// TODO - USE THIS SEARCH BAR ON THE HOME PAGE, AND USE ANOTHER ONE ON THE INDIVIDUAL PAGES (NEWS AND JOURNALS) - THE INDIVIDUAL ONES ARE GOING TO NOT HAVE A DROPDOWN, BUT SIMPLY SHOW SEARCH RESULTS DIRECTLY ON THE PAGE
+
 const SearchBar = ({ placeholder, data, id }) => {
+	const [approvedArticles, setApprovedArticles] = useState([]);
+
+	console.log(approvedArticles);
 	const [filteredData, setFilteredData] = useState([]);
 
 	// this is used to keep track of if there is anything in the input or not (used to render)
