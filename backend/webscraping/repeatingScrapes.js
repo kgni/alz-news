@@ -46,7 +46,7 @@ async function repeatingScrapes() {
 					let title = article.querySelector('.card-title').textContent.trim();
 					let subtitle = article.querySelector('.card-text').textContent.trim();
 					let url = article.querySelector('.card-title a').href;
-					let publisher = ['alz.org', "alzheimer's association"];
+					let publisher = ['alz.org', "Alzheimer's Association"];
 					let publisherUrl = 'https://www.alz.org/';
 					let publishDate = article.querySelector('.card-date').textContent;
 					publishDate = new Date(publishDate);
