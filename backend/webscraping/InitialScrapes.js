@@ -53,7 +53,7 @@ async function initialScrape() {
 				let title = article.querySelector('.card-title').textContent.trim();
 				let subtitle = article.querySelector('.card-text').textContent.trim();
 				let url = article.querySelector('.card-title a').href;
-				let publisher = ['alz.org', "alzheimer's association"];
+				let publisher = ['alz.org', "Alzheimer's Association"];
 				let publisherUrl = 'https://www.alz.org/';
 				let publishDate = article.querySelector('.card-date').textContent;
 				publishDate = new Date(publishDate);
@@ -174,7 +174,7 @@ async function initialScrape() {
 					title,
 					subtitle,
 					url,
-					publisher: ['alzheimers.org.uk', "alzheimer's society"],
+					publisher: ['alzheimers.org.uk', "Alzheimer's Society"],
 					publisherUrl: 'https://www.alzheimers.org.uk/',
 					publishDate,
 					categories: ['dementia', "alzheimer's"],
@@ -223,7 +223,7 @@ async function initialScrape() {
 					let url =
 						'https://www.nia.nih.gov' +
 						$(this).find('.news-title a').attr('href');
-					let publisher = 'National Institute on Aging';
+					let publisher = ['nia.gov', 'National Institute on Aging'];
 					let publisherUrl = 'https://www.nia.nih.gov/';
 					let publishDate = $(this).find('.postdate').text();
 					let type = $(this).find('.news-type').text().toLowerCase();
@@ -321,7 +321,7 @@ async function initialScrape() {
 
 					let subtitle = $(this).find('.field-items p').text().trim();
 					let url = $(this).find('h2 a').attr('href');
-					let publisher = "Journal Of Alzheimer's Disease";
+					let publisher = ['j-alz.com', "Journal Of Alzheimer's Disease"];
 					let publisherUrl = 'https://www.j-alz.com/';
 					let publishDate = $(this).find('h3 span').text();
 					// cleaning up the publishedDate, removing published and trimming
