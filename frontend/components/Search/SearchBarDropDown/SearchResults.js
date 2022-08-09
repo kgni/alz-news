@@ -3,8 +3,7 @@ import format from 'date-fns/format';
 import { motion } from 'framer-motion';
 
 const SearchResults = ({ article, index }) => {
-	// TODO - remove st, nd, rd when formatting (just show the date in number)
-	const publishDate = format(new Date(article.publishDate), 'PPP');
+	const publishDate = format(new Date(article.publishDate), 'MMMMPP');
 	let tagStyle;
 	let cardBgStyle;
 

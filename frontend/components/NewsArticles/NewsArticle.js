@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const NewsArticle = ({ article }) => {
 	// TODO - remove st, nd, rd when formatting (just show the date in number)
-	const publishDate = format(new Date(article.publishDate), 'PPP');
+	const publishDate = format(new Date(article.publishDate), 'MMMMPP');
 
 	// create publisher tag:
 	let tagStyle;

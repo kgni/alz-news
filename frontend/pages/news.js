@@ -4,8 +4,10 @@ import Link from 'next/link';
 import axios from 'axios';
 
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
-import SearchBar from '../components/Search/SearchBar';
+import SearchBar from '../components/Search/SearchBarDropDown/SearchBar';
 const news = () => {
+	// TODO - ADD SEARCH BAR WITH FILTERS AS WELL: Time, publisher,
+	// TODO - IMPORT SKELETON FOR WHEN WE ARE LOADING ARTICLES (DO THIS AFTER WE HAVE THE LAYOUT OF HOW WE ARE SHOWING ARTICLES)
 	const [articles, setArticles] = useState(null);
 
 	const [approvedArticles, setApprovedArticles] = useState([]);

@@ -73,6 +73,7 @@ const SearchBar = ({ placeholder, data, id }) => {
 				<div
 					className={`${styles.dataResults} dataResults absolute shadow-lg p-2 bg-gray-100 max-w-[400px] mt-2 rounded-md overflow-hidden h-[320px] overflow-y-auto`}
 				>
+					{/* // TODO - MAKE THE SEARCH RESULTS INFINITE SCROLL, RIGHT NOW WE ARE ONLY SHOWING 30 IN TOTAL - MAKE IT SO THAT WE SHOW 30 TO START WITH BUT WE ADD X AMOUNT WHEN WE SCROLL PAST 30 */}
 					{data &&
 						filteredData
 							.slice(0, 30)
