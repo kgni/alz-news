@@ -4,8 +4,8 @@ import NewsArticle from './NewsArticle';
 const NewsArticlesList = ({ articles }) => {
 	return (
 		<section className="grid grid-cols-2 gap-4">
-			{articles.map((article) => (
-				<NewsArticle article={article} />
+			{articles.slice(0, 50).map((article) => (
+				<NewsArticle key={article.id} article={article} />
 			))}
 		</section>
 	);

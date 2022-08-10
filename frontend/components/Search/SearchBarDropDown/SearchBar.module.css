@@ -1,6 +1,8 @@
 .dataResults::-webkit-scrollbar {
 	background-color: #fff;
 	width: 16px;
+	border-top-right-radius: 6px;
+	border-bottom-right-radius: 6px;
 }
 
 .dataResults::-webkit-scrollbar-track {

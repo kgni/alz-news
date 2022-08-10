@@ -3,7 +3,6 @@ import format from 'date-fns/format';
 import { motion } from 'framer-motion';
 
 const NewsArticle = ({ article }) => {
-	// TODO - remove st, nd, rd when formatting (just show the date in number)
 	const publishDate = format(new Date(article.publishDate), 'MMMMPP');
 
 	// create publisher tag:
@@ -24,7 +23,7 @@ const NewsArticle = ({ article }) => {
 			cardBgStyle = 'bg-yellow-50 hover:bg-yellow-100';
 			break;
 
-		case "Journal Of Alzheimer's Disease":
+		case 'j-alz.com':
 			tagStyle = 'bg-green-800 text-white';
 			cardBgStyle = 'bg-green-50 hover:bg-green-100';
 			break;
@@ -33,7 +32,7 @@ const NewsArticle = ({ article }) => {
 			cardBgStyle = 'bg-cyan-50 hover:bg-cyan-100';
 			break;
 
-		case 'National Institute on Aging':
+		case 'nia.gov':
 			tagStyle = 'bg-red-800 text-white';
 			cardBgStyle = 'bg-red-50 hover:bg-red-100';
 			break;
