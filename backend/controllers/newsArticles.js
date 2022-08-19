@@ -8,4 +8,10 @@ newsArticlesRouter.get('/news', async (req, res) => {
 	res.json(articles);
 });
 
+newsArticlesRouter.get('/news/approved', async (req, res) => {
+	const articles = await NewsArticle.find({ status: 'APPROVED' });
+
+	res.json(articles);
+});
+
 module.exports = newsArticlesRouter;
