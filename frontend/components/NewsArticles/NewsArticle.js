@@ -59,6 +59,7 @@ const NewsArticle = ({ article }) => {
 						whileHover={{ scale: 1.02 }}
 						className=""
 						href={article.publisherUrl}
+						target="_blank"
 					>
 						<p className={`${tagStyle} text-sm px-2 rounded-full`}>
 							{article.publisher[0]}

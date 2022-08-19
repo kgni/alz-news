@@ -11,7 +11,9 @@ const SearchBar = ({ placeholder, data, id, setFilteredArticles }) => {
 
 	const handleFilter = (event) => {
 		const searchWord = event.target.value.toLowerCase();
+
 		setInputValue(event.target.value);
+
 		const newFilter = data.filter((article) =>
 			article.title.toLowerCase().includes(searchWord)
 		);

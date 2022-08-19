@@ -42,7 +42,6 @@ export default function Home() {
 					id="search"
 				/>
 			</div>
-			<h1>TEST</h1>
 		</div>
 	);
 }
