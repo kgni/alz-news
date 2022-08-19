@@ -27,6 +27,9 @@ const SearchBar = ({ placeholder, data, id, setFilteredArticles }) => {
 		setFilteredArticles(data);
 		setInputValue('');
 	};
+
+	// select
+
 	return (
 		<div className="search">
 			<div className="searchInputs flex items-center relative">
@@ -38,7 +41,7 @@ const SearchBar = ({ placeholder, data, id, setFilteredArticles }) => {
 					onBlur={(e) => {
 						e.target.placeholder = placeholder;
 					}}
-					className="py-1 px-4 border-0 bg-gray-100 focus:bg-white rounded-md duration-600 w-[500px]"
+					className="py-1 px-4 border-0 bg-gray-100 focus:bg-white rounded-md duration-600 w-[300px]"
 					placeholder={placeholder}
 					type="text"
 					id={id}

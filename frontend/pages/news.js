@@ -4,6 +4,7 @@ import Link from 'next/link';
 import axios from 'axios';
 
 import SearchBar from '../components/Search/SearchBar/SearchBar';
+import SelectNewsSite from '../components/Search/Select/SelectNewsSite';
 
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
 const news = () => {
@@ -71,19 +72,20 @@ const news = () => {
 
 			<section className="news-section min-h-screen pt-8 pb-8">
 				<div className="w-[90%] mx-auto">
-					<div className="flex justify-center mb-8 gap-4 items-center">
+					<div className="flex justify-center mb-8  items-center">
+						<SelectNewsSite />
 						<SearchBar
 							placeholder="Enter Article Title..."
 							id="search"
 							data={articles}
 							setFilteredArticles={setFilteredArticles}
 						/>
-						<button
+						{/* <button
 							onClick={toggleNewest}
 							className="py-2 px-6 bg-black text-white font-bold hover:bg-white hover:text-black hover:ring-2 hover:ring-black"
 						>
 							FILTER DATE
-						</button>
+						</button> */}
 					</div>
 					<section className="">
 						{!articles && <p>Loading...</p>}
