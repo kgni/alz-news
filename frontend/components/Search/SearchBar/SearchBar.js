@@ -26,14 +26,14 @@ const SearchBar = ({
 		<div className="search">
 			<div className="searchInputs flex items-center relative">
 				<motion.input
-					// whileFocus={{ width: '400px' }}
+					whileFocus={{ width: '400px' }}
 					onFocus={(e) => {
 						e.target.placeholder = '';
 					}}
 					onBlur={(e) => {
 						e.target.placeholder = placeholder;
 					}}
-					className="py-1 px-4 border-0 bg-gray-100 focus:bg-white rounded-md duration-600 w-[300px]"
+					className="py-1 px-4 border-0 bg-gray-100 focus:bg-white  duration-600 w-[300px]"
 					placeholder={placeholder}
 					type="text"
 					id={inputId}
@@ -50,7 +50,8 @@ const SearchBar = ({
 					</motion.label>
 				) : (
 					<IoCloseSharp
-						onClick={onClearInput}
+						// this is set to onMouseDown instead of click, because we want to clear the input and blur at the same time, if we just had onClick, the input field would get blurred first, and the input would not be cleared until next time we would click it
+						onMouseDown={onClearInput}
 						className="text-[1.3em] cursor-pointer absolute right-3"
 					/>
 				)}

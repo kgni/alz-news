@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import SearchBarDropDown from '../components/Search/SearchBarDropDown/SearchBarDropDown';
-import FilterNewsSites from '../components/Search/Filters/FilterNewsSites';
 
 export default function Home() {
 	const [articles, setArticles] = useState([]);

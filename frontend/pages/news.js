@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
-import FilterNewsSource from '../components/Search/Filters/FilterNewsSites';
 
 // TODO - PASS IN KEYS
 
@@ -10,7 +9,9 @@ import SearchBar from '../components/Search/SearchBar/SearchBar';
 import SelectNewsSite from '../components/Search/Select/SelectNewsSite';
 
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
-import DropDown from '../components/Search/DropDown';
+import DropDownFilter from '../components/Search/DropDownFilter';
+import FilterNewsSource from '../components/Search/Filters/FilterNewsSource';
+import FilterByNewest from '../components/Search/Filters/FilterByNewest';
 
 function applySort(articles, sortingOrder) {
 	if (sortingOrder === 'desc') {
@@ -128,21 +129,21 @@ const News = () => {
 			<section className="news-section min-h-screen pt-8 pb-8">
 				<div className="w-[90%] mx-auto">
 					<div className="flex justify-center mb-4 items-center">
-						<DropDown>
-							<FilterNewsSource />
-						</DropDown>
+						<DropDownFilter
+							newsSource={newsSource}
+							setNewsSource={setNewsSource}
+						/>
+
 						<SearchBar
 							placeholder="Enter Article Title..."
 							inputId="search"
 							filterKeyword={filterKeyword}
 							setFilterKeyword={setFilterKeyword}
 						/>
-						<button
-							onClick={onToggleSort}
-							className="py-2 px-6 bg-black text-white font-bold hover:bg-white hover:text-black hover:ring-2 hover:ring-black"
-						>
-							FILTER DATE
-						</button>
+						<FilterByNewest
+							onToggleSort={onToggleSort}
+							sortingOrder={sortingOrder}
+						/>
 					</div>
 					<section className="">
 						{!articles && <p className="text-center">Loading...</p>}
