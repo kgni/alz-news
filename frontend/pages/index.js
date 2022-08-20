@@ -7,7 +7,7 @@ import SearchBarDropDown from '../components/Search/SearchBarDropDown/SearchBarD
 import FilterNewsSites from '../components/Search/Filters/FilterNewsSites';
 
 export default function Home() {
-	const [articles, setArticles] = useState(null);
+	const [articles, setArticles] = useState([]);
 
 	const [approvedArticles, setApprovedArticles] = useState([]);
 
@@ -35,7 +35,6 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<div className="flex justify-center pt-8">
-				<FilterNewsSites />
 				<SearchBarDropDown
 					placeholder="Enter Article Title..."
 					data={approvedArticles}

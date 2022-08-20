@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
+import FilterNewsSource from '../components/Search/Filters/FilterNewsSites';
 
 // TODO - PASS IN KEYS
 
@@ -9,6 +10,18 @@ import SearchBar from '../components/Search/SearchBar/SearchBar';
 import SelectNewsSite from '../components/Search/Select/SelectNewsSite';
 
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
+import DropDown from '../components/Search/DropDown';
+
+function applySort(articles, sortingOrder) {
+	if (sortingOrder === 'desc') {
+		return articles.sort(
+			(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
+		);
+	}
+	return articles.sort(
+		(a, b) => new Date(a.publishDate) - new Date(b.publishDate)
+	);
+}
 
 // applyingFilters function to use on the articles themselves
 function applyFilters(articles, sortingOrder, filterKeyword, newsSource) {
@@ -30,18 +43,6 @@ function applyFilters(articles, sortingOrder, filterKeyword, newsSource) {
 	);
 
 	return sortedArticles;
-}
-
-// TODO - put this in utils at some point, if needed.
-function applySort(articles, sortingOrder) {
-	if (sortingOrder === 'desc') {
-		return articles.sort(
-			(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
-		);
-	}
-	return articles.sort(
-		(a, b) => new Date(a.publishDate) - new Date(b.publishDate)
-	);
 }
 
 const News = () => {
@@ -127,7 +128,9 @@ const News = () => {
 			<section className="news-section min-h-screen pt-8 pb-8">
 				<div className="w-[90%] mx-auto">
 					<div className="flex justify-center mb-4 items-center">
-						{/* <SelectNewsSite /> */}
+						<DropDown>
+							<FilterNewsSource />
+						</DropDown>
 						<SearchBar
 							placeholder="Enter Article Title..."
 							inputId="search"

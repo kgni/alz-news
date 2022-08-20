@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FilterNewsSites = () => {
+const FilterNewsSource = ({ setNewsSource }) => {
 	const newsSites = [
 		'The Guardian',
 		'alz.org',
@@ -11,12 +11,23 @@ const FilterNewsSites = () => {
 	];
 
 	return (
-		<ul className="grid grid-cols-3 text-xs">
-			{newsSites.map((site) => (
-				<li key={site}>{site}</li>
-			))}
-		</ul>
+		<div className="bg-white z-10 p-4 shadow-md flex mt-4">
+			<ul className="grid grid-cols-2 text-xs gap-2">
+				{newsSites.map((site) => (
+					<div className="flex items-center gap-2">
+						<input
+							type="checkbox"
+							id={site}
+							key={site}
+							name={site}
+							value={site}
+						/>
+						<label htmlFor={site}>{site}</label>
+					</div>
+				))}
+			</ul>
+		</div>
 	);
 };
 
-export default FilterNewsSites;
+export default FilterNewsSource;
