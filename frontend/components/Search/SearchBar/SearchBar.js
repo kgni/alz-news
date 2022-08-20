@@ -5,27 +5,19 @@ import { FaSearch } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 
 import { motion } from 'framer-motion';
-const SearchBar = ({ placeholder, data, id, setFilteredArticles }) => {
-	const [inputValue, setInputValue] = useState('');
-	const [filteredData, setFilteredData] = useState([]);
 
-	const handleFilter = (event) => {
-		const searchWord = event.target.value.toLowerCase();
-
-		setInputValue(event.target.value);
-
-		const newFilter = data.filter((article) =>
-			article.title.toLowerCase().includes(searchWord)
-		);
-		if (searchWord === '') {
-			setFilteredArticles(data);
-		} else {
-			setFilteredArticles(newFilter);
-		}
+const SearchBar = ({
+	placeholder,
+	inputId,
+	filterKeyword,
+	setFilterKeyword,
+}) => {
+	const onChangeFilterKeyword = (event) => {
+		setFilterKeyword(event.target.value);
 	};
-	const clearInput = () => {
-		setFilteredArticles(data);
-		setInputValue('');
+
+	const onClearInput = () => {
+		setFilterKeyword('');
 	};
 
 	// select
@@ -44,21 +36,21 @@ const SearchBar = ({ placeholder, data, id, setFilteredArticles }) => {
 					className="py-1 px-4 border-0 bg-gray-100 focus:bg-white rounded-md duration-600 w-[300px]"
 					placeholder={placeholder}
 					type="text"
-					id={id}
-					onChange={handleFilter}
-					value={inputValue}
+					id={inputId}
+					onChange={onChangeFilterKeyword}
+					value={filterKeyword}
 					autocomplete="off"
 				/>
-				{inputValue.length === 0 ? (
+				{filterKeyword.length === 0 ? (
 					<motion.label
-						htmlFor={id}
+						htmlFor={inputId}
 						className="searchIcon cursor-pointer absolute right-3"
 					>
 						<FaSearch />
 					</motion.label>
 				) : (
 					<IoCloseSharp
-						onClick={clearInput}
+						onClick={onClearInput}
 						className="text-[1.3em] cursor-pointer absolute right-3"
 					/>
 				)}

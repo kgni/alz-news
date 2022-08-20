@@ -13,7 +13,7 @@ const FilterNewsSites = () => {
 	return (
 		<ul className="grid grid-cols-3 text-xs">
 			{newsSites.map((site) => (
-				<li>{site}</li>
+				<li key={site}>{site}</li>
 			))}
 		</ul>
 	);

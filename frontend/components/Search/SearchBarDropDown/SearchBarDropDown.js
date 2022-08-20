@@ -79,7 +79,11 @@ const SearchBar = ({ placeholder, data, id }) => {
 						filteredData
 							.slice(0, 30)
 							.map((article, index) => (
-								<SearchResultsDropDown article={article} index={index} />
+								<SearchResultsDropDown
+									key={article.id}
+									article={article}
+									index={index}
+								/>
 							))}
 				</div>
 			)}

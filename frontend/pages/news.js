@@ -1,66 +1,120 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
+
+// TODO - PASS IN KEYS
 
 import SearchBar from '../components/Search/SearchBar/SearchBar';
 import SelectNewsSite from '../components/Search/Select/SelectNewsSite';
 
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
-const news = () => {
+
+// applyingFilters function to use on the articles themselves
+function applyFilters(articles, sortingOrder, filterKeyword, newsSource) {
+	// we are applying every filter before sorting
+	const filteredArticles = articles.filter((article) =>
+		article.title.toLowerCase().includes(filterKeyword.toLowerCase())
+	);
+
+	const filteredArticlesByNewsSource =
+		newsSource.length > 0
+			? filteredArticles.filter((article) =>
+					newsSource.includes(article.publisher[0])
+			  )
+			: filteredArticles;
+
+	const sortedArticles = applySort(
+		[...filteredArticlesByNewsSource],
+		sortingOrder
+	);
+
+	return sortedArticles;
+}
+
+// TODO - put this in utils at some point, if needed.
+function applySort(articles, sortingOrder) {
+	if (sortingOrder === 'desc') {
+		return articles.sort(
+			(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
+		);
+	}
+	return articles.sort(
+		(a, b) => new Date(a.publishDate) - new Date(b.publishDate)
+	);
+}
+
+const News = () => {
 	// TODO - ADD SEARCH BAR WITH FILTERS AS WELL: Publish date, publisher,
 	// TODO - IMPORT SKELETON FOR WHEN WE ARE LOADING ARTICLES (DO THIS AFTER WE HAVE THE LAYOUT OF HOW WE ARE SHOWING ARTICLES)
-	const [articles, setArticles] = useState(null);
-	const [filteredArticles, setFilteredArticles] = useState([]);
+	const [articles, setArticles] = useState([]);
+	const [filterKeyword, setFilterKeyword] = useState('');
+	const [sortingOrder, setSortingOrder] = useState('desc');
+	const [newsSource, setNewsSource] = useState([]);
 
-	// deciding the order, if it is ascending or descending
-	const [newestFirst, setNewestFirst] = useState(true);
+	// computed state, when state changes (like filtering keyword, we will applyfilters again - which is why it works)
+	const filteredArticles = applyFilters(
+		articles,
+		sortingOrder,
+		filterKeyword,
+		newsSource
+	);
 
+	// TODO - No reason to have useEffect here, if we are doing it in a Next.js way.
+	// TODO - site is content heavy, we want to have the articles shown/rendered before serverside, this is loading it clientside.
 	useEffect(() => {
 		async function fetchArticles() {
 			const res = await axios.get('http://localhost:8000/api/news/approved');
 
 			const data = await res.data;
 
-			const approvedNewestArticles = data
-				.filter((article) => article.status === 'APPROVED')
-				.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+			const newestArticles = data.sort(
+				(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
+			);
 
 			// set articles to show newest first intially
-			setArticles(approvedNewestArticles);
-			setFilteredArticles(approvedNewestArticles);
+			setArticles(newestArticles);
 		}
 
 		fetchArticles();
 	}, []);
 
-	function toggleNewest() {
-		setNewestFirst((prevState) => !prevState);
-
-		if (!newestFirst) {
-			setArticles(
-				articles.sort(
-					(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
-				)
-			);
-			setFilteredArticles(
-				filteredArticles.sort(
-					(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
-				)
-			);
-		} else {
-			setArticles(
-				articles.sort(
-					(a, b) => new Date(a.publishDate) - new Date(b.publishDate)
-				)
-			);
-			setFilteredArticles(
-				filteredArticles.sort(
-					(a, b) => new Date(a.publishDate) - new Date(b.publishDate)
-				)
-			);
-		}
+	function onToggleSort() {
+		setSortingOrder((prevState) => {
+			if (prevState === 'desc') {
+				return 'asc';
+			}
+			return 'desc';
+		});
 	}
+
+	// function toggleNewest() {
+	// 	setNewestFirst((prevState) => !prevState);
+
+	// 	if (!newestFirst) {
+	// 		setArticles(
+	// 			articles.sort(
+	// 				(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
+	// 			)
+	// 		);
+	// 		setFilteredArticles(
+	// 			filteredArticles.sort(
+	// 				(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
+	// 			)
+	// 		);
+	// 	} else {
+	// 		setArticles(
+	// 			articles.sort(
+	// 				(a, b) => new Date(a.publishDate) - new Date(b.publishDate)
+	// 			)
+	// 		);
+	// 		setFilteredArticles(
+	// 			filteredArticles.sort(
+	// 				(a, b) => new Date(a.publishDate) - new Date(b.publishDate)
+	// 			)
+	// 		);
+	// 	}
+	// }
 
 	return (
 		<>
@@ -72,31 +126,35 @@ const news = () => {
 
 			<section className="news-section min-h-screen pt-8 pb-8">
 				<div className="w-[90%] mx-auto">
-					<div className="flex justify-center mb-8  items-center">
-						<SelectNewsSite />
+					<div className="flex justify-center mb-4 items-center">
+						{/* <SelectNewsSite /> */}
 						<SearchBar
 							placeholder="Enter Article Title..."
-							id="search"
-							data={articles}
-							setFilteredArticles={setFilteredArticles}
+							inputId="search"
+							filterKeyword={filterKeyword}
+							setFilterKeyword={setFilterKeyword}
 						/>
-						{/* <button
-							onClick={toggleNewest}
+						<button
+							onClick={onToggleSort}
 							className="py-2 px-6 bg-black text-white font-bold hover:bg-white hover:text-black hover:ring-2 hover:ring-black"
 						>
 							FILTER DATE
-						</button> */}
+						</button>
 					</div>
 					<section className="">
-						{!articles && <p>Loading...</p>}
+						{!articles && <p className="text-center">Loading...</p>}
 
 						{articles && (
 							<>
-								{filteredArticles.length === 0 ? (
-									<span className="">No articles found...</span>
-								) : (
-									<span className="">{filteredArticles.length}</span>
-								)}
+								<div className="mb-8">
+									{filteredArticles.length === 0 ? (
+										<p className="text-center">No articles found...</p>
+									) : (
+										<p className="text-center">
+											{filteredArticles.length} articles found
+										</p>
+									)}
+								</div>
 
 								<NewsArticlesList articles={filteredArticles} />
 							</>
@@ -108,4 +166,4 @@ const news = () => {
 	);
 };
 
-export default news;
+export default News;
