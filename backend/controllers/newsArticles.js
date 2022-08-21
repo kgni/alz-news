@@ -9,7 +9,9 @@ newsArticlesRouter.get('/news', async (req, res) => {
 });
 
 newsArticlesRouter.get('/news/approved', async (req, res) => {
-	const articles = await NewsArticle.find({ status: 'APPROVED' });
+	const articles = await NewsArticle.find({ status: 'APPROVED' })
+		.sort({ publishDate: 'desc' })
+		.limit(50);
 
 	res.json(articles);
 });
