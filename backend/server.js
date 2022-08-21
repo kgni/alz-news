@@ -11,10 +11,8 @@ const cors = require('cors');
 // routes
 
 const newsArticlesRouter = require('./controllers/newsArticles');
-// const usersRouter = require('./controllers/users');
-// const loginRouter = require('./controllers/login');
 
-// console.log(MONGODB_URI, PORT);
+console.log(MONGODB_URI, PORT);
 
 // Connect to DB and start listening to incoming requests:
 const connectDB = async () => {
