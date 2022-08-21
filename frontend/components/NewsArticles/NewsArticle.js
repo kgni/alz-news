@@ -39,7 +39,7 @@ const NewsArticle = ({ article }) => {
 	}
 
 	return (
-		<motion.a
+		<a
 			// whileHover={{ scale: 1.01 }}
 			className={`p-4 shadow-md flex  ${cardBgStyle} bg-white`}
 			target="_blank"
@@ -55,7 +55,7 @@ const NewsArticle = ({ article }) => {
 
 				<div className="flex items-center gap-x-4 mt-auto">
 					<p className="font-semibold">{publishDate}</p>
-					<motion.a
+					<a
 						whileHover={{ scale: 1.02 }}
 						className=""
 						href={article.publisherUrl}
@@ -64,10 +64,10 @@ const NewsArticle = ({ article }) => {
 						<p className={`${tagStyle} text-sm px-2 rounded-full`}>
 							{article.publisher[0]}
 						</p>
-					</motion.a>
+					</a>
 				</div>
 			</article>
-		</motion.a>
+		</a>
 	);
 };
 

@@ -53,7 +53,7 @@ const SearchBar = ({ placeholder, data, id }) => {
 					id={id}
 					onChange={handleFilter}
 					value={inputValue}
-					autocomplete="off"
+					autoComplete="off"
 				/>
 				{inputValue.length === 0 ? (
 					<motion.label
