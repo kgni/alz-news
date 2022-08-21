@@ -39,7 +39,7 @@ const SearchBar = ({
 					id={inputId}
 					onChange={onChangeFilterKeyword}
 					value={filterKeyword}
-					autocomplete="off"
+					autoComplete="off"
 				/>
 				{filterKeyword.length === 0 ? (
 					<motion.label

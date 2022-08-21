@@ -3,16 +3,32 @@ import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
 
-// TODO - PASS IN KEYS
-
+// COMPONENTS
 import SearchBar from '../components/Search/SearchBar/SearchBar';
 import SelectNewsSite from '../components/Search/Select/SelectNewsSite';
-
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
 import DropDownFilter from '../components/Search/DropDownFilter';
 import FilterNewsSource from '../components/Search/Filters/FilterNewsSource';
 import FilterByNewest from '../components/Search/Filters/FilterByNewest';
 
+// SSR function
+export async function getServerSideProps() {
+	const res = await axios.get('http://localhost:8000/api/news/approved');
+
+	const data = await res.data;
+
+	const newestArticles = data.sort(
+		(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
+	);
+
+	return {
+		props: {
+			articles: newestArticles,
+		},
+	};
+}
+
+// sorting function
 function applySort(articles, sortingOrder) {
 	if (sortingOrder === 'desc') {
 		return articles.sort(
@@ -46,10 +62,9 @@ function applyFilters(articles, sortingOrder, filterKeyword, newsSource) {
 	return sortedArticles;
 }
 
-const News = () => {
-	// TODO - ADD SEARCH BAR WITH FILTERS AS WELL: Publish date, publisher,
+const News = ({ articles }) => {
 	// TODO - IMPORT SKELETON FOR WHEN WE ARE LOADING ARTICLES (DO THIS AFTER WE HAVE THE LAYOUT OF HOW WE ARE SHOWING ARTICLES)
-	const [articles, setArticles] = useState([]);
+	// const [articles, setArticles] = useState(articles);
 	const [filterKeyword, setFilterKeyword] = useState('');
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
@@ -61,25 +76,6 @@ const News = () => {
 		filterKeyword,
 		newsSource
 	);
-
-	// TODO - No reason to have useEffect here, if we are doing it in a Next.js way.
-	// TODO - site is content heavy, we want to have the articles shown/rendered before serverside, this is loading it clientside.
-	useEffect(() => {
-		async function fetchArticles() {
-			const res = await axios.get('http://localhost:8000/api/news/approved');
-
-			const data = await res.data;
-
-			const newestArticles = data.sort(
-				(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
-			);
-
-			// set articles to show newest first intially
-			setArticles(newestArticles);
-		}
-
-		fetchArticles();
-	}, []);
 
 	function onToggleSort() {
 		setSortingOrder((prevState) => {
@@ -146,23 +142,19 @@ const News = () => {
 						/>
 					</div>
 					<section className="">
-						{!articles && <p className="text-center">Loading...</p>}
+						<>
+							<div className="mb-8">
+								{filteredArticles.length === 0 ? (
+									<p className="text-center">No articles found...</p>
+								) : (
+									<p className="text-center">
+										{filteredArticles.length} articles found
+									</p>
+								)}
+							</div>
 
-						{articles && (
-							<>
-								<div className="mb-8">
-									{filteredArticles.length === 0 ? (
-										<p className="text-center">No articles found...</p>
-									) : (
-										<p className="text-center">
-											{filteredArticles.length} articles found
-										</p>
-									)}
-								</div>
-
-								<NewsArticlesList articles={filteredArticles} />
-							</>
-						)}
+							<NewsArticlesList articles={filteredArticles} />
+						</>
 					</section>
 				</div>
 			</section>
