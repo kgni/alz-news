@@ -117,6 +117,7 @@ const News = ({ articles }) => {
 						</div>
 					</div>
 					<section className="">
+						{/* TODO - WE MIGHT WANT TO REORGANIZE THIS, SO THAT WE CONTROL THE GRID IN THE NEWS SITE, AND WE HAVE ALL OF OUR COMPONENTS IN THIS news-page instaed of in the NewsArticlesList */}
 						<NewsArticlesList
 							filterKeyword={filterKeyword}
 							setFilterKeyword={setFilterKeyword}

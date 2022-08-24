@@ -22,6 +22,9 @@ const NewsArticlesList = ({
 }) => {
 	// TODO - CAN WE MOVE PAGINATION OUT OF THE NewsArticlesList, and into the SearchBar instead?
 	// TODO - FIX PAGINATION (DON'T LET IT EXPAND LIKE IT DOES, IT SHOULD BE FIXED)
+
+	// PAGINATION
+
 	// We start with an empty list of articles.
 	const [currentItems, setCurrentItems] = useState([]);
 	const [pageCount, setPageCount] = useState(0);
@@ -50,6 +53,16 @@ const NewsArticlesList = ({
 		setCurrentPage(event.selected);
 	};
 
+	const onClickRemoveNewsSource = (event) => {
+		setNewsSource((prevState) =>
+			prevState.filter((source) => source !== event.target.innerText)
+		);
+	};
+
+	//! scroll to top after clicking on pagination - HOW SHOULD WE ELSE DO IT?
+
+	const onClickScrollToTop = () => window.scrollTo({ top: 0, left: 0 });
+
 	return (
 		<>
 			<div className="mb-8"></div>
@@ -59,8 +72,53 @@ const NewsArticlesList = ({
 					<RecommendedResources className="" />
 				</div>
 				<section className="mb-8 basis-2/3">
-					<h1 className="text-4xl font-bold mb-4">All Articles</h1>
-					<div className="flex  mb-4 items-center w-2/3 mx-auto justify-center">
+					{/* <h1 className="text-4xl font-bold mb-4">All Articles</h1> */}
+					<div className="flex mb-4 items-center mx-auto justify-center relative">
+						<ul className="absolute left-[300px] top-[48px] flex gap-2 flex-wrap">
+							{newsSource.map((source) => {
+								// create publisher tag styles:
+								let tagStyle;
+
+								switch (source) {
+									case 'The Guardian':
+										tagStyle =
+											'bg-blue-800 text-white hover:bg-blue-700 duration-150';
+										break;
+									case 'alz.org':
+										tagStyle =
+											'bg-purple-800 text-white hover:bg-purple-700 duration-150';
+										break;
+									case 'Neuroscience News':
+										tagStyle =
+											'bg-yellow-400 text-black hover:bg-yellow-700 duration-150';
+										break;
+
+									case 'j-alz.com':
+										tagStyle =
+											'bg-green-800 text-white hover:bg-green-700 duration-150';
+										break;
+									case 'alzheimers.org.uk':
+										tagStyle =
+											'bg-cyan-800 text-white hover:bg-cyan-700 duration-150';
+										break;
+
+									case 'nia.gov':
+										tagStyle =
+											'bg-red-800 text-white hover:bg-red-700 duration-150';
+										break;
+								}
+
+								return (
+									<li
+										onClick={onClickRemoveNewsSource}
+										className={`${tagStyle} rounded-full text-xs px-4 py-1 cursor-pointer`}
+									>
+										{source}
+									</li>
+								);
+							})}
+						</ul>
+
 						<DropDownFilter
 							newsSource={newsSource}
 							setNewsSource={setNewsSource}
@@ -77,8 +135,7 @@ const NewsArticlesList = ({
 							sortingOrder={sortingOrder}
 						/>
 					</div>
-
-					<div className="mb-4 italic flex gap-2 ">
+					<div className="mb-4 italic flex gap-2">
 						{articles.length === 0 ? (
 							<p className="font-semibold">No articles found...</p>
 						) : (
@@ -93,6 +150,7 @@ const NewsArticlesList = ({
 							</>
 						)}
 					</div>
+
 					<section className="mb-8">
 						{currentItems.map((article) => (
 							<NewsArticle key={article.id} article={article} />
@@ -100,6 +158,7 @@ const NewsArticlesList = ({
 					</section>
 					<ReactPaginate
 						key="paginate2"
+						onClick={onClickScrollToTop}
 						forcePage={currentPage}
 						previousLabel={'<'}
 						breakLabel={'...'}
