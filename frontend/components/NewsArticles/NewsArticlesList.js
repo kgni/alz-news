@@ -90,7 +90,7 @@ const NewsArticlesList = ({
 										break;
 									case 'Neuroscience News':
 										tagStyle =
-											'bg-yellow-400 text-black hover:bg-yellow-700 duration-150';
+											'bg-yellow-400 text-black hover:bg-yellow-300 duration-150';
 										break;
 
 									case 'j-alz.com':
