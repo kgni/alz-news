@@ -130,6 +130,7 @@ const News = ({ articles }) => {
 
 			<section className="news-section min-h-screen pt-8 pb-8">
 				<div className="w-[90%] mx-auto">
+					{/* <h1 className="text-8xl upper font-bold">News</h1> */}
 					<div className="flex justify-center mb-4 items-center">
 						<DropDownFilter
 							newsSource={newsSource}
@@ -162,10 +163,10 @@ const News = ({ articles }) => {
 							<option value="50">50</option>
 						</select> */}
 					</div>
-					<section className="flex">
+					<section className="">
 						<section className="">
 							<>
-								<div className="mb-8">
+								<div className="mb-8 flex justify-center">
 									{filteredArticles.length === 0 ? (
 										<p className="text-center">No articles found...</p>
 									) : (
