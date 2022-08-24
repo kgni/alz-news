@@ -4,7 +4,22 @@ import ReactPaginate from 'react-paginate';
 import RecommendedArticles from './RecommendedArticles';
 import RecommendedResources from '../RecommendedResources';
 
-const NewsArticlesList = ({ articles }) => {
+// search
+import SearchBar from '../Search/SearchBar/SearchBar';
+import DropDownFilter from '../Search/DropDownFilter';
+import FilterByNewest from '../Search/Filters/FilterByNewest';
+
+import { AiOutlineMinus } from 'react-icons/ai';
+
+const NewsArticlesList = ({
+	articles,
+	newsSource,
+	setNewsSource,
+	filterKeyword,
+	setFilterKeyword,
+	onToggleSort,
+	sortingOrder,
+}) => {
 	// TODO - CAN WE MOVE PAGINATION OUT OF THE NewsArticlesList, and into the SearchBar instead?
 	// TODO - FIX PAGINATION (DON'T LET IT EXPAND LIKE IT DOES, IT SHOULD BE FIXED)
 	// We start with an empty list of articles.
@@ -37,26 +52,7 @@ const NewsArticlesList = ({ articles }) => {
 
 	return (
 		<>
-			<div className="mb-8">
-				{/* <ReactPaginate
-					key="paginate1"
-					forcePage={currentPage}
-					previousLabel={'<'}
-					breakLabel={'...'}
-					nextLabel={'>'}
-					pageCount={pageCount}
-					onPageChange={handlePageClick}
-					pageRangeDisplayed={2}
-					marginPagesDisplayed={2}
-					containerClassName={'paginationBtns'}
-					previousLinkClassName={'previousBtn'}
-					nextLinkClassName={'nextBtn'}
-					disabledClassName={'paginationDisabled'}
-					activeClassName={'paginationActive'}
-					breakLinkClassName={'breakLink'}
-					renderOnZeroPageCount={null}
-				/> */}
-			</div>
+			<div className="mb-8"></div>
 			<div className="flex gap-x-8">
 				<div className="flex flex-col basis-1/3 self-start">
 					<RecommendedArticles className="" />
@@ -64,31 +60,65 @@ const NewsArticlesList = ({ articles }) => {
 				</div>
 				<section className="mb-8 basis-2/3">
 					<h1 className="text-4xl font-bold mb-4">All Articles</h1>
-					{currentItems.map((article) => (
-						<NewsArticle key={article.id} article={article} />
-					))}
+					<div className="flex  mb-4 items-center w-2/3 mx-auto justify-center">
+						<DropDownFilter
+							newsSource={newsSource}
+							setNewsSource={setNewsSource}
+						/>
+
+						<SearchBar
+							placeholder="Enter Article Title..."
+							inputId="search"
+							filterKeyword={filterKeyword}
+							setFilterKeyword={setFilterKeyword}
+						/>
+						<FilterByNewest
+							onToggleSort={onToggleSort}
+							sortingOrder={sortingOrder}
+						/>
+					</div>
+
+					<div className="mb-4 italic flex gap-2 ">
+						{articles.length === 0 ? (
+							<p className="font-semibold">No articles found...</p>
+						) : (
+							<>
+								<p className="font-semibold">
+									{articles.length} articles found
+								</p>
+								<span>&#8211;</span>
+								<p className="italic">
+									page {currentPage + 1} of {pageCount}
+								</p>
+							</>
+						)}
+					</div>
+					<section className="mb-8">
+						{currentItems.map((article) => (
+							<NewsArticle key={article.id} article={article} />
+						))}
+					</section>
+					<ReactPaginate
+						key="paginate2"
+						forcePage={currentPage}
+						previousLabel={'<'}
+						breakLabel={'...'}
+						nextLabel={'>'}
+						pageCount={pageCount}
+						onPageChange={handlePageClick}
+						pageRangeDisplayed={2}
+						marginPagesDisplayed={2}
+						containerClassName={'paginationBtns'}
+						previousLinkClassName={'previousBtn'}
+						nextLinkClassName={'nextBtn'}
+						disabledClassName={'paginationDisabled'}
+						activeClassName={'paginationActive'}
+						breakLinkClassName={'breakLink'}
+						renderOnZeroPageCount={null}
+					/>
 				</section>
 			</div>
-			<div className="">
-				<ReactPaginate
-					key="paginate2"
-					forcePage={currentPage}
-					previousLabel={'<'}
-					breakLabel={'...'}
-					nextLabel={'>'}
-					pageCount={pageCount}
-					onPageChange={handlePageClick}
-					pageRangeDisplayed={2}
-					marginPagesDisplayed={2}
-					containerClassName={'paginationBtns'}
-					previousLinkClassName={'previousBtn'}
-					nextLinkClassName={'nextBtn'}
-					disabledClassName={'paginationDisabled'}
-					activeClassName={'paginationActive'}
-					breakLinkClassName={'breakLink'}
-					renderOnZeroPageCount={null}
-				/>
-			</div>
+			<div className=""></div>
 		</>
 	);
 };

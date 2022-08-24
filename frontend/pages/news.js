@@ -4,13 +4,7 @@ import Link from 'next/link';
 import axios from 'axios';
 
 // COMPONENTS
-import SearchBar from '../components/Search/SearchBar/SearchBar';
-import SelectNewsSite from '../components/Search/Select/SelectNewsSite';
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
-import DropDownFilter from '../components/Search/DropDownFilter';
-import FilterNewsSource from '../components/Search/Filters/FilterNewsSource';
-import FilterByNewest from '../components/Search/Filters/FilterByNewest';
-import RecommendedArticles from '../components/NewsArticles/RecommendedArticles';
 
 // SSR function
 export async function getServerSideProps() {
@@ -92,34 +86,6 @@ const News = ({ articles }) => {
 		setArticlesPerPage(event.target.value);
 	}
 
-	// function toggleNewest() {
-	// 	setNewestFirst((prevState) => !prevState);
-
-	// 	if (!newestFirst) {
-	// 		setArticles(
-	// 			articles.sort(
-	// 				(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
-	// 			)
-	// 		);
-	// 		setFilteredArticles(
-	// 			filteredArticles.sort(
-	// 				(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
-	// 			)
-	// 		);
-	// 	} else {
-	// 		setArticles(
-	// 			articles.sort(
-	// 				(a, b) => new Date(a.publishDate) - new Date(b.publishDate)
-	// 			)
-	// 		);
-	// 		setFilteredArticles(
-	// 			filteredArticles.sort(
-	// 				(a, b) => new Date(a.publishDate) - new Date(b.publishDate)
-	// 			)
-	// 		);
-	// 	}
-	// }
-
 	return (
 		<>
 			<Head>
@@ -128,28 +94,14 @@ const News = ({ articles }) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<section className="news-section min-h-screen pt-8 pb-8">
+			<section className="news-section min-h-screen pb-8">
 				<div className="w-[90%] mx-auto">
 					{/* <h1 className="text-8xl upper font-bold">News</h1> */}
-					<div className="flex justify-center mb-4 items-center">
-						<DropDownFilter
-							newsSource={newsSource}
-							setNewsSource={setNewsSource}
-						/>
-
-						<SearchBar
-							placeholder="Enter Article Title..."
-							inputId="search"
-							filterKeyword={filterKeyword}
-							setFilterKeyword={setFilterKeyword}
-						/>
-						<FilterByNewest
-							onToggleSort={onToggleSort}
-							sortingOrder={sortingOrder}
-						/>
-
-						{/* TODO - FIX THIS SO THE USER CAN CHOOSE THEMSELVES HOW MANY ARTICLES THEY WANT TO HAVE SHOWN */}
-						{/* <select
+					<div className="flex gap-x-8">
+						<div className="flex w-1/3"></div>
+						<div className="flex  mb-4 items-center w-2/3 mx-auto justify-center">
+							{/* TODO - FIX THIS SO THE USER CAN CHOOSE THEMSELVES HOW MANY ARTICLES THEY WANT TO HAVE SHOWN */}
+							{/* <select
 							onChange={onSelectChange}
 							name="articlesPerPage"
 							id="articlesPerPage"
@@ -162,23 +114,19 @@ const News = ({ articles }) => {
 							<option value="40">40</option>
 							<option value="50">50</option>
 						</select> */}
+						</div>
 					</div>
 					<section className="">
-						<section className="">
-							<>
-								<div className="mb-8 flex justify-center">
-									{filteredArticles.length === 0 ? (
-										<p className="text-center">No articles found...</p>
-									) : (
-										<p className="text-center">
-											{filteredArticles.length} articles found
-										</p>
-									)}
-								</div>
-
-								<NewsArticlesList articles={filteredArticles} />
-							</>
-						</section>
+						<NewsArticlesList
+							filterKeyword={filterKeyword}
+							setFilterKeyword={setFilterKeyword}
+							sortingOrder={sortingOrder}
+							setSortingOrder={setSortingOrder}
+							newsSource={newsSource}
+							setNewsSource={setNewsSource}
+							onToggleSort={onToggleSort}
+							articles={filteredArticles}
+						/>
 					</section>
 				</div>
 			</section>
