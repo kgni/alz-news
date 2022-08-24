@@ -10,6 +10,7 @@ import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
 import DropDownFilter from '../components/Search/DropDownFilter';
 import FilterNewsSource from '../components/Search/Filters/FilterNewsSource';
 import FilterByNewest from '../components/Search/Filters/FilterByNewest';
+import RecommendedArticles from '../components/NewsArticles/RecommendedArticles';
 
 // SSR function
 export async function getServerSideProps() {
@@ -162,7 +163,6 @@ const News = ({ articles }) => {
 						</select> */}
 					</div>
 					<section className="flex">
-						<aside></aside>
 						<section className="">
 							<>
 								<div className="mb-8">
