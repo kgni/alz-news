@@ -68,6 +68,7 @@ const News = ({ articles }) => {
 	const [filterKeyword, setFilterKeyword] = useState('');
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
+	const [articlesPerPage, setArticlesPerPage] = useState(20);
 
 	// computed state, when state changes (like filtering keyword, we will applyfilters again - which is why it works)
 	const filteredArticles = applyFilters(
@@ -84,6 +85,11 @@ const News = ({ articles }) => {
 			}
 			return 'desc';
 		});
+	}
+
+	function onSelectChange(event) {
+		console.log(event.target.value);
+		setArticlesPerPage(event.target.value);
 	}
 
 	// function toggleNewest() {
@@ -140,10 +146,24 @@ const News = ({ articles }) => {
 							onToggleSort={onToggleSort}
 							sortingOrder={sortingOrder}
 						/>
+
+						<select
+							onChange={onSelectChange}
+							name="articlesPerPage"
+							id="articlesPerPage"
+						>
+							<option value="10">10</option>
+							<option selected value="20">
+								20
+							</option>
+							<option value="30">30</option>
+							<option value="40">40</option>
+							<option value="50">50</option>
+						</select>
 					</div>
 					<section className="">
 						<>
-							<div className="mb-8">
+							{/* <div className="mb-8">
 								{filteredArticles.length === 0 ? (
 									<p className="text-center">No articles found...</p>
 								) : (
@@ -151,9 +171,13 @@ const News = ({ articles }) => {
 										{filteredArticles.length} articles found
 									</p>
 								)}
-							</div>
+							</div> */}
 
-							<NewsArticlesList articles={filteredArticles} />
+							<NewsArticlesList
+								articles={filteredArticles}
+								articlesPerPage={articlesPerPage}
+								setArticlesPerPage={setArticlesPerPage}
+							/>
 						</>
 					</section>
 				</div>
