@@ -33,7 +33,7 @@ const SearchBar = ({
 					onBlur={(e) => {
 						e.target.placeholder = placeholder;
 					}}
-					className="py-1 px-4 border-0 bg-gray-100 focus:bg-white  duration-600 w-[300px]"
+					className="py-1 px-4 border-0 bg-gray-100 focus:bg-white  duration-600 w-[400px]"
 					placeholder={placeholder}
 					type="text"
 					id={inputId}
