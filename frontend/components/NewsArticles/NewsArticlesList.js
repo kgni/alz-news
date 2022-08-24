@@ -52,6 +52,7 @@ const NewsArticlesList = ({ articles }) => {
 			</div>
 			<div className="">
 				<RecommendedArticles className="float-left mr-8" />
+				<h1 className="text-3xl font-bold mb-4">All Articles</h1>
 				<section className="col-span-3 mb-8">
 					{currentItems.map((article) => (
 						<NewsArticle key={article.id} article={article} />
