@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.paginationBtns {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 12px;
+}
+
+.paginationBtns li {
+	display: flex;
+	justify-content: center;
+}
+
+.paginationBtns a {
+	padding: 8px;
+	padding-left: 12px;
+	padding-right: 12px;
+	width: 40px;
+	display: flex;
+	justify-content: center;
+
+	border-radius: 2000px;
+	/* border: 1px solid black; */
+	cursor: pointer;
+}
+.paginationBtns a:hover {
+	background-color: black;
+	color: white;
+}
+
+.paginationActive a {
+	background-color: black;
+	color: white;
+}
+
+.breakLink {
+	border: none;
+}
