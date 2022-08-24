@@ -41,7 +41,7 @@ const NewsArticle = ({ article }) => {
 	return (
 		<a
 			// whileHover={{ scale: 1.01 }}
-			className={`p-4 shadow-md flex  ${cardBgStyle} bg-white`}
+			className={`p-4 shadow-md flex  ${cardBgStyle} bg-white mb-4`}
 			target="_blank"
 			href={article.url}
 		>
