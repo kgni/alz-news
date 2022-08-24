@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import NewsArticle from './NewsArticle';
 import ReactPaginate from 'react-paginate';
+import RecommendedArticles from './RecommendedArticles';
 
 const NewsArticlesList = ({ articles }) => {
+	// TODO - CAN WE MOVE PAGINATION OUT OF THE NewsArticlesList, and into the SearchBar instead?
+	// TODO - FIX PAGINATION (DON'T LET IT EXPAND LIKE IT DOES, IT SHOULD BE FIXED)
 	// We start with an empty list of articles.
 	const [currentItems, setCurrentItems] = useState([]);
 	const [pageCount, setPageCount] = useState(0);
@@ -47,8 +50,8 @@ const NewsArticlesList = ({ articles }) => {
 					breakLinkClassName={'breakLink'}
 				/>
 			</div>
-			<div className="grid grid-cols-4">
-				<aside className="grid-cols-1">Hello</aside>
+			<div className="">
+				<RecommendedArticles className="float-left mr-8" />
 				<section className="col-span-3 mb-8">
 					{currentItems.map((article) => (
 						<NewsArticle key={article.id} article={article} />
