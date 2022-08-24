@@ -68,7 +68,6 @@ const News = ({ articles }) => {
 	const [filterKeyword, setFilterKeyword] = useState('');
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
-	const [articlesPerPage, setArticlesPerPage] = useState(20);
 
 	// computed state, when state changes (like filtering keyword, we will applyfilters again - which is why it works)
 	const filteredArticles = applyFilters(
@@ -88,7 +87,7 @@ const News = ({ articles }) => {
 	}
 
 	function onSelectChange(event) {
-		console.log(event.target.value);
+		// console.log(event.target.value);
 		setArticlesPerPage(event.target.value);
 	}
 
@@ -147,7 +146,8 @@ const News = ({ articles }) => {
 							sortingOrder={sortingOrder}
 						/>
 
-						<select
+						{/* TODO - FIX THIS SO THE USER CAN CHOOSE THEMSELVES HOW MANY ARTICLES THEY WANT TO HAVE SHOWN */}
+						{/* <select
 							onChange={onSelectChange}
 							name="articlesPerPage"
 							id="articlesPerPage"
@@ -159,26 +159,25 @@ const News = ({ articles }) => {
 							<option value="30">30</option>
 							<option value="40">40</option>
 							<option value="50">50</option>
-						</select>
+						</select> */}
 					</div>
-					<section className="">
-						<>
-							{/* <div className="mb-8">
-								{filteredArticles.length === 0 ? (
-									<p className="text-center">No articles found...</p>
-								) : (
-									<p className="text-center">
-										{filteredArticles.length} articles found
-									</p>
-								)}
-							</div> */}
+					<section className="flex">
+						<aside></aside>
+						<section className="">
+							<>
+								<div className="mb-8">
+									{filteredArticles.length === 0 ? (
+										<p className="text-center">No articles found...</p>
+									) : (
+										<p className="text-center">
+											{filteredArticles.length} articles found
+										</p>
+									)}
+								</div>
 
-							<NewsArticlesList
-								articles={filteredArticles}
-								articlesPerPage={articlesPerPage}
-								setArticlesPerPage={setArticlesPerPage}
-							/>
-						</>
+								<NewsArticlesList articles={filteredArticles} />
+							</>
+						</section>
 					</section>
 				</div>
 			</section>

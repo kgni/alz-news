@@ -2,34 +2,43 @@ import React, { useState, useEffect } from 'react';
 import NewsArticle from './NewsArticle';
 import ReactPaginate from 'react-paginate';
 
-const NewsArticlesList = ({
-	articles,
-	articlesPerPage,
-	setArticlesPerPage,
-}) => {
-	const [pageNumber, setPageNumber] = useState(0);
+const NewsArticlesList = ({ articles }) => {
+	// We start with an empty list of articles.
+	const [currentItems, setCurrentItems] = useState([]);
+	const [pageCount, setPageCount] = useState(0);
+	// Here we use item offsets; we could also use page offsets
+	// following the API or data you're working with.
+	const [itemOffset, setItemOffset] = useState(0);
 
-	// number for how many articles we want to display per page.
+	const itemsPerPage = 24;
 
-	const pagesVisited = pageNumber * articlesPerPage;
+	useEffect(() => {
+		// Fetch items from another resources.
+		const endOffset = itemOffset + itemsPerPage;
+		console.log(`Loading articles from ${itemOffset} to ${endOffset}`);
+		setCurrentItems(articles.slice(itemOffset, endOffset));
+		setPageCount(Math.ceil(articles.length / itemsPerPage));
+	}, [itemOffset, itemsPerPage, articles]);
 
-	const pageCount = Math.ceil(articles.length / articlesPerPage);
-
-	// function for setting the actual page number, the selected object comes from the ReactPaginate component, this will give us the pagenumber that was clicked on.
-	const changePage = ({ selected }) => {
-		setPageNumber(selected);
+	// Invoke when user click to request another page.
+	const handlePageClick = (event) => {
+		const newOffset = (event.selected * itemsPerPage) % articles.length;
+		console.log(
+			`User requested page number ${event.selected}, which is offset ${newOffset}`
+		);
+		setItemOffset(newOffset);
 	};
-
 	return (
 		<>
 			<div className="mb-8">
 				<ReactPaginate
 					previousLabel={'<'}
+					breakLabel={'...'}
 					nextLabel={'>'}
 					pageCount={pageCount}
-					onPageChange={changePage}
-					pageRangeDisplayed={3}
-					marginPagesDisplayed={1}
+					onPageChange={handlePageClick}
+					pageRangeDisplayed={2}
+					marginPagesDisplayed={2}
 					containerClassName={'paginationBtns'}
 					previousLinkClassName={'previousBtn'}
 					nextLinkClassName={'nextBtn'}
@@ -38,20 +47,22 @@ const NewsArticlesList = ({
 					breakLinkClassName={'breakLink'}
 				/>
 			</div>
-			<section className="grid grid-cols-2 gap-4 mb-8">
-				{articles
-					.slice(pagesVisited, pagesVisited + articlesPerPage)
-					.map((article) => (
+			<div className="grid grid-cols-4">
+				<aside className="grid-cols-1">Hello</aside>
+				<section className="col-span-3 mb-8">
+					{currentItems.map((article) => (
 						<NewsArticle key={article.id} article={article} />
 					))}
-			</section>
+				</section>
+			</div>
 			<div className="">
 				<ReactPaginate
 					previousLabel={'<'}
+					breakLabel={'...'}
 					nextLabel={'>'}
 					pageCount={pageCount}
-					onPageChange={changePage}
-					pageRangeDisplayed={3}
+					onPageChange={handlePageClick}
+					pageRangeDisplayed={2}
 					marginPagesDisplayed={2}
 					containerClassName={'paginationBtns'}
 					previousLinkClassName={'previousBtn'}
