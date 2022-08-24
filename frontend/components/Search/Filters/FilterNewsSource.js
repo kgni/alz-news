@@ -2,12 +2,12 @@ import React from 'react';
 
 const FilterNewsSource = ({ newsSource, setNewsSource, setIsOpen }) => {
 	const newsSites = [
-		'The Guardian',
 		'alz.org',
 		'alzheimers.org.uk',
 		'nia.gov',
 		'j-alz.com',
 		'Neuroscience News',
+		'The Guardian',
 	];
 
 	// onChange handler for checkboxes
