@@ -41,13 +41,13 @@ const NewsArticle = ({ article }) => {
 	return (
 		<a
 			// whileHover={{ scale: 1.01 }}
-			className={`p-4 shadow-md flex  ${cardBgStyle} bg-white mb-4`}
+			className={`p-4 shadow-md flex bg-white mb-4 hover:bg-gray-100`}
 			target="_blank"
 			href={article.url}
 		>
 			<article className="flex flex-col">
 				<div className="mb-4">
-					<a className="hover:underline" target="_blank" href={article.url}>
+					<a className="" target="_blank" href={article.url}>
 						<h4 className="text-2xl mb-2 font-bold">{article.title}</h4>
 					</a>
 					<h6>{article.subtitle}</h6>
