@@ -5,7 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SearchBarDropDown from '../components/Search/SearchBarDropDown/SearchBarDropDown';
 
-export default function Home() {
+import Layout from '../components/Layout';
+
+export default function Page() {
 	const [articles, setArticles] = useState([]);
 
 	const [approvedArticles, setApprovedArticles] = useState([]);
@@ -43,3 +45,7 @@ export default function Home() {
 		</div>
 	);
 }
+
+Page.getLayout = function getLayout(page) {
+	return <Layout>{page}</Layout>;
+};
