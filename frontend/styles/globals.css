@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* PAGINATION */
 .paginationBtns {
 	display: flex;
 	justify-content: center;

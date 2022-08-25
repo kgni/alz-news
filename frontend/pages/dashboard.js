@@ -93,7 +93,6 @@ const Dashboard = () => {
 				<meta name="description" content="Alz.news, we have news for you" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<NewsArticlesList articles={filteredArticles} />
 		</>
 	);
 };

@@ -5,6 +5,7 @@ import axios from 'axios';
 
 // COMPONENTS
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
+import Layout from '../components/Layout';
 
 // SSR function
 export async function getServerSideProps() {
@@ -57,7 +58,7 @@ function applyFilters(articles, sortingOrder, filterKeyword, newsSource) {
 	return sortedArticles;
 }
 
-const News = ({ articles }) => {
+export default function Page({ articles }) {
 	// TODO - IMPORT SKELETON FOR WHEN WE ARE LOADING ARTICLES (DO THIS AFTER WE HAVE THE LAYOUT OF HOW WE ARE SHOWING ARTICLES)
 	// const [articles, setArticles] = useState(articles);
 	const [filterKeyword, setFilterKeyword] = useState('');
@@ -133,6 +134,8 @@ const News = ({ articles }) => {
 			</section>
 		</>
 	);
-};
+}
 
-export default News;
+Page.getLayout = function getLayout(page) {
+	return <Layout>{page}</Layout>;
+};
