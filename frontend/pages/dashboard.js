@@ -13,6 +13,8 @@ import DropDownFilter from '../components/Search/DropDownFilter';
 import FilterNewsSource from '../components/Search/Filters/FilterNewsSource';
 import FilterByNewest from '../components/Search/Filters/FilterByNewest';
 
+import DashboardAside from '../components/Dashboard/DashboardAside';
+
 function applySort(articles, sortingOrder) {
 	if (sortingOrder === 'desc') {
 		return articles.sort(
@@ -89,10 +91,12 @@ const Dashboard = () => {
 	return (
 		<>
 			<Head>
-				<title>ALZ.NEWS</title>
-				<meta name="description" content="Alz.news, we have news for you" />
-				<link rel="icon" href="/favicon.ico" />
+				<title>ALZ.NEWS - DASHBOARD</title>
 			</Head>
+			<main className="flex">
+				<DashboardAside style={{ size: '40px' }} />
+				<section></section>
+			</main>
 		</>
 	);
 };
