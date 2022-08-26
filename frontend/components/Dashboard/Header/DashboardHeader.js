@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 
 import DashboardHeaderAddedWhen from './DashboardHeaderAddedWhen';
 
@@ -20,20 +21,22 @@ const DashboardHeader = ({ articles }) => {
 	);
 
 	return (
-		<header className="flex gap-8">
-			<div className="bg-zinc-100 py-4 px-8 rounded-lg w-1/5">
+		<header className="flex gap-8 mb-8 w-full">
+			<div className="bg-zinc-100 py-4 px-8 rounded-lg min-w-[250px] w-1/5 flex flex-col justify-between">
 				<h3 className="font-bold text-3xl mb-4">Articles</h3>
-				<div className="flex gap-5">
+				<motion.div
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 1 }}
+					className="flex gap-5"
+				>
 					<p className="text-green-600 font-bold">{approvedArticles.length}</p>
 					<p className="text-orange-300 font-bold">{pendingArticles.length}</p>
 					<p className="text-red-600 font-bold">{rejectedArticles.length}</p>
 					<p className="font-bold ml-auto">{articles.length}</p>
-				</div>
+				</motion.div>
 			</div>
 			<DashboardHeaderAddedWhen articles={articles} />
-
-			<div></div>
-			<div></div>
 		</header>
 	);
 };

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { motion } from 'framer-motion';
+
 import { AiFillCaretDown } from 'react-icons/ai';
 
 function getLastWeeksDate() {
@@ -38,7 +40,7 @@ const DashboardHeaderAddedWhen = ({ articles }) => {
 	});
 
 	return (
-		<div className="bg-zinc-100 py-4 px-8 rounded-lg w-1/5">
+		<div className="bg-zinc-100 py-4 px-8 rounded-lg w-[300px] flex flex-col justify-between">
 			{' '}
 			<h3 className="font-bold text-2xl mb-4 flex items-center gap-2">
 				Added last week{' '}
@@ -47,7 +49,12 @@ const DashboardHeaderAddedWhen = ({ articles }) => {
 					size="0.8em"
 				/>
 			</h3>
-			<div className="flex gap-5">
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ duration: 1.5 }}
+				className="flex gap-5"
+			>
 				<p className="text-green-600 font-bold">
 					{articlesLastAddedApproved.length}
 				</p>
@@ -58,7 +65,7 @@ const DashboardHeaderAddedWhen = ({ articles }) => {
 					{articlesLastAddedRejected.length}
 				</p>
 				<p className="font-bold ml-auto">{articlesLastAdded.length}</p>
-			</div>
+			</motion.div>
 		</div>
 	);
 };

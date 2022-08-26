@@ -8,12 +8,12 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 const DashboardHeaderSkeleton = () => {
 	return (
-		<header className="flex gap-8">
-			<div className="bg-zinc-100 py-4 px-8 rounded-lg w-1/5">
+		<header className="flex gap-8 min-w-screen">
+			<div className="bg-zinc-100 py-4 px-8 rounded-lg min-w-[250px] w-1/5">
 				<h3 className="font-bold text-3xl mb-4">Articles</h3>
 				<Skeleton height={20}>4000</Skeleton>
 			</div>
-			<div className="bg-zinc-100 py-4 px-8 rounded-lg w-1/5">
+			<div className="bg-zinc-100 py-4 px-8 rounded-lg w-[300px]">
 				{' '}
 				<h3 className="font-bold text-2xl mb-4 flex items-center gap-2">
 					Added last week{' '}
@@ -24,8 +24,6 @@ const DashboardHeaderSkeleton = () => {
 				</h3>
 				<Skeleton height={20}>4000</Skeleton>
 			</div>
-			<div></div>
-			<div></div>
 		</header>
 	);
 };
