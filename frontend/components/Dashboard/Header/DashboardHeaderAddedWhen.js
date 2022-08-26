@@ -19,20 +19,20 @@ const DashboardHeaderAddedWhen = ({ articles }) => {
 
 	const articlesLastAddedApproved = articles.filter((article) => {
 		return (
-			new Date(article.publishDate) > articlesDateRange &&
+			Date.parse(article.publishDate) > articlesDateRange &&
 			article.status === 'APPROVED'
 		);
 	});
 
 	const articlesLastAddedPending = articles.filter((article) => {
 		return (
-			new Date(article.publishDate) > articlesDateRange &&
+			Date.parse(article.publishDate) > articlesDateRange &&
 			article.status === 'PENDING'
 		);
 	});
 	const articlesLastAddedRejected = articles.filter((article) => {
 		return (
-			new Date(article.publishDate) > articlesDateRange &&
+			Date.parse(article.publishDate) > articlesDateRange &&
 			article.status === 'REJECTED'
 		);
 	});
