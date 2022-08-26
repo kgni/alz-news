@@ -4,11 +4,14 @@ import Link from 'next/link';
 import axios from 'axios';
 
 // CSS
-
 import styles from '../styles/Dashboard.module.css';
 
 // Modules
 import DashboardAside from '../components/Dashboard/DashboardAside';
+import DashboardNewsContent from '../components/Dashboard/News/DashboardNewsContent';
+import { set } from 'mongoose';
+import { SkeletonTheme } from 'react-loading-skeleton';
+import DashboardHeaderSkeleton from '../components/Dashboard/Skeletons/DashboardHeaderSkeleton';
 
 function applySort(articles, sortingOrder) {
 	if (sortingOrder === 'desc') {
@@ -49,6 +52,8 @@ const Dashboard = () => {
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
 
+	const [isLoading, setIsLoading] = useState(true);
+
 	const [currentPage, setCurrentPage] = useState('dashboard');
 
 	// computed state, when state changes (like filtering keyword, we will applyfilters again - which is why it works)
@@ -66,6 +71,7 @@ const Dashboard = () => {
 			const data = await res.data;
 
 			setArticles(data);
+			setIsLoading(false);
 		}
 
 		fetchArticles();
@@ -90,11 +96,15 @@ const Dashboard = () => {
 					currentPage={currentPage}
 					setCurrentPage={setCurrentPage}
 				/>
-				<section
-					className={`${styles.dashboardContent} py-8 px-12 max-h-full overflow-auto w-full`}
-				>
-					{articles.map((article) => <p>{article.title}</p>).slice(0, 50)}
-				</section>
+				<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">
+					<section className="py-8 px-12 w-full">
+						{isLoading ? (
+							<DashboardHeaderSkeleton />
+						) : (
+							<DashboardNewsContent articles={articles} />
+						)}
+					</section>
+				</SkeletonTheme>
 			</main>
 		</>
 	);
