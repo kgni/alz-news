@@ -90,13 +90,13 @@ const Dashboard = () => {
 			<Head>
 				<title>ALZ.NEWS - DASHBOARD</title>
 			</Head>
-			<main className="flex max-h-screen">
+			<main className="flex max-h-screen w-full">
 				<DashboardAside
 					currentPage={currentPage}
 					setCurrentPage={setCurrentPage}
 				/>
 				<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">
-					<section className="py-8 px-12 w-full">
+					<section className="py-8 px-12 w-full overflow-auto">
 						{isLoading ? (
 							<DashboardHeaderSkeleton />
 						) : (
