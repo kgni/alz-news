@@ -3,16 +3,11 @@ import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
 
-// TODO - PASS IN KEYS
+// CSS
 
-import SearchBar from '../components/Search/SearchBar/SearchBar';
-import SelectNewsSite from '../components/Search/Select/SelectNewsSite';
+import styles from '../styles/Dashboard.module.css';
 
-import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
-import DropDownFilter from '../components/Search/DropDownFilter';
-import FilterNewsSource from '../components/Search/Filters/FilterNewsSource';
-import FilterByNewest from '../components/Search/Filters/FilterByNewest';
-
+// Modules
 import DashboardAside from '../components/Dashboard/DashboardAside';
 
 function applySort(articles, sortingOrder) {
@@ -54,6 +49,8 @@ const Dashboard = () => {
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
 
+	const [currentPage, setCurrentPage] = useState('dashboard');
+
 	// computed state, when state changes (like filtering keyword, we will applyfilters again - which is why it works)
 	const filteredArticles = applyFilters(
 		articles,
@@ -68,12 +65,7 @@ const Dashboard = () => {
 
 			const data = await res.data;
 
-			const newestArticles = data.sort(
-				(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
-			);
-
-			// set articles to show newest first intially
-			setArticles(newestArticles);
+			setArticles(data);
 		}
 
 		fetchArticles();
@@ -93,9 +85,16 @@ const Dashboard = () => {
 			<Head>
 				<title>ALZ.NEWS - DASHBOARD</title>
 			</Head>
-			<main className="flex">
-				<DashboardAside style={{ size: '40px' }} />
-				<section></section>
+			<main className="flex max-h-screen">
+				<DashboardAside
+					currentPage={currentPage}
+					setCurrentPage={setCurrentPage}
+				/>
+				<section
+					className={`${styles.dashboardContent} py-8 px-12 max-h-full overflow-auto w-full`}
+				>
+					{articles.map((article) => <p>{article.title}</p>).slice(0, 50)}
+				</section>
 			</main>
 		</>
 	);
