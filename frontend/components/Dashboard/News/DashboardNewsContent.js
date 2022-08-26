@@ -1,5 +1,5 @@
 import React from 'react';
-import DashboardHeader from '../DashboardHeader';
+import DashboardHeader from '../Header/DashboardHeader';
 
 const DashboardNewsContent = ({ articles }) => {
 	return (

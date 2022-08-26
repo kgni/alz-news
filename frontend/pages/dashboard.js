@@ -9,7 +9,6 @@ import styles from '../styles/Dashboard.module.css';
 // Modules
 import DashboardAside from '../components/Dashboard/DashboardAside';
 import DashboardNewsContent from '../components/Dashboard/News/DashboardNewsContent';
-import { set } from 'mongoose';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import DashboardHeaderSkeleton from '../components/Dashboard/Skeletons/DashboardHeaderSkeleton';
 

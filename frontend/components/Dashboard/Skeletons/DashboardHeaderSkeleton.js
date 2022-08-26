@@ -13,10 +13,10 @@ const DashboardHeaderSkeleton = () => {
 				<h3 className="font-bold text-3xl mb-4">Articles</h3>
 				<Skeleton height={20}>4000</Skeleton>
 			</div>
-			<div className="bg-zinc-100 py-4 px-8 rounded-lg">
+			<div className="bg-zinc-100 py-4 px-8 rounded-lg w-1/5">
 				{' '}
 				<h3 className="font-bold text-2xl mb-4 flex items-center gap-2">
-					Articles added last week{' '}
+					Added last week{' '}
 					<AiFillCaretDown
 						style={{ marginTop: '5px', cursor: 'pointer' }}
 						size="0.8em"
