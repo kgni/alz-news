@@ -15,6 +15,9 @@ newsArticlesRouter.get('/news', async (req, res) => {
 			.limit(req.query.limit)
 			.sort({ publishDate: 'desc' });
 		res.json(articles);
+	} else {
+		const articles = await NewsArticle.find({}).sort({ publishDate: 'desc' });
+		res.json(articles);
 	}
 });
 
