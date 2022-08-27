@@ -2,7 +2,10 @@ import React, { useMemo } from 'react';
 import { useTable, useSortBy } from 'react-table';
 import { NEWS_COLUMNS } from './columns/newsColumns';
 
+import styles from '../../../styles/BasicTable.module.css';
+
 import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
+import { BiEdit } from 'react-icons/bi';
 
 const SortingBasicTable = ({ columnData }) => {
 	const columns = useMemo(() => NEWS_COLUMNS, []);
@@ -15,22 +18,24 @@ const SortingBasicTable = ({ columnData }) => {
 			{
 				columns,
 				data,
+				disableSortRemove: true,
 			},
+
 			useSortBy
 		);
 
 	return (
-		<table className="table-fixed" {...getTableProps()}>
-			<thead className="text-left mb-4 bg-zinc-200">
+		<table className={styles.table} {...getTableProps()}>
+			<thead className={styles.thead}>
 				{headerGroups.map((headerGroup) => (
-					<tr className="" {...headerGroup.getHeaderGroupProps()}>
+					<tr className={styles.trHead} {...headerGroup.getHeaderGroupProps()}>
 						{headerGroup.headers.map((column) => (
 							<th
-								className="py-1 px-2 relative"
+								className={`${styles.th} relative`}
 								{...column.getHeaderProps(column.getSortByToggleProps())}
 							>
 								{column.render('Header')}
-								<span className="ml-1 absolute top-2">
+								<span className="ml-1 absolute top-[19px]">
 									{column.isSorted ? (
 										column.isSortedDesc ? (
 											<AiOutlineCaretDown />
@@ -51,12 +56,18 @@ const SortingBasicTable = ({ columnData }) => {
 					.map((row) => {
 						prepareRow(row);
 						return (
-							<tr className="align-top" {...row.getRowProps()}>
+							<tr className={styles.trBody} {...row.getRowProps()}>
 								{row.cells.map((cell) => (
-									<td className="px-2" {...cell.getCellProps()}>
+									<td className={styles.td} {...cell.getCellProps()}>
 										{cell.render('Cell')}
 									</td>
 								))}
+								<td>
+									<BiEdit
+										style={{ cursor: 'pointer', marginRight: '12px' }}
+										size="1.2em"
+									/>
+								</td>
 							</tr>
 						);
 					})
