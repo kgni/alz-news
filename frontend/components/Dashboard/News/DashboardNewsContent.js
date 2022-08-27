@@ -1,12 +1,12 @@
 import React from 'react';
 import DashboardHeader from '../Header/DashboardHeader';
-import DashboardList from '../DashboardList';
+import BasicTable from '../Tables/BasicTable';
 
 const DashboardNewsContent = ({ articles }) => {
 	return (
 		<>
 			<DashboardHeader articles={articles} />
-			<DashboardList data={articles} />
+			<BasicTable columnData={articles} />
 		</>
 	);
 };
