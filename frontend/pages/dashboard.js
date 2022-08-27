@@ -90,7 +90,7 @@ const Dashboard = () => {
 			<Head>
 				<title>ALZ.NEWS - DASHBOARD</title>
 			</Head>
-			<main className="flex max-h-screen w-full">
+			<main className="flex max-h-screen w-full ">
 				<DashboardAside
 					currentPage={currentPage}
 					setCurrentPage={setCurrentPage}
