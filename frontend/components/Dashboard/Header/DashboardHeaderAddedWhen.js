@@ -40,7 +40,7 @@ const DashboardHeaderAddedWhen = ({ articles }) => {
 	});
 
 	return (
-		<div className="bg-zinc-100 py-4 px-8 rounded-lg w-[300px] flex flex-col justify-between">
+		<div className="bg-white py-4 px-8 rounded-lg w-[300px] flex flex-col justify-between shadow-md">
 			{' '}
 			<h3 className="font-bold text-2xl mb-4 flex items-center gap-2">
 				Added last week{' '}
