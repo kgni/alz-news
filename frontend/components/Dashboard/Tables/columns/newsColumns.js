@@ -9,7 +9,12 @@ export const NEWS_COLUMNS = [
 		accessor: 'title',
 		Cell: ({ value }) => {
 			if (!value) {
-				return <ImCross style={{ color: 'red' }} />;
+				return (
+					<span className="bg-[#FDEBEB] text-[#F14546] rounded-full font-bold inline-flex w-34 px-3 items-center justify-between gap-2 py-[2px] text-sm">
+						<ImCross size={'.8em'} style={{ color: '#F14546' }} />
+						MISSING
+					</span>
+				);
 			} else {
 				return `${value.split(' ').slice(0, 5).join(' ')}...`;
 			}
@@ -20,7 +25,12 @@ export const NEWS_COLUMNS = [
 		accessor: 'subtitle',
 		Cell: ({ value }) => {
 			if (!value) {
-				return <ImCross style={{ color: 'red' }} />;
+				return (
+					<span className="bg-[#FDEBEB] text-[#F14546] rounded-full font-bold inline-flex w-34 px-3 items-center justify-between gap-2 py-[2px] text-sm">
+						<ImCross size={'.8em'} style={{ color: '#F14546' }} />
+						MISSING
+					</span>
+				);
 			} else {
 				return `${value.split(' ').slice(0, 5).join(' ')}...`;
 			}
@@ -82,7 +92,10 @@ export const NEWS_COLUMNS = [
 		Cell: ({ value }) => {
 			if (value === 'PENDING') {
 				return (
-					<span className="p-1 px-4 bg-yellow-400 font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] justify-center cursor-pointer">
+					<span
+						onClick={() => alert('clicked')}
+						className="p-1 px-4 bg-[#FEF8E8] text-[#F4C745] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] justify-center cursor-pointer"
+					>
 						{value}
 						{/* <AiOutlineCaretDown
 							className="ml-auto"
@@ -94,7 +107,7 @@ export const NEWS_COLUMNS = [
 
 			if (value === 'APPROVED') {
 				return (
-					<span className="p-1 px-4 bg-[#007C00] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] justify-center text-white cursor-pointer">
+					<span className="p-1 px-4 bg-[#EBF9EB] text-[#3EC13D] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] justify-center cursor-pointer">
 						{value}
 						{/* <AiOutlineCaretDown
 							className="ml-auto"
@@ -106,7 +119,7 @@ export const NEWS_COLUMNS = [
 
 			if (value === 'REJECTED') {
 				return (
-					<span className="p-1 px-4 bg-red-600 font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] cursor-pointer">
+					<span className="p-1 px-4 bg-[#FDEBEB] text-[#F14546] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] cursor-pointer">
 						{value}
 						<AiOutlineCaretDown
 							className="ml-auto"
@@ -121,9 +134,18 @@ export const NEWS_COLUMNS = [
 		Header: 'Last Edited',
 		accessor: 'updatedAt',
 		Cell: ({ value }) => {
-			return formatDistance(subDays(new Date(value), 3), new Date(), {
-				addSuffix: true,
-			});
+			return (
+				<>
+					<span className="font-semibold">
+						{format(new Date(value), 'MMMPP')}
+					</span>
+					<span className="text-xs text-zinc-400 font-semibold block">
+						{formatDistance(subDays(new Date(value), 3), new Date(), {
+							addSuffix: true,
+						})}
+					</span>
+				</>
+			);
 		},
 	},
 	{
