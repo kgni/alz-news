@@ -5,6 +5,7 @@ import { RiDashboard2Fill } from 'react-icons/ri';
 import { IoNewspaperOutline } from 'react-icons/io5';
 import { IoIosJournal } from 'react-icons/io';
 import { FaCog, FaUserAlt } from 'react-icons/fa';
+import Link from 'next/link';
 
 const DashboardAside = ({ currentPage, setCurrentPage }) => {
 	function onClickSetCurrentPage(event) {
@@ -33,7 +34,11 @@ const DashboardAside = ({ currentPage, setCurrentPage }) => {
 		<>
 			<IconContext.Provider value={{ size: '1.3em' }}>
 				<aside className="py-8 px-12 bg-black w-72 h-screen flex flex-col flex-shrink-0">
-					<h2 className="text-white font-bold text-3xl mb-32">ALZ.news</h2>
+					<Link href="/news">
+						<h2 className="text-white font-bold text-3xl mb-32 cursor-pointer">
+							ALZ.news
+						</h2>
+					</Link>
 					<ul className="text-zinc-600 flex gap-8 font-semibold flex-col">
 						<li
 							onClick={onClickSetCurrentPage}
