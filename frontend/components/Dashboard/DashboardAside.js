@@ -39,7 +39,7 @@ const DashboardAside = ({ currentPage, setCurrentPage }) => {
 							onClick={onClickSetCurrentPage}
 							className={`${
 								currentPage === 'dashboard' ? 'text-white' : ''
-							} flex items-center gap-5 cursor-pointer hover:text-white duration-100`}
+							} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
 						>
 							<RiDashboard2Fill />
 							Dashboard
@@ -48,7 +48,7 @@ const DashboardAside = ({ currentPage, setCurrentPage }) => {
 							onClick={onClickSetCurrentPage}
 							className={`${
 								currentPage === 'news' ? 'text-white' : ''
-							} flex items-center gap-5 cursor-pointer hover:text-white duration-100`}
+							} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
 						>
 							<IoNewspaperOutline />
 							News
@@ -57,7 +57,7 @@ const DashboardAside = ({ currentPage, setCurrentPage }) => {
 							onClick={onClickSetCurrentPage}
 							className={`${
 								currentPage === 'journals' ? 'text-white' : ''
-							} flex items-center gap-5 cursor-pointer hover:text-white duration-100`}
+							} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
 						>
 							<IoIosJournal />
 							Journals
@@ -66,7 +66,7 @@ const DashboardAside = ({ currentPage, setCurrentPage }) => {
 							onClick={onClickSetCurrentPage}
 							className={`${
 								currentPage === 'settings' ? 'text-white' : ''
-							} flex items-center gap-5 cursor-pointer hover:text-white duration-100`}
+							} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
 						>
 							<FaCog />
 							Settings
@@ -88,7 +88,7 @@ const DashboardAside = ({ currentPage, setCurrentPage }) => {
 						</div>
 						<button
 							href="/"
-							className="text-white flex justify-center w-full px-4 py-1 bg-red-800 font-semibold rounded-md hover:bg-red-700 duration-100"
+							className="text-white flex justify-center w-full px-4 py-1 bg-red-800 font-semibold rounded-md hover:bg-red-700 duration-100 select-none"
 						>
 							LOGOUT
 						</button>

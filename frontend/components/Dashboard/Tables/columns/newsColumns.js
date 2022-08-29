@@ -10,7 +10,7 @@ export const NEWS_COLUMNS = [
 		Cell: ({ value }) => {
 			if (!value) {
 				return (
-					<span className="bg-[#FDEBEB] text-[#F14546] rounded-full font-bold inline-flex w-34 px-3 items-center justify-between gap-2 py-[2px] text-sm">
+					<span className="bg-[#FDEBEB] text-[#F14546] rounded-full font-bold inline-flex w-34 px-3 items-center justify-between gap-2 py-1 text-xs select-none">
 						<ImCross size={'.8em'} style={{ color: '#F14546' }} />
 						MISSING
 					</span>
@@ -26,7 +26,7 @@ export const NEWS_COLUMNS = [
 		Cell: ({ value }) => {
 			if (!value) {
 				return (
-					<span className="bg-[#FDEBEB] text-[#F14546] rounded-full font-bold inline-flex w-34 px-3 items-center justify-between gap-2 py-[2px] text-sm">
+					<span className="bg-[#FDEBEB] text-[#F14546] rounded-full font-bold inline-flex w-34 px-3 items-center justify-between gap-2 py-1 text-xs select-none">
 						<ImCross size={'.8em'} style={{ color: '#F14546' }} />
 						MISSING
 					</span>
@@ -94,7 +94,7 @@ export const NEWS_COLUMNS = [
 				return (
 					<span
 						onClick={() => alert('clicked')}
-						className="p-1 px-4 bg-[#FEF8E8] text-[#F4C745] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] justify-center cursor-pointer"
+						className="p-1 px-4 bg-[#FEF8E8] text-[#F4C745] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] justify-center cursor-pointer select-none"
 					>
 						{value}
 						{/* <AiOutlineCaretDown
@@ -107,7 +107,7 @@ export const NEWS_COLUMNS = [
 
 			if (value === 'APPROVED') {
 				return (
-					<span className="p-1 px-4 bg-[#EBF9EB] text-[#3EC13D] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] justify-center cursor-pointer">
+					<span className="p-1 px-4 bg-[#EBF9EB] text-[#3EC13D] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] justify-center cursor-pointer select-none">
 						{value}
 						{/* <AiOutlineCaretDown
 							className="ml-auto"
@@ -119,12 +119,12 @@ export const NEWS_COLUMNS = [
 
 			if (value === 'REJECTED') {
 				return (
-					<span className="p-1 px-4 bg-[#FDEBEB] text-[#F14546] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] cursor-pointer">
+					<span className="p-1 px-4 bg-[#FDEBEB] text-[#F14546] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] cursor-pointer select-none">
 						{value}
-						<AiOutlineCaretDown
+						{/* <AiOutlineCaretDown
 							className="ml-auto"
 							style={{ cursor: 'pointer' }}
-						/>
+						/> */}
 					</span>
 				);
 			}
@@ -140,7 +140,7 @@ export const NEWS_COLUMNS = [
 						{format(new Date(value), 'MMMPP')}
 					</span>
 					<span className="text-xs text-zinc-400 font-semibold block">
-						{formatDistance(subDays(new Date(value), 3), new Date(), {
+						{formatDistance(subDays(new Date(value), 0), new Date(), {
 							addSuffix: true,
 						})}
 					</span>

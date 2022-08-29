@@ -6,6 +6,8 @@ import styles from '../../../styles/BasicTable.module.css';
 
 import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
 import { BiEdit } from 'react-icons/bi';
+import DashBoardModal from '../DashBoardModal';
+import DashboardNewsForm from '../News/DashboardNewsForm';
 
 const SortingBasicTable = ({ columnData }) => {
 	const [currentShownArticle, setCurrentShownArticle] = useState({});
@@ -13,8 +15,7 @@ const SortingBasicTable = ({ columnData }) => {
 
 	const columns = useMemo(() => NEWS_COLUMNS, []);
 
-	const testColumData = columnData.slice(0, 50);
-	const data = useMemo(() => testColumData, []);
+	const data = useMemo(() => columnData.slice(0, 50), []);
 
 	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
 		useTable(
@@ -35,9 +36,11 @@ const SortingBasicTable = ({ columnData }) => {
 	return (
 		<>
 			{isModalShown && (
-				<h1 className="text-2xl font-bold absolute">
-					{currentShownArticle.title}
-				</h1>
+				<>
+					<DashBoardModal setIsModalShown={setIsModalShown}>
+						<DashboardNewsForm currentShownArticle={currentShownArticle} />
+					</DashBoardModal>
+				</>
 			)}
 			<table className={`${styles.table} shadow-md`} {...getTableProps()}>
 				<thead className={styles.thead}>
@@ -73,7 +76,7 @@ const SortingBasicTable = ({ columnData }) => {
 						.map((row) => {
 							prepareRow(row);
 							return (
-								<tr className={styles.trBody} {...row.getRowProps()}>
+								<tr className={`${styles.trBody}`} {...row.getRowProps()}>
 									{row.cells.map((cell) => (
 										<td className={styles.td} {...cell.getCellProps()}>
 											{cell.render('Cell')}

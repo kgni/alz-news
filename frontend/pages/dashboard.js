@@ -97,12 +97,12 @@ const Dashboard = () => {
 				/>
 				<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">
 					<section
-						className={`${styles.dashboardContent} py-8 px-12 w-full overflow-auto bg-[#f8f8f8]`}
+						className={`${styles.dashboardContent} relative py-8 px-12 w-full overflow-auto bg-[#f8f8f8]`}
 					>
 						{isLoading ? (
 							<DashboardHeaderSkeleton />
 						) : (
-							<DashboardNewsContent articles={articles} />
+							<DashboardNewsContent articles={filteredArticles} />
 						)}
 					</section>
 				</SkeletonTheme>
