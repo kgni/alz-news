@@ -81,7 +81,9 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 					<FaGlobeEurope />
 				</a>
 				<p className="italic ml-auto flex text-sm">
-					Last edited:{' '}
+					<p className="not-italic font-bold inline-block">
+						Last edited: &nbsp;
+					</p>
 					{formatDistance(
 						subDays(new Date(currentShownArticle.updatedAt), 0),
 						new Date(),
