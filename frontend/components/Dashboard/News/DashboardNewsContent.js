@@ -1,14 +1,13 @@
 import React from 'react';
 import DashboardHeader from '../Header/DashboardHeader';
-import BasicTable from '../Tables/BasicTable';
-import SortingBasicTable from '../Tables/SortingBasicTable';
+import Table from '../Tables/Table';
 
 const DashboardNewsContent = ({ articles }) => {
 	return (
 		<>
 			<DashboardHeader articles={articles} />
 			{/* <BasicTable columnData={articles} /> */}
-			<SortingBasicTable columnData={articles} />
+			<Table columnData={articles} />
 		</>
 	);
 };

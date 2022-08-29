@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useTable, useSortBy } from 'react-table';
+import { useTable, useSortBy, useGlobalFilter } from 'react-table';
 import { NEWS_COLUMNS } from './columns/newsColumns';
 
 import styles from '../../../styles/BasicTable.module.css';
@@ -8,6 +8,7 @@ import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
 import { BiEdit } from 'react-icons/bi';
 import DashBoardModal from '../DashBoardModal';
 import DashboardNewsForm from '../News/DashboardNewsForm';
+import GlobalFilter from './GlobalFilter';
 
 const SortingBasicTable = ({ columnData }) => {
 	const [currentShownArticle, setCurrentShownArticle] = useState({});
@@ -15,26 +16,39 @@ const SortingBasicTable = ({ columnData }) => {
 
 	const columns = useMemo(() => NEWS_COLUMNS, []);
 
-	const data = useMemo(() => columnData, [columnData]);
+	const data = useMemo(() => columnData.slice(0, 50), [columnData]);
 
-	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-		useTable(
-			{
-				columns,
-				data,
-				disableSortRemove: true,
-				initialState: {
-					sortBy: [
-						{
-							id: 'updatedAt',
-							desc: true,
-						},
-					],
-				},
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		rows,
+		prepareRow,
+		state,
+		setGlobalFilter,
+	} = useTable(
+		{
+			columns,
+			data,
+			disableSortRemove: true,
+			initialState: {
+				sortBy: [
+					// {
+					// 	id: 'updatedAt',
+					// 	desc: true,
+					// },
+					{
+						id: 'publishDate',
+						desc: true,
+					},
+				],
 			},
+		},
+		useGlobalFilter,
+		useSortBy
+	);
 
-			useSortBy
-		);
+	const { globalFilter } = state;
 
 	function openArticle(articleData) {
 		setCurrentShownArticle(articleData);
@@ -50,6 +64,7 @@ const SortingBasicTable = ({ columnData }) => {
 					</DashBoardModal>
 				</>
 			)}
+			<GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
 			<table className={`${styles.table} shadow-md`} {...getTableProps()}>
 				<thead className={styles.thead}>
 					{headerGroups.map((headerGroup) => (
