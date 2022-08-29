@@ -20,8 +20,10 @@ const DashboardHeader = ({ articles }) => {
 		(article) => article.status === 'REJECTED'
 	);
 
+	// TODO - fix the mb on header on smaller devices - the pagination should be below header when there is no space
+
 	return (
-		<header className="flex gap-8 mb-8 w-full">
+		<header className="flex gap-8 w-full">
 			<div className="bg-white py-4 px-8 rounded-lg min-w-[250px] w-1/5 flex flex-col justify-between shadow-md">
 				<h3 className="font-bold text-3xl mb-4">Articles</h3>
 				<motion.div

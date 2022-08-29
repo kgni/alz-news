@@ -10,7 +10,7 @@ const GlobalFilter = ({ filter, setFilter }) => {
 	return (
 		<div className="flex justify-start">
 			<input
-				className="mb-4 px-2 py-1 rounded-lg shadow-md"
+				className=" px-2 py-1 rounded-lg shadow-md"
 				placeholder="Search..."
 				type="text"
 				value={value || ''}
