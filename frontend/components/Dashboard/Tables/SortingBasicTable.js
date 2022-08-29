@@ -15,7 +15,7 @@ const SortingBasicTable = ({ columnData }) => {
 
 	const columns = useMemo(() => NEWS_COLUMNS, []);
 
-	const data = useMemo(() => columnData.slice(0, 50), []);
+	const data = useMemo(() => columnData, [columnData]);
 
 	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
 		useTable(
@@ -23,6 +23,14 @@ const SortingBasicTable = ({ columnData }) => {
 				columns,
 				data,
 				disableSortRemove: true,
+				initialState: {
+					sortBy: [
+						{
+							id: 'updatedAt',
+							desc: true,
+						},
+					],
+				},
 			},
 
 			useSortBy

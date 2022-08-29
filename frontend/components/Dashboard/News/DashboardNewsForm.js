@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FaGlobeEurope } from 'react-icons/fa';
 import { formatDistance, subDays } from 'date-fns';
-
+import { AllNewsContext } from '../../Helper/Context';
 import axios from 'axios';
 
 const DashboardNewsForm = ({ currentShownArticle }) => {
 	const [isSaving, setIsSaving] = useState(false);
+
+	const { articles, setArticles } = useContext(AllNewsContext);
 
 	const [title, setTitle] = useState(currentShownArticle.title);
 	const [subtitle, setSubtitle] = useState(currentShownArticle.title);
@@ -14,9 +16,14 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 	const [publisherUrl, setPublisherUrl] = useState(
 		currentShownArticle.publisherUrl
 	);
+
 	const [publishDate, setPublishDate] = useState(
-		currentShownArticle.publishDate
+		new Date(currentShownArticle.publishDate).toISOString()
 	);
+
+	// const [publishDate, setPublishDate] = useState(
+	// 	currentShownArticle.publishDate.toISOString()
+	// );
 	const [type, setType] = useState(currentShownArticle.type);
 
 	const [status, setStatus] = useState(currentShownArticle.status);
@@ -30,7 +37,16 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 		publishDate,
 		type,
 		status,
+		updatedAt: Date.now(),
 	};
+
+	async function testOnClick() {
+		const newArticles = articles.filter(
+			(article) => currentShownArticle.id !== article.id
+		);
+
+		setArticles([...newArticles, formData]);
+	}
 
 	async function onSubmitForm() {
 		try {
@@ -99,7 +115,11 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 					<div className="col-span-4">
 						<div className="mb-4">
 							<h3 className="text-2xl uppercase font-bold mb-2">Title</h3>
-							<textarea className="w-full" value={currentShownArticle.title} />
+							<textarea
+								className="w-full"
+								value={title}
+								onChange={(e) => setTitle(e.target.value)}
+							/>
 						</div>
 						<div className="mb-4">
 							<h3 className="text-2xl uppercase font-bold mb-2">Subtitle</h3>
@@ -111,7 +131,8 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 								) : (
 									<textarea
 										className="w-full max-h-72"
-										value={currentShownArticle.subtitle}
+										value={subtitle}
+										onChange={(e) => setSubtitle(e.target.value)}
 									/>
 								)}
 							</h1>
@@ -152,6 +173,7 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 					</div>
 				</section>
 			</form>
+			<button onClick={testOnClick}>TEST</button>
 		</>
 	);
 };
