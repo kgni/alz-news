@@ -12,6 +12,8 @@ import DashboardNewsContent from '../components/Dashboard/News/DashboardNewsCont
 import { SkeletonTheme } from 'react-loading-skeleton';
 import DashboardHeaderSkeleton from '../components/Dashboard/Skeletons/DashboardHeaderSkeleton';
 
+import { AllNewsContext } from '../components/Helper/Context';
+
 function applySort(articles, sortingOrder) {
 	if (sortingOrder === 'desc') {
 		return articles.sort(
@@ -86,7 +88,7 @@ const Dashboard = () => {
 	}
 
 	return (
-		<>
+		<AllNewsContext.Provider value={{ articles, setArticles, applyFilters }}>
 			<Head>
 				<title>ALZ.NEWS - DASHBOARD</title>
 			</Head>
@@ -102,12 +104,12 @@ const Dashboard = () => {
 						{isLoading ? (
 							<DashboardHeaderSkeleton />
 						) : (
-							<DashboardNewsContent articles={filteredArticles} />
+							<DashboardNewsContent articles={articles} />
 						)}
 					</section>
 				</SkeletonTheme>
 			</main>
-		</>
+		</AllNewsContext.Provider>
 	);
 };
 
