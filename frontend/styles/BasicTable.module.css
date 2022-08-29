@@ -39,6 +39,10 @@
 	border-bottom: none;
 }
 
+.trBody:hover {
+	background-color: #eeeeee;
+}
+
 .th,
 .td {
 	padding: 12px;
