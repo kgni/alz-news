@@ -4,37 +4,89 @@ import { motion } from 'framer-motion';
 
 import { AiFillCaretDown } from 'react-icons/ai';
 
-function getLastWeeksDate() {
-	const now = new Date();
+function getMondayOfCurrentWeek() {
+	const today = new Date();
+	const first = today.getDate() - today.getDay() + 1;
 
-	return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
+	const monday = new Date(today.setDate(first));
+	return monday;
 }
+
+function getMondayOfLastWeek() {
+	const today = new Date();
+	const first = today.getDate() - today.getDay() + 1;
+
+	const monday = new Date(today.setDate(first - 7));
+	return monday;
+}
+
+function getFirstDayOfCurrentMonth() {
+	const now = new Date();
+	const firstDayOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+	const lastDayOfCurrentMonth = new Date(
+		now.getFullYear(),
+		now.getMonth() + 1,
+		0
+	);
+
+	console.log(firstDayOfCurrentMonth);
+
+	return firstDayOfCurrentMonth;
+}
+
+function getFirstDayPreviousMonth() {
+	const now = new Date();
+	const firstDayOfPreviousMonth = new Date(
+		now.getFullYear(),
+		now.getMonth() - 1,
+		1
+	);
+	console.log(firstDayOfPreviousMonth);
+
+	return firstDayOfPreviousMonth;
+}
+
+function getFirstDayThreePreviousMonth() {
+	const now = new Date();
+	const firstDayOfThreePreviousMonth = new Date(
+		now.getFullYear(),
+		now.getMonth() - 3,
+		1
+	);
+	console.log(firstDayOfThreePreviousMonth);
+
+	return firstDayOfThreePreviousMonth;
+}
+
+getFirstDayOfCurrentMonth();
+getFirstDayPreviousMonth();
+getFirstDayThreePreviousMonth();
 
 const DashboardHeaderAddedWhen = ({ articles }) => {
 	// get initial date for range
-	const lastWeeksDate = getLastWeeksDate();
-	const [articlesDateRange, setArticlesDateRange] = useState(lastWeeksDate);
+	const mondayThisWeek = getMondayOfCurrentWeek();
+	const [articlesDateRange, setArticlesDateRange] = useState(mondayThisWeek);
 
 	const articlesLastAdded = articles.filter((article) => {
-		return Date.parse(article.publishDate) > articlesDateRange;
+		return Date.parse(article.createdAt) > articlesDateRange;
 	});
 
 	const articlesLastAddedApproved = articles.filter((article) => {
 		return (
-			Date.parse(article.publishDate) > articlesDateRange &&
+			Date.parse(article.createdAt) > articlesDateRange &&
 			article.status === 'APPROVED'
 		);
 	});
 
 	const articlesLastAddedPending = articles.filter((article) => {
 		return (
-			Date.parse(article.publishDate) > articlesDateRange &&
+			Date.parse(article.createdAt) > articlesDateRange &&
 			article.status === 'PENDING'
 		);
 	});
 	const articlesLastAddedRejected = articles.filter((article) => {
 		return (
-			Date.parse(article.publishDate) > articlesDateRange &&
+			Date.parse(article.createdAt) > articlesDateRange &&
 			article.status === 'REJECTED'
 		);
 	});
