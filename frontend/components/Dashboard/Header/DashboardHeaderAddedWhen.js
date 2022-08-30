@@ -58,9 +58,16 @@ function getFirstDayThreePreviousMonth() {
 	return firstDayOfThreePreviousMonth;
 }
 
+function getFirstDayOfYear(year) {
+	return new Date(year, 0, 1);
+}
+
+const currentYear = new Date().getFullYear();
+
 getFirstDayOfCurrentMonth();
 getFirstDayPreviousMonth();
 getFirstDayThreePreviousMonth();
+getFirstDayOfYear(currentYear);
 
 const DashboardHeaderAddedWhen = ({ articles }) => {
 	// get initial date for range
