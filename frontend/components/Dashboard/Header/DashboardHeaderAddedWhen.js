@@ -46,6 +46,7 @@ function getFirstDayPreviousMonth() {
 	return firstDayOfPreviousMonth;
 }
 
+// TODO - make a generic function, that will work like the getFirstDayOfYear function - where you just paste in how many months back you want the date range to be.
 function getFirstDayThreePreviousMonth() {
 	const now = new Date();
 	const firstDayOfThreePreviousMonth = new Date(
