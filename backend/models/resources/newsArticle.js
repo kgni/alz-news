@@ -9,7 +9,7 @@ const newsArticleSchema = new mongoose.Schema(
 		publisherUrl: { type: String },
 		publishDate: { type: mongoose.Schema.Types.Mixed },
 		categories: [String],
-		type: [String],
+		type: String,
 		status: {
 			type: String,
 			enum: ['APPROVED', 'PENDING', 'REJECTED'],
