@@ -320,7 +320,7 @@ async function initialScrape() {
 					}
 
 					let subtitle = $(this).find('.field-items p').text().trim();
-					let url = $(this).find('h2 a').attr('href');
+					let url = `https://www.j-alz.com${$(this).find('h2 a').attr('href')}`;
 					let publisher = ['j-alz.com', "Journal Of Alzheimer's Disease"];
 					let publisherUrl = 'https://www.j-alz.com/';
 					let publishDate = $(this).find('h3 span').text();
@@ -649,13 +649,13 @@ async function initialScrape() {
 		await scrape(baseUrl);
 	}
 
-	await alzOrgNewsScrape();
-	await neuroScienceNews();
-	await niaNihGovScrape();
+	// await alzOrgNewsScrape();
+	// await neuroScienceNews();
+	// await niaNihGovScrape();
 	await jAlzScrape();
-	await theGuardianAlzheimerScrape();
-	await theGuardianDementiaScrape();
-	await alzheimersOrgUkScrape();
+	// await theGuardianAlzheimerScrape();
+	// await theGuardianDementiaScrape();
+	// await alzheimersOrgUkScrape();
 	// console.log(`${newArticles.length} articles added`);
 	NewsArticle.insertMany(newArticles, (err) => {
 		if (err) return handleError(err);

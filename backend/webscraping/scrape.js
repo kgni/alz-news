@@ -2,6 +2,7 @@ const cheerio = require('cheerio');
 const axios = require('axios');
 
 // scrape and format specific articles content into HTML
+// ! NOT IMPLEMENTED YET
 async function getArticleContent(url, articleClass) {
 	try {
 		const currentArticle = await axios.get(url);
