@@ -10,6 +10,10 @@ const newsArticleSchema = new mongoose.Schema(
 		publishDate: { type: mongoose.Schema.Types.Mixed },
 		categories: [String],
 		type: String,
+		recommended: {
+			type: Boolean,
+			default: false,
+		},
 		status: {
 			type: String,
 			enum: ['APPROVED', 'PENDING', 'REJECTED'],
