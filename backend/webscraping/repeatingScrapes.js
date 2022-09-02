@@ -371,7 +371,9 @@ async function repeatingScrapes() {
 						}
 
 						let subtitle = $(this).find('.field-items p').text().trim();
-						let url = $(this).find('h2 a').attr('href');
+						let url = `https://www.j-alz.com${$(this)
+							.find('h2 a')
+							.attr('href')}`;
 						let publisher = ['j-alz.com', "Journal Of Alzheimer's Disease"];
 						let publisherUrl = 'https://www.j-alz.com/';
 						let publishDate = $(this).find('h3 span').text();
