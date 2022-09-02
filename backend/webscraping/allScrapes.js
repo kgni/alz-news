@@ -77,7 +77,7 @@ async function allScrape() {
 					publisherUrl,
 					publishDate,
 					categories,
-					type: ['news', type],
+					type: 'news',
 					status: 'PENDING',
 				};
 				articlesScraped.push(articleData);
@@ -170,6 +170,8 @@ async function allScrape() {
 				let publishDate = url.split('/')[4];
 				publishDate = new Date(publishDate);
 
+				let type = article.querySelector('span').textContent.toLowerCase();
+
 				if (
 					articlesScraped.find(
 						(article) => article.title.toLowerCase() === title.toLowerCase()
@@ -192,7 +194,7 @@ async function allScrape() {
 					publisherUrl: 'https://www.alzheimers.org.uk/',
 					publishDate,
 					categories: ['dementia', "alzheimer's"],
-					type: article.querySelector('span').textContent.toLowerCase(),
+					type: 'news',
 					status: 'PENDING',
 				};
 				articlesScraped.push(articleData);
@@ -280,7 +282,7 @@ async function allScrape() {
 						publisherUrl,
 						publishDate,
 						categories: [],
-						type: ['news', type],
+						type: 'news',
 						status: 'PENDING',
 						// articleContent,
 					};
@@ -644,7 +646,7 @@ async function allScrape() {
 						publisherUrl,
 						publishDate,
 						categories: [],
-						type: ['news'],
+						type: 'news',
 						status: 'PENDING',
 						// articleContent,
 					};

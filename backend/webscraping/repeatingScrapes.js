@@ -76,7 +76,7 @@ async function repeatingScrapes() {
 						publisherUrl,
 						publishDate,
 						categories,
-						type: ['news', type],
+						type: 'news',
 						status: 'PENDING',
 					};
 					articlesScraped.push(articleData);
@@ -175,6 +175,8 @@ async function repeatingScrapes() {
 					let publishDate = url.split('/')[4];
 					publishDate = new Date(publishDate);
 
+					let type = article.querySelector('span').textContent.toLowerCase();
+
 					// check if article was already scraped
 					if (
 						articlesScraped.find(
@@ -198,7 +200,7 @@ async function repeatingScrapes() {
 						publisherUrl: 'https://www.alzheimers.org.uk/',
 						publishDate,
 						categories: ['dementia', "alzheimer's"],
-						type: article.querySelector('span').textContent.toLowerCase(),
+						type: 'news',
 						status: 'PENDING',
 					};
 					articlesScraped.push(articleData);
@@ -303,7 +305,7 @@ async function repeatingScrapes() {
 							publisherUrl,
 							publishDate,
 							categories: [],
-							type: ['news', type],
+							type: 'news',
 							status: 'PENDING',
 							// articleContent,
 						};
@@ -668,7 +670,7 @@ async function repeatingScrapes() {
 							publisherUrl,
 							publishDate,
 							categories: [],
-							type: ['news'],
+							type: 'news',
 							status: 'PENDING',
 							// articleContent,
 						};
