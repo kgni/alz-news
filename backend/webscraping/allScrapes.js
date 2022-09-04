@@ -175,7 +175,8 @@ async function allScrape() {
 				if (
 					articlesScraped.find(
 						(article) => article.title.toLowerCase() === title.toLowerCase()
-					)
+					) &&
+					title !== ''
 				) {
 					return;
 				}
@@ -254,17 +255,22 @@ async function allScrape() {
 					publishDate = publishDate.split(' Published:').join('').trim();
 					publishDate = new Date([...new Set(publishDate.split(' '))]);
 					if (
-						articlesDB.find(
+						(articlesDB.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						newArticles.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						) ||
-						articlesScraped.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							) ||
+							articlesScraped.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
 					) {
 						// console.log(`article already exists: "${title}"`);
+						return;
+					}
+
+					if (url === 'https://www.nia.nih.govundefined') {
 						return;
 					}
 
@@ -335,15 +341,16 @@ async function allScrape() {
 
 					// check if we have an article already with the title name, if we have skip this iteration.
 					if (
-						articlesDB.find(
+						(articlesDB.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						newArticles.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						) ||
-						articlesScraped.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							) ||
+							articlesScraped.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
 					) {
 						// console.log(`article already exists: "${title}"`);
 						return;
@@ -431,15 +438,16 @@ async function allScrape() {
 					let publishDate = $(this).find('.fc-timestamp__text').text();
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
-						articlesDB.find(
+						(articlesDB.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						newArticles.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						) ||
-						articlesScraped.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							) ||
+							articlesScraped.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
 					) {
 						// console.log(`article already exists: "${title}"`);
 						return;
@@ -519,15 +527,16 @@ async function allScrape() {
 					let publishDate = $(this).find('.fc-timestamp__text').text();
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
-						articlesDB.find(
+						(articlesDB.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						newArticles.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						) ||
-						articlesScraped.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							) ||
+							articlesScraped.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
 					) {
 						// console.log(`article already exists: "${title}"`);
 						return;
@@ -609,15 +618,16 @@ async function allScrape() {
 					let title = $(this).find('.title').text().trim();
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
-						articlesDB.find(
+						(articlesDB.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						newArticles.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						) ||
-						articlesScraped.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							) ||
+							articlesScraped.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
 					) {
 						// console.log(`article already exists: "${title}"`);
 						return;
