@@ -57,7 +57,8 @@ async function repeatingScrapes() {
 					if (
 						articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+						) &&
+						title !== ''
 					) {
 						return;
 					}
@@ -181,7 +182,8 @@ async function repeatingScrapes() {
 					if (
 						articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+						) &&
+						title !== ''
 					) {
 						return;
 					}
@@ -277,15 +279,18 @@ async function repeatingScrapes() {
 						publishDate = new Date([...new Set(publishDate.split(' '))]);
 
 						if (
-							articlesDB.find(
+							(articlesDB.find(
 								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
-							newArticles.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							) ||
-							articlesScraped.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							)
+								newArticles.find(
+									(article) =>
+										article.title.toLowerCase() === title.toLowerCase()
+								) ||
+								articlesScraped.find(
+									(article) =>
+										article.title.toLowerCase() === title.toLowerCase()
+								)) &&
+							title !== ''
 						) {
 							// console.log(`article already exists: "${title}"`);
 							return;
@@ -358,15 +363,18 @@ async function repeatingScrapes() {
 
 						// check if we have an article already with the title name, if we have skip this iteration.
 						if (
-							articlesDB.find(
+							(articlesDB.find(
 								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
-							newArticles.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							) ||
-							articlesScraped.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							)
+								newArticles.find(
+									(article) =>
+										article.title.toLowerCase() === title.toLowerCase()
+								) ||
+								articlesScraped.find(
+									(article) =>
+										article.title.toLowerCase() === title.toLowerCase()
+								)) &&
+							title !== ''
 						) {
 							// console.log(`article already exists: "${title}"`);
 							return;
@@ -453,15 +461,18 @@ async function repeatingScrapes() {
 						let publishDate = $(this).find('.fc-timestamp__text').text();
 						// If we already have an article with the same name, then we skip that article from being added
 						if (
-							articlesDB.find(
+							(articlesDB.find(
 								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
-							newArticles.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							) ||
-							articlesScraped.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							)
+								newArticles.find(
+									(article) =>
+										article.title.toLowerCase() === title.toLowerCase()
+								) ||
+								articlesScraped.find(
+									(article) =>
+										article.title.toLowerCase() === title.toLowerCase()
+								)) &&
+							title !== ''
 						) {
 							// console.log(`article already exists: "${title}"`);
 							return;
@@ -544,15 +555,18 @@ async function repeatingScrapes() {
 						let publishDate = $(this).find('.fc-timestamp__text').text();
 						// If we already have an article with the same name, then we skip that article from being added
 						if (
-							articlesDB.find(
+							(articlesDB.find(
 								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
-							newArticles.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							) ||
-							articlesScraped.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							)
+								newArticles.find(
+									(article) =>
+										article.title.toLowerCase() === title.toLowerCase()
+								) ||
+								articlesScraped.find(
+									(article) =>
+										article.title.toLowerCase() === title.toLowerCase()
+								)) &&
+							title !== ''
 						) {
 							// console.log(`article already exists: "${title}"`);
 							return;
@@ -634,15 +648,18 @@ async function repeatingScrapes() {
 						let title = $(this).find('.title').text().trim();
 						// If we already have an article with the same name, then we skip that article from being added
 						if (
-							articlesDB.find(
+							(articlesDB.find(
 								(article) => article.title.toLowerCase() === title.toLowerCase()
 							) ||
-							newArticles.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							) ||
-							articlesScraped.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							)
+								newArticles.find(
+									(article) =>
+										article.title.toLowerCase() === title.toLowerCase()
+								) ||
+								articlesScraped.find(
+									(article) =>
+										article.title.toLowerCase() === title.toLowerCase()
+								)) &&
+							title !== ''
 						) {
 							// console.log(`article already exists: "${title}"`);
 							return;

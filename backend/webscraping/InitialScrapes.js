@@ -161,7 +161,8 @@ async function initialScrape() {
 				if (
 					articlesScraped.find(
 						(article) => article.title.toLowerCase() === title.toLowerCase()
-					)
+					) &&
+					title !== ''
 				) {
 					return;
 				}
@@ -233,13 +234,19 @@ async function initialScrape() {
 					publishDate = publishDate.split(' Published:').join('').trim();
 					publishDate = new Date([...new Set(publishDate.split(' '))]);
 					if (
-						articlesScraped.find(
+						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						newArticles.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
 					) {
+						return;
+					}
+
+					// ! quick fix for empty article scraped on every site with this URL,
+					if (url === 'https://www.nia.nih.govundefined') {
 						return;
 					}
 
@@ -261,8 +268,10 @@ async function initialScrape() {
 						status: 'PENDING',
 						// articleContent,
 					};
-					// console.log(article);
 					articlesScraped.push(article);
+					if (article.title === '') {
+						console.log(article);
+					}
 				});
 
 				// !PAGINATION
@@ -274,7 +283,7 @@ async function initialScrape() {
 
 					// if the baseUrl is undefined, then we there are no next page and we want to just return
 					if (baseUrl === 'https://www.nia.nih.gov/news/allundefined') {
-						console.log(articlesScraped);
+						// console.log(articlesScraped);
 						console.log('done scraping...');
 						console.log(
 							`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.nia.nih.gov/news/all`
@@ -308,16 +317,16 @@ async function initialScrape() {
 					// creating the properties for the
 					let title = $(this).find('h2').text().trim();
 
-					// check if we have an article already with the title name, if we have skip this iteration.
+					// check if we have an article already with the title name and if the title is not empty, if both are true we skip this iteration.
 					if (
-						articlesScraped.find(
+						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						newArticles.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
 					) {
-						// console.log(`article already exists: "${title}"`);
 						return;
 					}
 
@@ -405,12 +414,13 @@ async function initialScrape() {
 					let publishDate = $(this).find('.fc-timestamp__text').text();
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
-						articlesScraped.find(
+						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						newArticles.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
 					) {
 						return;
 					}
@@ -491,12 +501,13 @@ async function initialScrape() {
 					let publishDate = $(this).find('.fc-timestamp__text').text();
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
-						articlesScraped.find(
+						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						newArticles.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
 					) {
 						// console.log(`article already exists: "${title}"`);
 						return;
@@ -580,12 +591,13 @@ async function initialScrape() {
 					let title = $(this).find('.title').text().trim();
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
-						articlesScraped.find(
+						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
-						newArticles.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						)
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
 					) {
 						return;
 					}
@@ -653,12 +665,12 @@ async function initialScrape() {
 
 	// await alzOrgNewsScrape();
 	// await neuroScienceNews();
-	// await niaNihGovScrape();
-	await jAlzScrape();
+	await niaNihGovScrape();
+	// await jAlzScrape();
 	// await theGuardianAlzheimerScrape();
 	// await theGuardianDementiaScrape();
 	// await alzheimersOrgUkScrape();
-	// console.log(`${newArticles.length} articles added`);
+	console.log(`${newArticles.length} articles added`);
 	NewsArticle.insertMany(newArticles, (err) => {
 		if (err) return handleError(err);
 		console.log(`${newArticles.length} articles added to DB`);
