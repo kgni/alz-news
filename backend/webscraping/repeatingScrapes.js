@@ -664,7 +664,14 @@ async function repeatingScrapes() {
 							// console.log(`article already exists: "${title}"`);
 							return;
 						}
-						let subtitle = $(this).find('.excerpt').text().trim();
+						// getting the container for the subtitle, but we will remove all other children inside the container, except for the actual container with the text
+						let subtitle = $(this)
+							.find('.excerpt')
+							.children()
+							.remove()
+							.end()
+							.text()
+							.trim();
 						let url = $(this).find('.title a').attr('href');
 						let publisher = 'Neuroscience News';
 						let publisherUrl = 'https://neurosciencenews.com/';
