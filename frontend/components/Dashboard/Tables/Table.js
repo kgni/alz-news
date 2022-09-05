@@ -80,7 +80,10 @@ const SortingBasicTable = ({ columnData }) => {
 			{isModalShown && (
 				<>
 					<DashBoardModal setIsModalShown={setIsModalShown}>
-						<DashboardNewsForm currentShownArticle={currentShownArticle} />
+						<DashboardNewsForm
+							setIsModalShown={setIsModalShown}
+							currentShownArticle={currentShownArticle}
+						/>
 					</DashBoardModal>
 				</>
 			)}
