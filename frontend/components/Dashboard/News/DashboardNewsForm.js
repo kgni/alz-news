@@ -1,14 +1,17 @@
 import React, { useContext, useState } from 'react';
 import { FaGlobeEurope } from 'react-icons/fa';
-import { formatDistance, subDays } from 'date-fns';
+import { IoCloseSharp } from 'react-icons/io5';
+
+import { Oval } from 'react-loader-spinner';
+// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+
+import { format, formatDistance, subDays } from 'date-fns';
 import { AllNewsContext } from '../../Helper/Context';
 import axios from 'axios';
 
-const DashboardNewsForm = ({ currentShownArticle }) => {
+const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	const [isSaving, setIsSaving] = useState(false);
-
 	const { articles, setArticles } = useContext(AllNewsContext);
-
 	const [title, setTitle] = useState(currentShownArticle.title);
 	const [subtitle, setSubtitle] = useState(currentShownArticle.title);
 	const [url, setUrl] = useState(currentShownArticle.url);
@@ -19,6 +22,12 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 
 	const [publishDate, setPublishDate] = useState(
 		new Date(currentShownArticle.publishDate).toISOString()
+	);
+	const [updatedAt, setUpdatedAt] = useState(
+		new Date(currentShownArticle.updatedAt)
+	);
+	const [recommended, setRecommended] = useState(
+		currentShownArticle.recommended
 	);
 
 	// const [publishDate, setPublishDate] = useState(
@@ -37,29 +46,37 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 		publishDate,
 		type,
 		status,
+		recommended,
 		updatedAt: Date.now(),
 	};
 
-	async function testOnClick() {
-		const newArticles = articles.filter(
-			(article) => currentShownArticle.id !== article.id
-		);
-
-		setArticles([...newArticles, formData]);
-	}
+	console.log(recommended);
 
 	async function onSubmitForm() {
 		try {
-			setIsSaving(true);
 			const res = await axios.put('http://localhost:8000/api/news', formData);
-			if (!res.ok) {
-				throw new Error(res.status);
+			console.log(res);
+			if (res.status === 200) {
+				setIsSaving(false);
+				const newArticles = articles.filter(
+					(article) => currentShownArticle.id !== article.id
+				);
+				setArticles([...newArticles, formData]);
+				setUpdatedAt(Date.now());
+				console.log('ARTICLE UPDATED');
 			} else {
 				setIsSaving(false);
+				throw new Error(res.status);
 			}
 		} catch (e) {
+			console.log('ERROR');
 			console.log(e);
 		}
+	}
+
+	async function saveOnClick() {
+		setIsSaving(true);
+		await onSubmitForm();
 	}
 
 	return (
@@ -100,17 +117,13 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 					<p className="not-italic font-bold inline-block">
 						Last edited: &nbsp;
 					</p>
-					{formatDistance(
-						subDays(new Date(currentShownArticle.updatedAt), 0),
-						new Date(),
-						{
-							addSuffix: true,
-						}
-					)}
+					{formatDistance(subDays(new Date(updatedAt), 0), new Date(), {
+						addSuffix: true,
+					})}
 				</p>
 			</div>
 
-			<form action="">
+			<form className="flex" action="">
 				<section className="grid grid-cols-6 gap-x-12">
 					<div className="col-span-4">
 						<div className="mb-4">
@@ -136,6 +149,21 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 									/>
 								)}
 							</h1>
+						</div>
+						<div className="mb-4">
+							<h3 className="text-xl uppercase font-bold mb-2">Publish Date</h3>
+							<p>{format(new Date(publishDate), 'dd/MM/yyyy')}</p>
+						</div>
+						<div className="flex items-center gap-2">
+							<label className="font-bold" htmlFor="recommended">
+								Recommended:
+							</label>
+							<input
+								type="checkbox"
+								id="recommended"
+								checked={recommended}
+								onChange={() => setRecommended((prevState) => !prevState)}
+							/>
 						</div>
 					</div>
 					<div className="col-span-2">
@@ -173,7 +201,36 @@ const DashboardNewsForm = ({ currentShownArticle }) => {
 					</div>
 				</section>
 			</form>
-			<button onClick={testOnClick}>TEST</button>
+			<div className="flex gap-4 mt-auto justify-end">
+				<button
+					className="bg-green-800 text-white font-bold py-1 px-4 rounded-md tracking-wide flex items-center gap-2"
+					onClick={saveOnClick}
+				>
+					SAVE
+					{isSaving ? (
+						<Oval
+							height={15}
+							width={15}
+							color="#fff"
+							ariaLabel="oval-loading"
+							strokeWidth={5}
+							strokeWidthSecondary={4}
+						/>
+					) : (
+						''
+					)}
+				</button>
+				<button
+					className="bg-red-700 text-white font-bold py-1 px-4 rounded-md flex items-center gap-1 justify-center"
+					onClick={() => setIsModalShown(false)}
+				>
+					<IoCloseSharp
+						color="white"
+						size="1.4em"
+						style={{ fontWeight: 'bold' }}
+					/>
+				</button>
+			</div>
 		</>
 	);
 };
