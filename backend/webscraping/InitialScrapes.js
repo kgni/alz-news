@@ -670,13 +670,13 @@ async function initialScrape() {
 		await scrape(baseUrl);
 	}
 
-	// await alzOrgNewsScrape();
+	await alzOrgNewsScrape();
 	await neuroScienceNews();
-	// await niaNihGovScrape();
-	// await jAlzScrape();
-	// await theGuardianAlzheimerScrape();
-	// await theGuardianDementiaScrape();
-	// await alzheimersOrgUkScrape();
+	await niaNihGovScrape();
+	await jAlzScrape();
+	await theGuardianAlzheimerScrape();
+	await theGuardianDementiaScrape();
+	await alzheimersOrgUkScrape();
 	console.log(`${newArticles.length} articles added`);
 	NewsArticle.insertMany(newArticles, (err) => {
 		if (err) return handleError(err);
