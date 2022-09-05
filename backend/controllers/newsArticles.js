@@ -36,4 +36,15 @@ newsArticlesRouter.get('/news/approved', async (req, res) => {
 	res.json(articles);
 });
 
+// UPDATE
+
+newsArticlesRouter.put('/news', async (req, res) => {
+	const id = req.body.id;
+	console.log(req.body);
+
+	await NewsArticle.findByIdAndUpdate(id, req.body);
+
+	res.json({ msg: 'Hello' });
+});
+
 module.exports = newsArticlesRouter;
