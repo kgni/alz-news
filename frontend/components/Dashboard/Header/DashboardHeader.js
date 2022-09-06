@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
+import { AllNewsContext } from '../../../context/Context';
 
 import DashboardHeaderAddedWhen from './DashboardHeaderAddedWhen';
 
@@ -9,7 +10,8 @@ function getLastWeeksDate() {
 	return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
 }
 
-const DashboardHeader = ({ articles }) => {
+const DashboardHeader = () => {
+	const { articles, setArticles } = useContext(AllNewsContext);
 	const approvedArticles = articles.filter(
 		(article) => article.status === 'APPROVED'
 	);
