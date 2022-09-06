@@ -1,6 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { FaGlobeEurope } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
+import { FiCheck } from 'react-icons/fi';
+import { BiEdit } from 'react-icons/bi';
 
 import { Oval } from 'react-loader-spinner';
 // import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
@@ -12,8 +14,17 @@ import axios from 'axios';
 const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	const [isSaving, setIsSaving] = useState(false);
 	const { articles, setArticles } = useContext(AllNewsContext);
+	const [isEditMode, setIsEditMode] = useState({
+		title: false,
+		subtitle: false,
+		publishDate: false,
+		recommended: false,
+		publisher: false,
+		url: false,
+	});
+
 	const [title, setTitle] = useState(currentShownArticle.title);
-	const [subtitle, setSubtitle] = useState(currentShownArticle.title);
+	const [subtitle, setSubtitle] = useState(currentShownArticle.subtitle);
 	const [url, setUrl] = useState(currentShownArticle.url);
 	const [publisher, setPublisher] = useState(currentShownArticle.publisher);
 	const [publisherUrl, setPublisherUrl] = useState(
@@ -50,8 +61,6 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 		updatedAt: Date.now(),
 	};
 
-	console.log(recommended);
-
 	async function onSubmitForm() {
 		try {
 			const res = await axios.put('http://localhost:8000/api/news', formData);
@@ -74,9 +83,39 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 		}
 	}
 
+	const titleText = useRef();
+	const subTitleText = useRef();
+
 	async function saveOnClick() {
 		setIsSaving(true);
 		await onSubmitForm();
+	}
+
+	function activateEditMode(title) {
+		switch (title) {
+			case 'title':
+				setIsEditMode((prevState) => ({ ...prevState, title: true }));
+				break;
+			case 'subtitle':
+				setIsEditMode((prevState) => ({ ...prevState, subtitle: true }));
+				break;
+		}
+		// setIsEditMode();
+	}
+	function deactivateEditMode(title) {
+		switch (title) {
+			case 'title':
+				setIsEditMode((prevState) => ({ ...prevState, title: false }));
+				break;
+			case 'subtitle':
+				setIsEditMode((prevState) => ({ ...prevState, subtitle: false }));
+				break;
+		}
+	}
+
+	function onClickAcceptChange(ref, setterFunc) {
+		setterFunc(ref.current.value);
+		setIsEditMode(false);
 	}
 
 	return (
@@ -124,31 +163,97 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 			</div>
 
 			<form className="flex" action="">
-				<section className="grid grid-cols-6 gap-x-12">
-					<div className="col-span-4">
+				<section className="grid w-full grid-cols-4 gap-x-12">
+					<div className="col-span-2">
 						<div className="mb-4">
-							<h3 className="text-2xl uppercase font-bold mb-2">Title</h3>
-							<textarea
-								className="w-full"
-								value={title}
-								onChange={(e) => setTitle(e.target.value)}
-							/>
+							{isEditMode.title ? (
+								<>
+									<h3 className="text-2xl uppercase font-bold mb-2">Title</h3>
+
+									<div className="flex items-start gap-2">
+										<textarea
+											className="w-full"
+											// onBlur={(e) => deactivateEditMode(e)}
+											// onChange={(e) => setTitle(e.target.value)}
+											defaultValue={title}
+											// value={title}
+											ref={titleText}
+										/>
+										<button
+											onClick={() => onClickAcceptChange(titleText, setTitle)}
+											className="bg-green-800 hover:bg-green-700 text-white py-1 px-4 text-lg flex items-center justify-center"
+										>
+											<FiCheck />
+										</button>
+										<button
+											onClick={() => deactivateEditMode('title')}
+											className="bg-red-700 hover:bg-red-600 text-white py-1 px-4 text-lg flex items-center justify-center"
+										>
+											<IoCloseSharp />
+										</button>
+									</div>
+								</>
+							) : (
+								<>
+									<div className="flex gap-2 items-center">
+										<h3 className="text-2xl uppercase font-bold mb-2">title</h3>
+										<BiEdit
+											onClick={(e) => activateEditMode('title')}
+											size="1.2em"
+											className="cursor-pointer hover:text-zinc-700"
+										/>
+									</div>
+									<p>{title}</p>
+								</>
+							)}
 						</div>
 						<div className="mb-4">
-							<h3 className="text-2xl uppercase font-bold mb-2">Subtitle</h3>
-							<h1>
-								{!currentShownArticle.subtitle ? (
-									<p className="bg-[#FDEBEB] text-[#F14546] rounded-full px-3 font-bold py-1 inline-block">
-										MISSING
-									</p>
-								) : (
-									<textarea
-										className="w-full max-h-72"
-										value={subtitle}
-										onChange={(e) => setSubtitle(e.target.value)}
-									/>
-								)}
-							</h1>
+							{isEditMode.subtitle ? (
+								<>
+									<h3 className="text-2xl uppercase font-bold mb-2">
+										subtitle
+									</h3>
+
+									<div className="flex items-start gap-2">
+										<textarea
+											className="w-full"
+											// onBlur={(e) => deactivateEditMode(e)}
+											// onChange={(e) => setTitle(e.target.value)}
+											defaultValue={subtitle}
+											// value={title}
+											ref={subTitleText}
+										/>
+										<button
+											onClick={() =>
+												onClickAcceptChange(subTitleText, setSubtitle)
+											}
+											className="bg-green-800 hover:bg-green-700 text-white py-1 px-4 text-lg flex items-center justify-center"
+										>
+											<FiCheck />
+										</button>
+										<button
+											onClick={(e) => deactivateEditMode('subtitle')}
+											className="bg-red-700 hover:bg-red-600 text-white py-1 px-4 text-lg flex items-center justify-center"
+										>
+											<IoCloseSharp />
+										</button>
+									</div>
+								</>
+							) : (
+								<>
+									<div className="flex gap-2 items-center">
+										<h3 className="text-2xl uppercase font-bold mb-2">
+											subtitle
+										</h3>
+										<BiEdit
+											onClick={(e) => activateEditMode('subtitle')}
+											size="1.2em"
+											className="cursor-pointer hover:text-zinc-700"
+										/>
+									</div>
+									<p>{subtitle}</p>
+								</>
+							)}
 						</div>
 						<div className="mb-4">
 							<h3 className="text-xl uppercase font-bold mb-2">Publish Date</h3>
