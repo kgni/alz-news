@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useContext } from 'react';
 import {
 	useTable,
 	useSortBy,
@@ -6,10 +6,16 @@ import {
 	usePagination,
 } from 'react-table';
 import { NEWS_COLUMNS } from './columns/newsColumns';
-
+import Select from 'react-select';
+import { AllNewsContext } from '../../../context/Context';
 import styles from '../../../styles/BasicTable.module.css';
 
-import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
+import {
+	AiFillCaretDown,
+	AiFillCaretUp,
+	AiOutlineCaretDown,
+	AiOutlineCaretUp,
+} from 'react-icons/ai';
 import {
 	BiEdit,
 	BiLastPage,
@@ -21,13 +27,16 @@ import DashBoardModal from '../DashBoardModal';
 import DashboardNewsForm from '../News/DashboardNewsForm';
 import GlobalFilter from './GlobalFilter';
 
-const SortingBasicTable = ({ columnData }) => {
+const SortingBasicTable = () => {
 	const [currentShownArticle, setCurrentShownArticle] = useState({});
+	const { articles, setArticles, filteredArticles, status, setStatus } =
+		useContext(AllNewsContext);
 	const [isModalShown, setIsModalShown] = useState(false);
+	const [isSearchDropDownShown, setIsSearchDropDownShown] = useState(false);
 
 	const columns = useMemo(() => NEWS_COLUMNS, []);
 
-	const data = useMemo(() => columnData, [columnData]);
+	const data = useMemo(() => filteredArticles, [filteredArticles]);
 
 	const {
 		getTableProps,
@@ -75,6 +84,21 @@ const SortingBasicTable = ({ columnData }) => {
 		setIsModalShown(true);
 	}
 
+	function openAndCloseSearchDropDown(isSearchDropDownShown) {
+		if (isSearchDropDownShown) {
+			setIsSearchDropDownShown(false);
+		} else {
+			setIsSearchDropDownShown(true);
+		}
+	}
+
+	const options = [
+		{ value: 'ALL', label: 'ALL' },
+		{ value: 'APPROVED', label: 'APPROVED' },
+		{ value: 'PENDING', label: 'PENDING' },
+		{ value: 'REJECTED', label: 'REJECTED' },
+	];
+
 	return (
 		<>
 			{isModalShown && (
@@ -88,6 +112,38 @@ const SortingBasicTable = ({ columnData }) => {
 				</>
 			)}
 			<div className="flex items-center justify-end gap-4 mb-4">
+				{isSearchDropDownShown ? (
+					<>
+						<div className="relative">
+							<div
+								onClick={() =>
+									openAndCloseSearchDropDown(isSearchDropDownShown)
+								}
+								className="flex justify-center items-center p-[6px] rounded-md bg-black cursor-pointer"
+							>
+								<AiFillCaretUp style={{ color: 'white' }} />
+							</div>
+							<div className="absolute bg-white shadow-md w-52 p-4 left-0 top-[-85px] z-10 rounded-md">
+								<Select
+									defaultValue={options[0]}
+									value={status}
+									closeMenuOnSelect={false}
+									onChange={(e) => setStatus(e.value)}
+									options={options}
+									placeholder={status}
+								/>
+							</div>
+						</div>
+					</>
+				) : (
+					<div
+						onClick={() => openAndCloseSearchDropDown(isSearchDropDownShown)}
+						className="flex justify-center items-center p-[6px] rounded-md bg-black cursor-pointer relative"
+					>
+						<AiFillCaretDown style={{ color: 'white' }} />
+					</div>
+				)}
+
 				<GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
 				{/* TODO - ABSTRACT PAGINATION AWAY INTO OWN COMPONENT */}
 				<div className="flex items-center gap-4 justify-center">

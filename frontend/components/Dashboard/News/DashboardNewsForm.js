@@ -6,7 +6,7 @@ import { Oval } from 'react-loader-spinner';
 // import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import { format, formatDistance, subDays } from 'date-fns';
-import { AllNewsContext } from '../../Helper/Context';
+import { AllNewsContext } from '../../../context/Context';
 import axios from 'axios';
 
 const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
