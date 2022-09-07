@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 const middleware = require('./middlewares/middleware');
+const morgan = require('morgan');
 
 require('dotenv').config();
 const { MONGODB_URI, PORT } = require('./configs/config');
@@ -26,6 +27,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
+app.use(morgan('dev'));
 
 app.use('/api/', newsArticlesRouter);
 // app.use('/api/users', usersRouter);
