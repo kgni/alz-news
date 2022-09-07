@@ -119,7 +119,7 @@ export const NEWS_COLUMNS = [
 
 			if (value === 'REJECTED') {
 				return (
-					<span className="p-1 px-4 bg-[#FDEBEB] text-[#F14546] font-bold text-xs rounded-full inline-flex items-center gap-1 w-[70%] cursor-pointer select-none">
+					<span className="p-1 px-4 bg-[#FDEBEB] text-[#F14546] font-bold text-xs rounded-full inline-flex items-center justify-center gap-1 w-[70%] cursor-pointer select-none">
 						{value}
 						{/* <AiOutlineCaretDown
 							className="ml-auto"
