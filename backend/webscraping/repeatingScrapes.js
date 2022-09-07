@@ -168,7 +168,9 @@ async function repeatingScrapes() {
 						'#alz-mixed-content-news [data-content-type="article"]'
 					)
 				).map((article) => {
-					let title = article.querySelector('.title').textContent.trim();
+					let title = article
+						.querySelector('.title')
+						.children[0].textContent.trim();
 					let subtitle = article
 						.querySelector('.pattern--teaser--summary')
 						.firstElementChild.textContent.trim();

@@ -162,7 +162,9 @@ async function allScrape() {
 			).map((article) => {
 				articlesScrapedCount++;
 
-				let title = article.querySelector('.title').textContent.trim();
+				let title = article
+					.querySelector('.title')
+					.children[0].textContent.trim();
 				let subtitle = article
 					.querySelector('.pattern--teaser--summary')
 					.firstElementChild.textContent.trim();
@@ -698,12 +700,12 @@ async function allScrape() {
 		await scrape(baseUrl);
 	}
 
-	await alzOrgNewsScrape();
-	await neuroScienceNews();
-	await niaNihGovScrape();
-	await jAlzScrape();
-	await theGuardianAlzheimerScrape();
-	await theGuardianDementiaScrape();
+	// await alzOrgNewsScrape();
+	// await neuroScienceNews();
+	// await niaNihGovScrape();
+	// await jAlzScrape();
+	// await theGuardianAlzheimerScrape();
+	// await theGuardianDementiaScrape();
 	await alzheimersOrgUkScrape();
 	// console.log(`${newArticles.length} articles added`);
 	NewsArticle.insertMany(newArticles, (err) => {
