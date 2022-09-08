@@ -39,12 +39,27 @@ newsArticlesRouter.get('/news/approved', async (req, res) => {
 // UPDATE
 
 newsArticlesRouter.put('/news', async (req, res) => {
-	const id = req.body.id;
-	console.log(req.body);
+	try {
+		const id = req.body.id;
+		await NewsArticle.findByIdAndUpdate(id, req.body);
 
-	await NewsArticle.findByIdAndUpdate(id, req.body);
+		res.json({ msg: 'Updated ' });
+	} catch (e) {
+		console.log(e);
+	}
+});
 
-	res.json({ msg: 'Hello' });
+// DELETE
+
+newsArticlesRouter.delete('/news/:id', async (req, res) => {
+	try {
+		const id = req.params.id;
+		console.log(id);
+		await NewsArticle.findByIdAndDelete(id);
+		res.json({ msg: `Successfully deleted article with ID: ${id}` });
+	} catch (e) {
+		console.log(e);
+	}
 });
 
 module.exports = newsArticlesRouter;
