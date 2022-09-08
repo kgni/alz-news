@@ -16,8 +16,8 @@ import ConfirmationPopup from '../../Confirmation/ConfirmationPopup';
 import ConfirmationBackdrop from '../../Confirmation/ConfirmationBackdrop';
 
 const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
-	const [isSaving, setIsSaving] = useState(false);
 	const { articles, setArticles } = useContext(AllNewsContext);
+	const [isSaving, setIsSaving] = useState(false);
 	const [isEditMode, setIsEditMode] = useState({
 		title: false,
 		subtitle: false,
@@ -89,11 +89,15 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 		}
 	}
 
-	async function onDeleteArticle(id) {
+	async function onDeleteArticle(id, articles, setArticles) {
 		try {
-			const res = await axios.delete('http://localhost:8000/api/news', id);
-			console.log(res);
+			const res = await axios.delete(`http://localhost:8000/api/news/${id}`);
+
 			if (res.status === 200) {
+				// removing the article from the articles array
+				const newArticles = articles.filter((article) => id !== article.id);
+				// setting the articles to be the new articles array
+				setArticles(newArticles);
 				setIsConfirmationPopup(false);
 				setIsModalShown(false);
 			}
@@ -182,6 +186,8 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 								<ConfirmationPopup
 									setIsConfirmationPopup={setIsConfirmationPopup}
 									onDeleteArticle={onDeleteArticle}
+									articles={articles}
+									setArticles={setArticles}
 									id={currentShownArticle.id}
 								/>
 							</ConfirmationBackdrop>

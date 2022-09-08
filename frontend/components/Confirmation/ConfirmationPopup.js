@@ -1,6 +1,12 @@
 import React from 'react';
 
-const ConfirmationPopup = ({ id, onDeleteArticle, setIsConfirmationPopup }) => {
+const ConfirmationPopup = ({
+	id,
+	articles,
+	setArticles,
+	onDeleteArticle,
+	setIsConfirmationPopup,
+}) => {
 	return (
 		<div className="bg-white p-4 rounded-md">
 			<p className="mb-6 text-center text-xl">
@@ -10,7 +16,7 @@ const ConfirmationPopup = ({ id, onDeleteArticle, setIsConfirmationPopup }) => {
 			<div className="flex gap-4">
 				<button
 					className="bg-green-800 text-white font-bold py-1 px-4 rounded-md tracking-wide flex items-center gap-2 hover:bg-green-700 grow justify-center"
-					onClick={() => onDeleteArticle(id)}
+					onClick={() => onDeleteArticle(id, articles, setArticles)}
 				>
 					YES
 				</button>{' '}
