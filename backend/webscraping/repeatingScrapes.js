@@ -63,6 +63,11 @@ async function repeatingScrapes() {
 						return;
 					}
 
+					// if the url has already been scraped, then we skip this article
+					if (articlesScraped.find((article) => article.url === url)) {
+						return;
+					}
+
 					if (publishDate == 'Invalid Date') {
 						publishDate = null;
 					} else {
@@ -95,29 +100,22 @@ async function repeatingScrapes() {
 
 			// filtering articles already fetched (but not added to db)
 
-			let filteredNewArticles = parse.filterPuppeteerArticlesTitle(
+			let filteredNewArticles = parse.filterPuppeteerArticlesTitleAndURL(
 				newFetchedArticles,
 				newArticles
 			);
 
 			// filtering  articles already in DB
 
-			filteredNewArticles = parse.filterPuppeteerArticlesTitle(
+			filteredNewArticles = parse.filterPuppeteerArticlesTitleAndURL(
 				filteredNewArticles,
 				articlesDB
 			);
-			// let filteredNewArticles = newFetchedArticles.filter(
-			// 	(article) => !newArticles.find(({ title }) => article.title === title)
-			// );
-
-			// filteredNewArticles.filter(
-			// 	(article) => !articlesDB.find(({ title }) => article.title === title)
-			// );
 
 			console.log(`${filteredNewArticles.length} articles after filtering`);
 
 			// only if we have filteredNewArticles will we push them to the newArticles
-			if (filteredNewArticles.length > 1) {
+			if (filteredNewArticles.length > 0) {
 				newArticles.push(...filteredNewArticles);
 			}
 
@@ -180,13 +178,18 @@ async function repeatingScrapes() {
 
 					let type = article.querySelector('span').textContent.toLowerCase();
 
-					// check if article was already scraped
+					// check if article title was already scraped and it was NOT empty
 					if (
 						articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) &&
 						title !== ''
 					) {
+						return;
+					}
+
+					// if the url has already been scraped, or is already in the DB, then we skip this article
+					if (articlesScraped.find((article) => article.url === url)) {
 						return;
 					}
 
@@ -218,7 +221,7 @@ async function repeatingScrapes() {
 
 			// filtering articles already fetched (but not added to db)
 
-			let filteredNewArticles = parse.filterPuppeteerArticlesTitle(
+			let filteredNewArticles = parse.filterPuppeteerArticlesTitleAndURL(
 				newFetchedArticles,
 				newArticles
 			);
@@ -228,7 +231,7 @@ async function repeatingScrapes() {
 
 			// filtering  articles already in DB
 
-			filteredNewArticles = parse.filterPuppeteerArticlesTitle(
+			filteredNewArticles = parse.filterPuppeteerArticlesTitleAndURL(
 				filteredNewArticles,
 				articlesDB
 			);
@@ -238,9 +241,10 @@ async function repeatingScrapes() {
 			// );
 
 			console.log(`${filteredNewArticles.length} articles after filtering`);
+			console.log(filteredNewArticles);
 
 			// only if we have filteredNewArticles will we push them to the newArticles
-			if (filteredNewArticles.length > 1) {
+			if (filteredNewArticles.length > 0) {
 				newArticles.push(...filteredNewArticles);
 			}
 
@@ -295,6 +299,20 @@ async function repeatingScrapes() {
 							title !== ''
 						) {
 							// console.log(`article already exists: "${title}"`);
+							return;
+						}
+
+						// if the url has already been scraped, or is already in the DB, then we skip this article
+						if (
+							articlesDB.find((article) => article.url === url) ||
+							newArticles.find((article) => article.url === url) ||
+							articlesScraped.find((article) => article.url === url)
+						) {
+							return;
+						}
+
+						// ! quick fix for empty article scraped on every site with this URL,
+						if (url === 'https://www.nia.nih.govundefined') {
 							return;
 						}
 
@@ -362,6 +380,16 @@ async function repeatingScrapes() {
 
 						// creating the properties for the
 						let title = $(this).find('h2').text().trim();
+						let subtitle = $(this).find('.field-items p').text().trim();
+						let url = `https://www.j-alz.com${$(this)
+							.find('h2 a')
+							.attr('href')}`;
+						let publisher = ['j-alz.com', "Journal Of Alzheimer's Disease"];
+						let publisherUrl = 'https://www.j-alz.com/';
+						let publishDate = $(this).find('h3 span').text();
+						// cleaning up the publishedDate, removing published and trimming
+						publishDate = publishDate.split(' Published:').join('').trim();
+						publishDate = new Date([...new Set(publishDate.split(' '))]);
 
 						// check if we have an article already with the title name, if we have skip this iteration.
 						if (
@@ -382,16 +410,14 @@ async function repeatingScrapes() {
 							return;
 						}
 
-						let subtitle = $(this).find('.field-items p').text().trim();
-						let url = `https://www.j-alz.com${$(this)
-							.find('h2 a')
-							.attr('href')}`;
-						let publisher = ['j-alz.com', "Journal Of Alzheimer's Disease"];
-						let publisherUrl = 'https://www.j-alz.com/';
-						let publishDate = $(this).find('h3 span').text();
-						// cleaning up the publishedDate, removing published and trimming
-						publishDate = publishDate.split(' Published:').join('').trim();
-						publishDate = new Date([...new Set(publishDate.split(' '))]);
+						// if the url has already been scraped, or is already in the DB, then we skip this article
+						if (
+							articlesDB.find((article) => article.url === url) ||
+							newArticles.find((article) => article.url === url) ||
+							articlesScraped.find((article) => article.url === url)
+						) {
+							return;
+						}
 
 						if (publishDate == 'Invalid Date') {
 							publishDate = null;
@@ -477,6 +503,15 @@ async function repeatingScrapes() {
 							title !== ''
 						) {
 							// console.log(`article already exists: "${title}"`);
+							return;
+						}
+
+						// if the url has already been scraped, or is already in the DB, then we skip this article
+						if (
+							articlesDB.find((article) => article.url === url) ||
+							newArticles.find((article) => article.url === url) ||
+							articlesScraped.find((article) => article.url === url)
+						) {
 							return;
 						}
 
@@ -574,6 +609,15 @@ async function repeatingScrapes() {
 							return;
 						}
 
+						// if the url has already been scraped, or is already in the DB, then we skip this article
+						if (
+							articlesDB.find((article) => article.url === url) ||
+							newArticles.find((article) => article.url === url) ||
+							articlesScraped.find((article) => article.url === url)
+						) {
+							return;
+						}
+
 						// cleaning up the publishedDate, removing published and trimming
 						publishDate = publishDate.split(' Published:').join('').trim();
 
@@ -646,8 +690,22 @@ async function repeatingScrapes() {
 						// increment articles scraped counter by 1 on every iteration
 						articlesScrapedCount++;
 
-						// creating the properties for the
 						let title = $(this).find('.title').text().trim();
+						// getting the container for the subtitle, but we will remove all other children inside the container, except for the actual container with the text
+						let subtitle = $(this)
+							.find('.excerpt')
+							.children()
+							.remove()
+							.end()
+							.text()
+							.trim();
+						let url = $(this).find('.title a').attr('href');
+						let publisher = 'Neuroscience News';
+						let publisherUrl = 'https://neurosciencenews.com/';
+						let publishDate = $(this).find('.dateCreated').text();
+						// cleaning up the publishedDate, removing published and trimming
+						publishDate = publishDate.trim();
+						publishDate = new Date(publishDate);
 						// If we already have an article with the same name, then we skip that article from being added
 						if (
 							(articlesDB.find(
@@ -666,21 +724,15 @@ async function repeatingScrapes() {
 							// console.log(`article already exists: "${title}"`);
 							return;
 						}
-						// getting the container for the subtitle, but we will remove all other children inside the container, except for the actual container with the text
-						let subtitle = $(this)
-							.find('.excerpt')
-							.children()
-							.remove()
-							.end()
-							.text()
-							.trim();
-						let url = $(this).find('.title a').attr('href');
-						let publisher = 'Neuroscience News';
-						let publisherUrl = 'https://neurosciencenews.com/';
-						let publishDate = $(this).find('.dateCreated').text();
-						// cleaning up the publishedDate, removing published and trimming
-						publishDate = publishDate.trim();
-						publishDate = new Date(publishDate);
+
+						// if the url has already been scraped, or is already in the DB, then we skip this article
+						if (
+							articlesDB.find((article) => article.url === url) ||
+							newArticles.find((article) => article.url === url) ||
+							articlesScraped.find((article) => article.url === url)
+						) {
+							return;
+						}
 
 						if (publishDate == 'Invalid Date') {
 							publishDate = null;
