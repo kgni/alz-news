@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CENTER DASHBOARD MODALS */
+
+.center-dashboard-popup-modal {
+	width: calc(100% - 288px);
+	left: calc(288px);
+	padding: 0 550px;
+	/* left: 288px; */
+	/* transform: translateX(calc(-50%)); */
+}
+
+.center-dashboard-modal {
+	width: calc(100% - 288px);
+
+	padding: 0 200px;
+}
+
 /* PAGINATION */
 .paginationBtns {
 	display: flex;
