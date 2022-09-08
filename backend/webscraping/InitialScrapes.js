@@ -160,12 +160,19 @@ async function initialScrape() {
 
 				let type = article.querySelector('span').textContent.toLowerCase();
 
+				// checking if the article title is already scraped and is NOT empty
 				if (
 					articlesScraped.find(
 						(article) => article.title.toLowerCase() === title.toLowerCase()
 					) &&
 					title !== ''
 				) {
+					return;
+				}
+
+				// if url has already been scraped, we skip this article as well
+
+				if (articlesScraped.find((article) => article.url === url)) {
 					return;
 				}
 
@@ -223,7 +230,6 @@ async function initialScrape() {
 
 					// creating the properties for the
 					let title = $(this).find('.news-title').text().trim();
-
 					let subtitle = null;
 					let url =
 						'https://www.nia.nih.gov' +
@@ -235,6 +241,8 @@ async function initialScrape() {
 					// cleaning up the publishedDate, removing published and trimming
 					publishDate = publishDate.split(' Published:').join('').trim();
 					publishDate = new Date([...new Set(publishDate.split(' '))]);
+
+					// checking if title has already been scraped, if it has and it was not empty, then we skip this article
 					if (
 						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
@@ -243,6 +251,15 @@ async function initialScrape() {
 								(article) => article.title.toLowerCase() === title.toLowerCase()
 							)) &&
 						title !== ''
+					) {
+						return;
+					}
+
+					// if the url has already been scraped, then we skip this article
+
+					if (
+						articlesScraped.find((article) => article.url === url) ||
+						newArticles.find((article) => article.url === url)
 					) {
 						return;
 					}
@@ -318,6 +335,14 @@ async function initialScrape() {
 
 					// creating the properties for the
 					let title = $(this).find('h2').text().trim();
+					let subtitle = $(this).find('.field-items p').text().trim();
+					let url = `https://www.j-alz.com${$(this).find('h2 a').attr('href')}`;
+					let publisher = ['j-alz.com', "Journal Of Alzheimer's Disease"];
+					let publisherUrl = 'https://www.j-alz.com/';
+					let publishDate = $(this).find('h3 span').text();
+					// cleaning up the publishedDate, removing published and trimming
+					publishDate = publishDate.split(' Published:').join('').trim();
+					publishDate = new Date([...new Set(publishDate.split(' '))]);
 
 					// check if we have an article already with the title name and if the title is not empty, if both are true we skip this iteration.
 					if (
@@ -332,16 +357,15 @@ async function initialScrape() {
 						return;
 					}
 
-					let subtitle = $(this).find('.field-items p').text().trim();
-					let url = `https://www.j-alz.com${$(this).find('h2 a').attr('href')}`;
-					let publisher = ['j-alz.com', "Journal Of Alzheimer's Disease"];
-					let publisherUrl = 'https://www.j-alz.com/';
-					let publishDate = $(this).find('h3 span').text();
-					// cleaning up the publishedDate, removing published and trimming
-					publishDate = publishDate.split(' Published:').join('').trim();
-					publishDate = new Date([...new Set(publishDate.split(' '))]);
+					// if url has already been added, skip article
 
-					let status = '';
+					if (
+						articlesScraped.find((article) => article.url === url) ||
+						newArticles.find((article) => article.url === url)
+					) {
+						return;
+					}
+
 					if (publishDate == 'Invalid Date') {
 						publishDate = null;
 						status = 'PENDING';
@@ -426,6 +450,16 @@ async function initialScrape() {
 					) {
 						return;
 					}
+
+					// if url has already been added, skip article.
+
+					if (
+						articlesScraped.find((article) => article.url === url) ||
+						newArticles.find((article) => article.url === url)
+					) {
+						return;
+					}
+
 					// cleaning up the publishedDate, removing published and trimming
 					publishDate = publishDate.split(' Published:').join('').trim();
 
@@ -435,7 +469,6 @@ async function initialScrape() {
 					publishDate = new Date([...new Set(publishDate.split(' '))]);
 
 					// If date couldn't be created, we need to add it manually
-					let status = '';
 					if (publishDate == 'Invalid Date') {
 						publishDate = null;
 						status = 'PENDING';
@@ -512,6 +545,15 @@ async function initialScrape() {
 						title !== ''
 					) {
 						// console.log(`article already exists: "${title}"`);
+						return;
+					}
+
+					// if url has already been added, skip article
+
+					if (
+						articlesScraped.find((article) => article.url === url) ||
+						newArticles.find((article) => article.url === url)
+					) {
 						return;
 					}
 					// cleaning up the publishedDate, removing published and trimming
@@ -591,18 +633,6 @@ async function initialScrape() {
 
 					// creating the properties for the
 					let title = $(this).find('.title').text().trim();
-					// If we already have an article with the same name, then we skip that article from being added
-					if (
-						(articlesScraped.find(
-							(article) => article.title.toLowerCase() === title.toLowerCase()
-						) ||
-							newArticles.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							)) &&
-						title !== ''
-					) {
-						return;
-					}
 					// getting the container for the subtitle, but we will remove all other children inside the container, except for the actual container with the text
 					let subtitle = $(this)
 						.find('.excerpt')
@@ -618,6 +648,27 @@ async function initialScrape() {
 					// cleaning up the publishedDate, removing published and trimming
 					publishDate = publishDate.trim();
 					publishDate = new Date(publishDate);
+
+					// If we already have an article with the same name, then we skip that article from being added
+					if (
+						(articlesScraped.find(
+							(article) => article.title.toLowerCase() === title.toLowerCase()
+						) ||
+							newArticles.find(
+								(article) => article.title.toLowerCase() === title.toLowerCase()
+							)) &&
+						title !== ''
+					) {
+						return;
+					}
+
+					// if url has already been added, skip article.
+					if (
+						articlesScraped.find((article) => article.url === url) ||
+						newArticles.find((article) => article.url === url)
+					) {
+						return;
+					}
 
 					let status = '';
 					if (publishDate == 'Invalid Date') {
