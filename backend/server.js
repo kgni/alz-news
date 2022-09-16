@@ -11,7 +11,7 @@ const cors = require('cors');
 
 // routes
 
-const newsArticlesRouter = require('./controllers/newsArticles');
+const apiRouter = require('./routes/apiRouter');
 
 console.log(MONGODB_URI, PORT);
 
@@ -29,7 +29,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-app.use('/api/', newsArticlesRouter);
+app.use('/api/', apiRouter);
 // app.use('/api/users', usersRouter);
 // app.use('/api/login', loginRouter);
 
