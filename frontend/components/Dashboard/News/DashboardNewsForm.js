@@ -118,6 +118,7 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 
 	const titleText = useRef();
 	const subTitleText = useRef();
+	const publisherRef = useRef([]);
 
 	async function saveOnClick() {
 		setIsSaving(true);
@@ -132,6 +133,9 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 			case 'subtitle':
 				setIsEditMode((prevState) => ({ ...prevState, subtitle: true }));
 				break;
+			case 'publisher':
+				setIsEditMode((prevState) => ({ ...prevState, publisher: true }));
+				break;
 		}
 		// setIsEditMode();
 	}
@@ -143,11 +147,19 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 			case 'subtitle':
 				setIsEditMode((prevState) => ({ ...prevState, subtitle: false }));
 				break;
+			case 'publisher':
+				setIsEditMode((prevState) => ({ ...prevState, publisher: false }));
+				break;
 		}
 	}
 
 	function onClickAcceptChange(ref, setterFunc) {
 		setterFunc(ref.current.value);
+		setIsEditMode(false);
+	}
+	function onClickAcceptChangeArray(ref, setterFunc) {
+		const array = ref.current.map((el) => el.value);
+		setterFunc(array);
 		setIsEditMode(false);
 	}
 
@@ -406,18 +418,62 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 						</div>
 						<div className="col-span-2">
 							<div className="mb-4">
-								<h4 className="text-xl uppercase font-bold mb-2">PUBLISHER</h4>
-
-								{!currentShownArticle.publisher ? (
-									<p className="bg-[#FDEBEB] text-[#F14546] rounded-full px-3 font-bold py-1 inline-block">
-										MISSING
-									</p>
+								{isEditMode.publisher ? (
+									<>
+										<h4 className="text-xl uppercase font-bold mb-2">
+											PUBLISHER
+										</h4>
+										<div className="flex items-end gap-2">
+											<div className="flex flex-col gap-2">
+												{publisher.map((el, i) => (
+													<input
+														key={i}
+														ref={(ref) => (publisherRef.current[i] = ref)}
+														className={`text-sm w-[200px]`}
+														defaultValue={el}
+													/>
+												))}
+											</div>
+											<button
+												onClick={() =>
+													onClickAcceptChangeArray(publisherRef, setPublisher)
+												}
+												className="bg-green-800 hover:bg-green-700 text-white py-1 px-4 text-lg flex items-center justify-center"
+											>
+												<FiCheck />
+											</button>
+											<button
+												onClick={() => deactivateEditMode('publisher')}
+												className="bg-red-700 hover:bg-red-600 text-white py-1 px-4 text-lg flex items-center justify-center"
+											>
+												<IoCloseSharp />
+											</button>
+										</div>
+									</>
 								) : (
-									<div className="flex gap-4 justify-start items-center">
-										{currentShownArticle.publisher.map((el) => (
-											<input type="text" className="text-sm" value={el} />
-										))}
-									</div>
+									<>
+										<div className="flex gap-2 items-center">
+											<h4 className="text-xl uppercase font-bold mb-2">
+												PUBLISHER
+											</h4>
+											<BiEdit
+												onClick={(e) => activateEditMode('publisher')}
+												size="1.2em"
+												className="cursor-pointer hover:text-zinc-700"
+											/>
+										</div>
+										{!publisher ? (
+											<p className="bg-[#FDEBEB] text-[#F14546] rounded-full px-3 font-bold py-1 inline-block mb-4">
+												MISSING
+											</p>
+										) : (
+											<div className="mb-4">
+												{publisher.map((el, index) => (
+													<p className="text-sm">{el}</p>
+												))}
+											</div>
+										)}
+									</>
 								)}
 							</div>
 							<div className="mb-4">
