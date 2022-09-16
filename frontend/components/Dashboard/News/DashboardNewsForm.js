@@ -1,19 +1,27 @@
 import React, { useContext, useRef, useState } from 'react';
+
+// libraries
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+import { Oval } from 'react-loader-spinner';
+// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { format, formatDistance, subDays, getMonth, getYear } from 'date-fns';
+import range from 'lodash/range';
+import axios from 'axios';
+
+// ICONS
 import { FaGlobeEurope, FaTrash } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { FiCheck } from 'react-icons/fi';
 import { BiEdit } from 'react-icons/bi';
 
-import DashBoardModal from '../DashBoardModal';
-
-import { Oval } from 'react-loader-spinner';
-// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-
-import { format, formatDistance, subDays } from 'date-fns';
 import { AllNewsContext } from '../../../context/Context';
-import axios from 'axios';
+
+// COMPONENTS
 import ConfirmationPopup from '../../Confirmation/ConfirmationPopup';
 import ConfirmationBackdrop from '../../Confirmation/ConfirmationBackdrop';
+import DashBoardModal from '../DashBoardModal';
 
 const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	const { articles, setArticles } = useContext(AllNewsContext);
@@ -38,8 +46,9 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	);
 
 	const [publishDate, setPublishDate] = useState(
-		new Date(currentShownArticle.publishDate).toISOString()
+		new Date(currentShownArticle.publishDate)
 	);
+
 	const [updatedAt, setUpdatedAt] = useState(
 		new Date(currentShownArticle.updatedAt)
 	);
@@ -53,6 +62,7 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	const [type, setType] = useState(currentShownArticle.type);
 
 	const [status, setStatus] = useState(currentShownArticle.status);
+
 	const formData = {
 		id: currentShownArticle.id,
 		title,
@@ -140,6 +150,24 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 		setterFunc(ref.current.value);
 		setIsEditMode(false);
 	}
+
+	// props for datepicker component:
+
+	const years = range(1990, getYear(new Date()) + 1, 1);
+	const months = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December',
+	];
 
 	return (
 		<>
@@ -299,12 +327,71 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 									</>
 								)}
 							</div>
-							<div className="mb-4">
+							<div className="flex gap-2 items-center">
 								<h3 className="text-xl uppercase font-bold mb-2">
 									Publish Date
 								</h3>
-								<p>{format(new Date(publishDate), 'dd/MM/yyyy')}</p>
 							</div>
+							<DatePicker
+								renderCustomHeader={({
+									date,
+									changeYear,
+									changeMonth,
+									decreaseMonth,
+									increaseMonth,
+									prevMonthButtonDisabled,
+									nextMonthButtonDisabled,
+								}) => (
+									<div
+										style={{
+											margin: 10,
+											display: 'flex',
+											justifyContent: 'center',
+										}}
+									>
+										<button
+											onClick={decreaseMonth}
+											disabled={prevMonthButtonDisabled}
+										>
+											{'<'}
+										</button>
+										<select
+											value={getYear(date)}
+											onChange={({ target: { value } }) => changeYear(value)}
+										>
+											{years.map((option) => (
+												<option key={option} value={option}>
+													{option}
+												</option>
+											))}
+										</select>
+
+										<select
+											value={months[getMonth(date)]}
+											onChange={({ target: { value } }) =>
+												changeMonth(months.indexOf(value))
+											}
+										>
+											{months.map((option) => (
+												<option key={option} value={option}>
+													{option}
+												</option>
+											))}
+										</select>
+
+										<button
+											onClick={increaseMonth}
+											disabled={nextMonthButtonDisabled}
+										>
+											{'>'}
+										</button>
+									</div>
+								)}
+								className="cursor-pointer italic mb-4"
+								selected={publishDate}
+								onChange={(date) => setPublishDate(date)}
+								dateFormat="dd/MM/yyyy"
+							/>
 							<div className="flex items-center gap-2">
 								<label className="font-bold" htmlFor="recommended">
 									Recommended:
