@@ -7,7 +7,7 @@ import {
 } from 'react-table';
 import { NEWS_COLUMNS } from './columns/newsColumns';
 import Select from 'react-select';
-import { AllNewsContext } from '../../../context/Context';
+import { NewsContext } from '../../../context/NewsContext';
 import styles from '../../../styles/BasicTable.module.css';
 
 import {
@@ -30,7 +30,7 @@ import GlobalFilter from './GlobalFilter';
 const SortingBasicTable = () => {
 	const [currentShownArticle, setCurrentShownArticle] = useState({});
 	const { articles, setArticles, filteredArticles, status, setStatus } =
-		useContext(AllNewsContext);
+		useContext(NewsContext);
 	const [isModalShown, setIsModalShown] = useState(false);
 	const [isSearchDropDownShown, setIsSearchDropDownShown] = useState(false);
 

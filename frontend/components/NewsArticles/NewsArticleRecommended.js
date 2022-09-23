@@ -41,16 +41,16 @@ const NewsArticle = ({ article }) => {
 	return (
 		<a
 			// whileHover={{ scale: 1.01 }}
-			className={`p-4 shadow-md flex bg-white mb-4 ${cardBgStyle}`}
+			className={`${cardBgStyle} p-4 shadow-md flex bg-white mb-4 rounded-md`}
 			target="_blank"
 			href={article.url}
 		>
-			<article className="flex flex-col">
+			<article className={` flex flex-col`}>
 				<div className="mb-4">
 					<a className="" target="_blank" href={article.url}>
-						<h4 className="text-2xl mb-2 font-bold">{article.title}</h4>
+						<h4 className="text-md mb-2 font-bold">{article.title}</h4>
 					</a>
-					<h6>{article.subtitle}</h6>
+					{/* <h6 className="text-sm">{article.subtitle}</h6> */}
 				</div>
 
 				<div className="flex items-center gap-x-4 mt-auto">

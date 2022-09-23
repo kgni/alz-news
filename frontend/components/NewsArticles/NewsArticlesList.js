@@ -9,8 +9,6 @@ import SearchBar from '../Search/SearchBar/SearchBar';
 import DropDownFilter from '../Search/DropDownFilter';
 import FilterByNewest from '../Search/Filters/FilterByNewest';
 
-import { AiOutlineMinus } from 'react-icons/ai';
-
 const NewsArticlesList = ({
 	articles,
 	newsSource,
@@ -68,7 +66,7 @@ const NewsArticlesList = ({
 			<div className="mb-8"></div>
 			<div className="flex gap-x-8">
 				<div className="flex flex-col basis-1/3 self-start">
-					<RecommendedArticles className="" />
+					<RecommendedArticles articles={articles} className="" />
 					<RecommendedResources className="" />
 				</div>
 				<section className="mb-8 basis-2/3">
