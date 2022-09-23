@@ -34,7 +34,7 @@ const DashboardAside = ({ currentPage, setCurrentPage }) => {
 		<>
 			<IconContext.Provider value={{ size: '1.3em' }}>
 				<aside className="py-8 px-12 bg-black w-72 h-screen flex flex-col flex-shrink-0">
-					<Link href="/news">
+					<Link href="/">
 						<h2 className="text-white font-bold text-3xl mb-32 cursor-pointer">
 							ALZ.news
 						</h2>

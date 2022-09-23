@@ -11,6 +11,7 @@ import FilterByNewest from '../Search/Filters/FilterByNewest';
 
 const NewsArticlesList = ({
 	articles,
+	recommendedArticles,
 	newsSource,
 	setNewsSource,
 	filterKeyword,
@@ -66,7 +67,7 @@ const NewsArticlesList = ({
 			<div className="mb-8"></div>
 			<div className="flex gap-x-8">
 				<div className="flex flex-col basis-1/3 self-start">
-					<RecommendedArticles articles={articles} className="" />
+					<RecommendedArticles articles={recommendedArticles} className="" />
 					<RecommendedResources className="" />
 				</div>
 				<section className="mb-8 basis-2/3">
