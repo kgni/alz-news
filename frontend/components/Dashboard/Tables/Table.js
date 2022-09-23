@@ -29,8 +29,15 @@ import GlobalFilter from './GlobalFilter';
 
 const SortingBasicTable = () => {
 	const [currentShownArticle, setCurrentShownArticle] = useState({});
-	const { articles, setArticles, filteredArticles, status, setStatus } =
-		useContext(NewsContext);
+	const {
+		articles,
+		setArticles,
+		filteredArticles,
+		status,
+		setStatus,
+		isRecommendedActive,
+		setIsRecommendedActive,
+	} = useContext(NewsContext);
 	const [isModalShown, setIsModalShown] = useState(false);
 	const [isSearchDropDownShown, setIsSearchDropDownShown] = useState(false);
 
@@ -124,7 +131,7 @@ const SortingBasicTable = () => {
 								>
 									<AiFillCaretUp style={{ color: 'white' }} />
 								</div>
-								<div className="absolute bg-white shadow-md w-52 p-4 left-0 top-[-85px] z-10 rounded-md">
+								<div className="absolute bg-white shadow-md w-52 p-3 left-0 top-[-110px] z-10 rounded-md flex flex-col gap-2">
 									<Select
 										defaultValue={options[0]}
 										value={status}
@@ -133,6 +140,16 @@ const SortingBasicTable = () => {
 										options={options}
 										placeholder={status}
 									/>
+									<div className="flex items-center gap-1">
+										<input
+											type="checkbox"
+											id="recommended"
+											name="recommended"
+											checked={isRecommendedActive}
+											onClick={(e) => setIsRecommendedActive(e.target.checked)}
+										/>
+										<label for="recommended"> Recommended</label>
+									</div>
 								</div>
 							</div>
 						</>
@@ -147,7 +164,7 @@ const SortingBasicTable = () => {
 
 					<GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
 					{/* TODO - ABSTRACT PAGINATION AWAY INTO OWN COMPONENT */}
-					<div className="flex items-center gap-4 justify-center">
+					<div className="flex items-center gap-4 justify-center relative">
 						<div className="flex items-center">
 							<BiFirstPage
 								onClick={() => gotoPage(0)}
