@@ -16,7 +16,7 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { FiCheck } from 'react-icons/fi';
 import { BiEdit } from 'react-icons/bi';
 
-import { AllNewsContext } from '../../../context/Context';
+import { NewsContext } from '../../../context/NewsContext';
 
 // COMPONENTS
 import ConfirmationPopup from '../../Confirmation/ConfirmationPopup';
@@ -24,7 +24,7 @@ import ConfirmationBackdrop from '../../Confirmation/ConfirmationBackdrop';
 import DashBoardModal from '../DashBoardModal';
 
 const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
-	const { articles, setArticles } = useContext(AllNewsContext);
+	const { articles, setArticles } = useContext(NewsContext);
 	const [isSaving, setIsSaving] = useState(false);
 	const [isEditMode, setIsEditMode] = useState({
 		title: false,

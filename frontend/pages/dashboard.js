@@ -11,7 +11,7 @@ import DashboardAside from '../components/Dashboard/DashboardAside';
 import DashboardNewsContent from '../components/Dashboard/News/DashboardNewsContent';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import DashboardHeaderSkeleton from '../components/Dashboard/Skeletons/DashboardHeaderSkeleton';
-import { AllNewsContext } from '../context/Context';
+import { NewsContext } from '../context/NewsContext';
 
 import { articleSort } from '../helper/articleSort';
 const Dashboard = () => {
@@ -56,7 +56,7 @@ const Dashboard = () => {
 	}
 
 	return (
-		<AllNewsContext.Provider
+		<NewsContext.Provider
 			value={{ articles, filteredArticles, setArticles, status, setStatus }}
 		>
 			<Head>
@@ -75,7 +75,7 @@ const Dashboard = () => {
 					</section>
 				</SkeletonTheme>
 			</main>
-		</AllNewsContext.Provider>
+		</NewsContext.Provider>
 	);
 };
 

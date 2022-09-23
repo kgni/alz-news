@@ -13,17 +13,12 @@ const MainNav = () => {
 			<ul className="flex gap-x-8 font-semibold">
 				<Link href="/">
 					<li className="cursor-pointer hover:text-gray-500 duration-200">
-						HOME
-					</li>
-				</Link>
-				<Link href="/news">
-					<li className="cursor-pointer hover:text-gray-500 duration-200">
 						NEWS
 					</li>
 				</Link>
-				<Link href="/journals">
+				<Link href="/login">
 					<li className="cursor-pointer hover:text-gray-500 duration-200">
-						JOURNALS
+						LOGIN
 					</li>
 				</Link>
 			</ul>
