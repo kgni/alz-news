@@ -78,7 +78,10 @@ const DashboardAside = ({ currentPage, setCurrentPage }) => {
 						</li>
 					</ul>
 					<div className="mt-auto">
-						<div className="flex mb-12 gap-4 items-center">
+						<div
+							onClick={() => setCurrentPage('settings')}
+							className="flex mb-12 gap-4 items-center cursor-pointer select-none"
+						>
 							<div className="rounded-full flex p-6 bg-white">
 								{/* <FaUserAlt color="white" size="1.4em" /> */}
 							</div>
