@@ -4,12 +4,6 @@ import { NewsContext } from '../../../context/NewsContext';
 
 import DashboardHeaderAddedWhen from './DashboardHeaderAddedWhen';
 
-function getLastWeeksDate() {
-	const now = new Date();
-
-	return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
-}
-
 const DashboardHeader = () => {
 	const { articles, setArticles } = useContext(NewsContext);
 	const approvedArticles = articles.filter(
@@ -40,7 +34,7 @@ const DashboardHeader = () => {
 					<p className="font-bold ml-auto">{articles.length}</p>
 				</motion.div>
 			</div>
-			<DashboardHeaderAddedWhen articles={articles} />
+			<DashboardHeaderAddedWhen />
 		</header>
 	);
 };
