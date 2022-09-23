@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { motion } from 'framer-motion';
 
 import { AiFillCaretDown } from 'react-icons/ai';
+import { NewsContext } from '../../../context/NewsContext';
 
 function getMondayOfCurrentWeek() {
 	const today = new Date();
 	const first = today.getDate() - today.getDay() + 1;
 
 	const monday = new Date(today.setDate(first));
-	return monday;
+	return {
+		text: 'Added this week',
+		range: monday,
+	};
 }
 
 function getMondayOfLastWeek() {
@@ -31,7 +35,7 @@ function getFirstDayOfCurrentMonth() {
 
 	console.log(firstDayOfCurrentMonth);
 
-	return firstDayOfCurrentMonth;
+	return { text: 'Added this month', range: firstDayOfCurrentMonth };
 }
 
 function getFirstDayPreviousMonth() {
@@ -69,31 +73,34 @@ getFirstDayPreviousMonth();
 getFirstDayThreePreviousMonth();
 getFirstDayOfYear(currentYear);
 
-const DashboardHeaderAddedWhen = ({ articles }) => {
+const DashboardHeaderAddedWhen = () => {
+	const { articles, setArticles } = useContext(NewsContext);
 	// get initial date for range
-	const mondayThisWeek = getMondayOfCurrentWeek();
-	const [articlesDateRange, setArticlesDateRange] = useState(mondayThisWeek);
+
+	const [articlesDateRange, setArticlesDateRange] = useState(
+		getMondayOfCurrentWeek()
+	);
 
 	const articlesLastAdded = articles.filter((article) => {
-		return Date.parse(article.createdAt) > articlesDateRange;
+		return Date.parse(article.createdAt) > articlesDateRange.range;
 	});
 
 	const articlesLastAddedApproved = articles.filter((article) => {
 		return (
-			Date.parse(article.createdAt) > articlesDateRange &&
+			Date.parse(article.createdAt) > articlesDateRange.range &&
 			article.status === 'APPROVED'
 		);
 	});
 
 	const articlesLastAddedPending = articles.filter((article) => {
 		return (
-			Date.parse(article.createdAt) > articlesDateRange &&
+			Date.parse(article.createdAt) > articlesDateRange.range &&
 			article.status === 'PENDING'
 		);
 	});
 	const articlesLastAddedRejected = articles.filter((article) => {
 		return (
-			Date.parse(article.createdAt) > articlesDateRange &&
+			Date.parse(article.createdAt) > articlesDateRange.range &&
 			article.status === 'REJECTED'
 		);
 	});
@@ -102,7 +109,7 @@ const DashboardHeaderAddedWhen = ({ articles }) => {
 		<div className="bg-white py-4 px-8 rounded-lg w-[300px] flex flex-col justify-between shadow-md">
 			{' '}
 			<h3 className="font-bold text-2xl mb-4 flex items-center gap-2">
-				Added last week{' '}
+				{articlesDateRange.text}
 				<AiFillCaretDown
 					style={{ marginTop: '5px', cursor: 'pointer' }}
 					size="0.8em"
