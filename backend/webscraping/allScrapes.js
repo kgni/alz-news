@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const { MONGODB_URI } = require('../configs/config');
 
 // News Model
-const { NewsArticle } = require('../models/resources/newsArticle');
+const { NewsArticle } = require('../models/newsArticle');
 
 // Connect to DB and start listening to incoming requests:
 const connectDB = async () => {
