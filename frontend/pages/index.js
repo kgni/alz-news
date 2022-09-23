@@ -73,6 +73,8 @@ export default function Page({ articles }) {
 		newsSource
 	);
 
+	const recommendedArticles = articles.filter((article) => article.recommended);
+
 	function onToggleSort() {
 		setSortingOrder((prevState) => {
 			if (prevState === 'desc') {
@@ -128,6 +130,7 @@ export default function Page({ articles }) {
 							setNewsSource={setNewsSource}
 							onToggleSort={onToggleSort}
 							articles={filteredArticles}
+							recommendedArticles={recommendedArticles}
 						/>
 					</section>
 				</div>
