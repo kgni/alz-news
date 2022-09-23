@@ -22,6 +22,7 @@ const Dashboard = () => {
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
 	const [status, setStatus] = useState('ALL');
+	const [isRecommendedActive, setIsRecommendedActive] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 
 	const [currentPage, setCurrentPage] = useState('dashboard');
@@ -30,7 +31,8 @@ const Dashboard = () => {
 
 	const filteredArticles = articleSort.applyArticleFiltersDashboard(
 		articles,
-		status
+		status,
+		isRecommendedActive
 	);
 
 	useEffect(() => {
@@ -56,8 +58,17 @@ const Dashboard = () => {
 	}
 
 	return (
+		// TODO - HOW TO MAKE THIS BETTER, SEEMS WACK TO USE THE PROVIDER LIKE THIS AND THEN JUST ADDING ON TO IT...
 		<NewsContext.Provider
-			value={{ articles, filteredArticles, setArticles, status, setStatus }}
+			value={{
+				articles,
+				filteredArticles,
+				setArticles,
+				status,
+				setStatus,
+				isRecommendedActive,
+				setIsRecommendedActive,
+			}}
 		>
 			<Head>
 				<title>ALZ.NEWS - DASHBOARD</title>

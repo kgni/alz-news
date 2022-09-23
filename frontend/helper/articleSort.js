@@ -43,11 +43,16 @@ export const articleSort = {
 		return sortedArticles;
 	},
 
-	applyArticleFiltersDashboard(articles, status) {
+	applyArticleFiltersDashboard(articles, status, isRecommendedActive) {
 		const filteredArticlesByStatus =
 			status === 'ALL'
 				? articles
 				: articles.filter((article) => article.status === status);
-		return filteredArticlesByStatus;
+
+		const filteredByRecommended = isRecommendedActive
+			? filteredArticlesByStatus.filter((article) => article.recommended)
+			: filteredArticlesByStatus;
+
+		return filteredByRecommended;
 	},
 };
