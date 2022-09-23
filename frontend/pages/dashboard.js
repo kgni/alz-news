@@ -78,13 +78,22 @@ const Dashboard = () => {
 					currentPage={currentPage}
 					setCurrentPage={setCurrentPage}
 				/>
-				<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">
-					<section
-						className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-[#f8f8f8]`}
-					>
-						{isLoading ? <DashboardHeaderSkeleton /> : <DashboardNewsContent />}
-					</section>
-				</SkeletonTheme>
+				{currentPage === 'dashboard' && <p>dashboard</p>}
+				{currentPage === 'news' && (
+					<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">
+						<section
+							className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-[#f8f8f8]`}
+						>
+							{isLoading ? (
+								<DashboardHeaderSkeleton />
+							) : (
+								<DashboardNewsContent />
+							)}
+						</section>
+					</SkeletonTheme>
+				)}
+				{currentPage === 'journals' && <p>journals</p>}
+				{currentPage === 'settings' && <p>settings</p>}
 			</main>
 		</NewsContext.Provider>
 	);
