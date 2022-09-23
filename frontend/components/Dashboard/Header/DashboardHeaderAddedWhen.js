@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { AiFillCaretDown } from 'react-icons/ai';
 import { NewsContext } from '../../../context/NewsContext';
 
+// TODO A1) - turn these functions into ranges instead, right now we are only getting a date.
 function getMondayOfCurrentWeek() {
 	const today = new Date();
 	const first = today.getDate() - today.getDay() + 1;
@@ -81,6 +82,7 @@ const DashboardHeaderAddedWhen = () => {
 		getMondayOfCurrentWeek()
 	);
 
+	// TODO A2) - these should filter a range instead of just from 1 date until now
 	const articlesLastAdded = articles.filter((article) => {
 		return Date.parse(article.createdAt) > articlesDateRange.range;
 	});
