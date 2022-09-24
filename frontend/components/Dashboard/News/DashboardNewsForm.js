@@ -153,14 +153,14 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 		}
 	}
 
-	function onClickAcceptChange(ref, setterFunc) {
+	function onClickAcceptChange(ref, setterFunc, title) {
 		setterFunc(ref.current.value);
-		setIsEditMode(false);
+		deactivateEditMode(title);
 	}
-	function onClickAcceptChangeArray(ref, setterFunc) {
+	function onClickAcceptChangeArray(ref, setterFunc, title) {
 		const array = ref.current.map((el) => el.value);
 		setterFunc(array);
-		setIsEditMode(false);
+		deactivateEditMode(title);
 	}
 
 	// props for datepicker component:
@@ -262,7 +262,9 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 												ref={titleText}
 											/>
 											<button
-												onClick={() => onClickAcceptChange(titleText, setTitle)}
+												onClick={() =>
+													onClickAcceptChange(titleText, setTitle, 'title')
+												}
 												className="bg-green-800 hover:bg-green-700 text-white py-1 px-4 text-lg flex items-center justify-center"
 											>
 												<FiCheck />
@@ -309,7 +311,11 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 											/>
 											<button
 												onClick={() =>
-													onClickAcceptChange(subTitleText, setSubtitle)
+													onClickAcceptChange(
+														subTitleText,
+														setSubtitle,
+														'subtitle'
+													)
 												}
 												className="bg-green-800 hover:bg-green-700 text-white py-1 px-4 text-lg flex items-center justify-center"
 											>
@@ -436,7 +442,11 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 											</div>
 											<button
 												onClick={() =>
-													onClickAcceptChangeArray(publisherRef, setPublisher)
+													onClickAcceptChangeArray(
+														publisherRef,
+														setPublisher,
+														'publisher'
+													)
 												}
 												className="bg-green-800 hover:bg-green-700 text-white py-1 px-4 text-lg flex items-center justify-center"
 											>
