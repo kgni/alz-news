@@ -28,6 +28,7 @@ const NewsArticlesList = ({
 	const [currentItems, setCurrentItems] = useState([]);
 	const [pageCount, setPageCount] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
+	const [currentPageBeforeSearch, setCurrentPageBeforeSearch] = useState(0);
 	// Here we use item offsets; we could also use page offsets
 	// following the API or data you're working with.
 	const [itemOffset, setItemOffset] = useState(0);
@@ -128,6 +129,8 @@ const NewsArticlesList = ({
 							inputId="search"
 							filterKeyword={filterKeyword}
 							setFilterKeyword={setFilterKeyword}
+							setCurrentPage={setCurrentPage}
+							setItemOffset={setItemOffset}
 						/>
 						<FilterByNewest
 							onToggleSort={onToggleSort}

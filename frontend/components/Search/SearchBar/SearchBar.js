@@ -11,9 +11,13 @@ const SearchBar = ({
 	inputId,
 	filterKeyword,
 	setFilterKeyword,
+	setCurrentPage,
+	setItemOffset,
 }) => {
 	const onChangeFilterKeyword = (event) => {
 		setFilterKeyword(event.target.value);
+		setCurrentPage(0);
+		setItemOffset(0);
 	};
 
 	const onClearInput = () => {
