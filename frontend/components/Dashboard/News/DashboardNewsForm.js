@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState, useEffect } from 'react';
 
 // libraries
 import DatePicker from 'react-datepicker';
@@ -22,6 +22,7 @@ import { NewsContext } from '../../../context/NewsContext';
 import ConfirmationPopup from '../../Confirmation/ConfirmationPopup';
 import ConfirmationBackdrop from '../../Confirmation/ConfirmationBackdrop';
 import DashBoardModal from '../DashBoardModal';
+import TextareaAutosize from 'react-textarea-autosize';
 
 const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	const { articles, setArticles } = useContext(NewsContext);
@@ -253,8 +254,11 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 										<h3 className="text-2xl uppercase font-bold mb-2">Title</h3>
 
 										<div className="flex items-start gap-2">
-											<textarea
-												className="w-full"
+											<TextareaAutosize
+												autoFocus
+												className="w-full p-1"
+												minRows={1}
+												maxRows={20}
 												// onBlur={(e) => deactivateEditMode(e)}
 												// onChange={(e) => setTitle(e.target.value)}
 												defaultValue={title}
@@ -301,8 +305,10 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 										</h3>
 
 										<div className="flex items-start gap-2">
-											<textarea
+											<TextareaAutosize
 												className="w-full"
+												minRows={1}
+												maxRows={20}
 												// onBlur={(e) => deactivateEditMode(e)}
 												// onChange={(e) => setTitle(e.target.value)}
 												defaultValue={subtitle}
