@@ -307,6 +307,7 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 										<div className="flex items-start gap-2">
 											<TextareaAutosize
 												className="w-full"
+												autoFocus
 												minRows={1}
 												maxRows={20}
 												// onBlur={(e) => deactivateEditMode(e)}
