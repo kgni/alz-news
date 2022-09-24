@@ -6,6 +6,7 @@ import { IoCloseSharp } from 'react-icons/io5';
 
 import { motion } from 'framer-motion';
 
+// TODO - at the moment the currentPage will be set to 0 (1) whenever we are typing into the search field, maybe we should memorize what page the user was on before searching?
 const SearchBar = ({
 	placeholder,
 	inputId,

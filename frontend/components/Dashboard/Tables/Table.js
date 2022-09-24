@@ -29,6 +29,12 @@ import GlobalFilter from './GlobalFilter';
 
 const SortingBasicTable = () => {
 	const [currentShownArticle, setCurrentShownArticle] = useState({});
+	const [currentSortingState, setCurrentSortingState] = useState([
+		{
+			id: 'updatedAt',
+			desc: true,
+		},
+	]);
 	const {
 		articles,
 		setArticles,
@@ -67,18 +73,11 @@ const SortingBasicTable = () => {
 			data,
 			disableSortRemove: true,
 			initialState: {
-				sortBy: [
-					{
-						id: 'updatedAt',
-						desc: true,
-					},
-					// {
-					// 	id: 'publishDate',
-					// 	desc: true,
-					// },
-				],
+				sortBy: currentSortingState,
 			},
+			autoResetSortBy: false,
 		},
+
 		useGlobalFilter,
 		useSortBy,
 		usePagination
