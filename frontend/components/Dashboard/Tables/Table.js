@@ -76,6 +76,7 @@ const SortingBasicTable = () => {
 				sortBy: currentSortingState,
 			},
 			autoResetSortBy: false,
+			autoResetPagination: false,
 		},
 
 		useGlobalFilter,
