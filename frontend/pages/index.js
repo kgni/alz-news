@@ -2,24 +2,35 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
+import { debounce } from 'lodash';
 
 // COMPONENTS
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
 import Layout from '../components/UI/Layout/Layout';
+import RecommendedArticles from '../components/NewsArticles/RecommendedArticles';
+import RecommendedResources from '../components/RecommendedResources';
+import DropDownFilter from '../components/Search/DropDownFilter';
+import SearchBar from '../components/Search/SearchBar/SearchBar';
+import FilterByNewest from '../components/Search/Filters/FilterByNewest';
+import ReactPaginate from 'react-paginate';
+import NewsSourceTags from '../components/NewsArticles/NewsSourceTags';
 
 // SSR function
 export async function getServerSideProps() {
 	const res = await axios.get('http://localhost:8000/api/news/approved');
 
-	const data = await res.data;
+	const { articles, allArticlesLength, page, totalPages, recommendedArticles } =
+		await res.data;
 
-	const newestArticles = data.sort(
-		(a, b) => new Date(b.publishDate) - new Date(a.publishDate)
-	);
+	console.log(allArticlesLength, page, totalPages);
 
 	return {
 		props: {
-			articles: newestArticles,
+			articles,
+			allArticlesLength,
+			page,
+			totalPages,
+			recommendedArticles,
 		},
 	};
 }
@@ -58,36 +69,96 @@ function applyFilters(articles, sortingOrder, filterKeyword, newsSource) {
 	return sortedArticles;
 }
 
-export default function Page({ articles }) {
-	// TODO - IMPORT SKELETON FOR WHEN WE ARE LOADING ARTICLES (DO THIS AFTER WE HAVE THE LAYOUT OF HOW WE ARE SHOWING ARTICLES)
-	// const [articles, setArticles] = useState(articles);
+export default function Page({
+	articles,
+	recommendedArticles,
+	allArticlesLength,
+	page,
+	totalPages,
+}) {
+	const [currentArticles, setCurrentArticles] = useState(articles);
+	const [articlesLength, setArticlesLength] = useState(allArticlesLength);
 	const [filterKeyword, setFilterKeyword] = useState('');
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
 
-	// computed state, when state changes (like filtering keyword, we will applyfilters again - which is why it works)
-	const filteredArticles = applyFilters(
-		articles,
-		sortingOrder,
-		filterKeyword,
-		newsSource
-	);
+	// PAGINATION
 
-	const recommendedArticles = articles.filter((article) => article.recommended);
+	const [currentPage, setCurrentPage] = useState(page - 1);
+	const [allPages, setAllPages] = useState(totalPages);
 
-	function onToggleSort() {
+	const handlePageClick = async (event) => {
+		try {
+			const res = await axios.get(`http://localhost:8000/api/news/approved/`, {
+				params: {
+					page: event.selected + 1,
+					sortingOrder,
+					filterKeyword,
+					newsSource,
+				},
+			});
+
+			const { articles, allArticlesLength, totalPages } = res.data;
+			setCurrentArticles(articles);
+			setArticlesLength(allArticlesLength);
+			setCurrentPage(event.selected);
+			setAllPages(totalPages);
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	const onClickRemoveNewsSource = (event) => {
+		setNewsSource((prevState) =>
+			prevState.filter((source) => source !== event.target.innerText)
+		);
+	};
+
+	//! scroll to top after clicking on pagination - HOW SHOULD WE ELSE DO IT?
+
+	const onClickScrollToTop = () => window.scrollTo({ top: 0, left: 0 });
+
+	async function onToggleSort() {
+		const negatedSortingOrder = sortingOrder === 'desc' ? 'asc' : 'desc';
+		const res = await axios.get(`http://localhost:8000/api/news/approved/`, {
+			params: {
+				page: currentPage + 1,
+				sortingOrder: negatedSortingOrder,
+				filterKeyword,
+				newsSource,
+			},
+		});
+
+		const { articles, allArticlesLength, totalPages } = res.data;
+		setCurrentArticles(articles);
+		setArticlesLength(allArticlesLength);
+		setAllPages(totalPages);
 		setSortingOrder((prevState) => {
-			if (prevState === 'desc') {
-				return 'asc';
-			}
-			return 'desc';
+			return prevState === 'desc' ? 'asc' : 'desc';
 		});
 	}
 
-	function onSelectChange(event) {
-		// console.log(event.target.value);
-		setArticlesPerPage(event.target.value);
-	}
+	// debouncing our onchange keyword input
+	const debouncedKeywordSearch = debounce(async (keyword) => {
+		const res = await axios.get(`http://localhost:8000/api/news/approved/`, {
+			params: {
+				page: currentPage + 1,
+				sortingOrder,
+				filterKeyword: keyword,
+				newsSource,
+			},
+		});
+
+		const { articles, allArticlesLength, totalPages } = res.data;
+		setCurrentArticles(articles);
+		setArticlesLength(allArticlesLength);
+		setAllPages(totalPages);
+	}, 300);
+
+	const onChangeFilterKeyword = async (event, clear) => {
+		clear ? setFilterKeyword('') : setFilterKeyword(event.target.value);
+		debouncedKeywordSearch(event.target.value);
+	};
 
 	return (
 		<>
@@ -98,40 +169,79 @@ export default function Page({ articles }) {
 			</Head>
 
 			<section className="news-section min-h-screen pb-8">
-				<div className="w-[90%] mx-auto">
-					{/* <h1 className="text-8xl upper font-bold">News</h1> */}
+				<div className="w-[90%] mx-auto py-8">
 					<div className="flex gap-x-8">
 						<div className="flex w-1/3"></div>
-						<div className="flex  mb-4 items-center w-2/3 mx-auto justify-center">
-							{/* TODO - FIX THIS SO THE USER CAN CHOOSE THEMSELVES HOW MANY ARTICLES THEY WANT TO HAVE SHOWN */}
-							{/* <select
-								onChange={onSelectChange}
-								name="articlesPerPage"
-								id="articlesPerPage"
-							>
-								<option value="10">10</option>
-								<option selected value="20">
-									20
-								</option>
-								<option value="30">30</option>
-								<option value="40">40</option>
-								<option value="50">50</option>
-							</select> */}
-						</div>
+						<div className="flex  mb-4 items-center w-2/3 mx-auto justify-center"></div>
 					</div>
-					<section className="">
-						{/* TODO - WE MIGHT WANT TO REORGANIZE THIS, SO THAT WE CONTROL THE GRID IN THE NEWS SITE, AND WE HAVE ALL OF OUR COMPONENTS IN THIS news-page instead of in the NewsArticlesList */}
-						<NewsArticlesList
-							filterKeyword={filterKeyword}
-							setFilterKeyword={setFilterKeyword}
-							sortingOrder={sortingOrder}
-							setSortingOrder={setSortingOrder}
+					<section className="flex gap-x-8">
+						<div className="flex flex-col basis-1/3 self-start">
+							<RecommendedArticles
+								articles={recommendedArticles}
+								className=""
+							/>
+							<RecommendedResources className="" />
+						</div>
+						<NewsSourceTags
 							newsSource={newsSource}
-							setNewsSource={setNewsSource}
-							onToggleSort={onToggleSort}
-							articles={filteredArticles}
-							recommendedArticles={recommendedArticles}
+							onClickRemoveNewsSource={onClickRemoveNewsSource}
 						/>
+						<div className="flex flex-col">
+							<div className="flex items-center justify-center">
+								<DropDownFilter
+									newsSource={newsSource}
+									setNewsSource={setNewsSource}
+								/>
+								<SearchBar
+									placeholder="Enter Article Title..."
+									inputId="search"
+									onChangeFilterKeyword={onChangeFilterKeyword}
+									filterKeyword={filterKeyword}
+									debounce={debounce}
+								/>
+								<FilterByNewest
+									onToggleSort={onToggleSort}
+									sortingOrder={sortingOrder}
+								/>
+							</div>
+							<div className="mb-4 italic flex gap-2">
+								{currentArticles.length === 0 ? (
+									<p className="font-semibold">No articles found...</p>
+								) : (
+									<>
+										<p className="font-semibold">
+											{articlesLength} articles found
+										</p>
+										<span>&#8211;</span>
+										<p className="italic">
+											page {currentPage + 1} of {allPages}
+										</p>
+									</>
+								)}
+							</div>
+
+							<NewsArticlesList currentItems={currentArticles} />
+
+							<ReactPaginate
+								key="paginate2"
+								onClick={onClickScrollToTop}
+								forcePage={currentPage}
+								previousLabel={'<'}
+								breakLabel={'...'}
+								nextLabel={'>'}
+								pageCount={allPages}
+								onPageChange={handlePageClick}
+								pageRangeDisplayed={2}
+								marginPagesDisplayed={2}
+								containerClassName={'paginationBtns'}
+								previousLinkClassName={'previousBtn'}
+								nextLinkClassName={'nextBtn'}
+								disabledClassName={'paginationDisabled'}
+								activeClassName={'paginationActive'}
+								breakLinkClassName={'breakLink'}
+								renderOnZeroPageCount={null}
+							/>
+						</div>
 					</section>
 				</div>
 			</section>
