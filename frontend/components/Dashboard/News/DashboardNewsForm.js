@@ -1,9 +1,9 @@
-import React, { useContext, useRef, useState, useEffect } from 'react';
+import React, { useContext, useRef, useState } from 'react';
+import { NewsContext } from '../../../context/NewsContext';
 
 // libraries
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
 import { Oval } from 'react-loader-spinner';
 // import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { format, formatDistance, subDays, getMonth, getYear } from 'date-fns';
@@ -16,13 +16,12 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { FiCheck } from 'react-icons/fi';
 import { BiEdit } from 'react-icons/bi';
 
-import { NewsContext } from '../../../context/NewsContext';
-
 // COMPONENTS
 import ConfirmationPopup from '../../Confirmation/ConfirmationPopup';
 import ConfirmationBackdrop from '../../Confirmation/ConfirmationBackdrop';
-import DashBoardModal from '../DashBoardModal';
 import TextareaAutosize from 'react-textarea-autosize';
+import { ToastContainer, toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	const { articles, setArticles } = useContext(NewsContext);
@@ -35,9 +34,7 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 		publisher: false,
 		url: false,
 	});
-
 	const [isConfirmationPopup, setIsConfirmationPopup] = useState(false);
-
 	const [title, setTitle] = useState(currentShownArticle.title);
 	const [subtitle, setSubtitle] = useState(currentShownArticle.subtitle);
 	const [url, setUrl] = useState(currentShownArticle.url);
@@ -45,11 +42,9 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	const [publisherUrl, setPublisherUrl] = useState(
 		currentShownArticle.publisherUrl
 	);
-
 	const [publishDate, setPublishDate] = useState(
 		new Date(currentShownArticle.publishDate)
 	);
-
 	const [updatedAt, setUpdatedAt] = useState(
 		new Date(currentShownArticle.updatedAt)
 	);
@@ -57,13 +52,8 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 		currentShownArticle.recommended
 	);
 
-	// const [publishDate, setPublishDate] = useState(
-	// 	currentShownArticle.publishDate.toISOString()
-	// );
 	const [type, setType] = useState(currentShownArticle.type);
-
 	const [status, setStatus] = useState(currentShownArticle.status);
-
 	const formData = {
 		id: currentShownArticle.id,
 		title,
@@ -87,11 +77,25 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 				const newArticles = articles.filter(
 					(article) => currentShownArticle.id !== article.id
 				);
-				setArticles([...newArticles, formData]);
+				// TODO - THIS (LINE 81) IS FREEZING UP THE APPLICATION FOR QUITE SOME TIME WHEN SAVING, HOW DO WE FIX THIS SO THAT OUR DASHBOARD IS STILL SYNCED WITH THE BACKEND, WITHOUT DOING A RELOAD AND WITHOUT CAUSING SUCH A BIG RE-RENDER?
+				// setArticles([...newArticles, formData]);
 				setUpdatedAt(Date.now());
-				console.log('ARTICLE UPDATED');
+				toast.success('Article updated!', {
+					autoClose: 1500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+				});
 			} else {
 				setIsSaving(false);
+				toast.error('Something went wrong, try again!', {
+					autoClose: 1500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+				});
 				throw new Error(res.status);
 			}
 		} catch (e) {
@@ -100,6 +104,10 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 		}
 	}
 
+	async function onClickSubmitForm() {
+		setIsSaving(true);
+		await onSubmitForm();
+	}
 	async function onDeleteArticle(id, articles, setArticles) {
 		try {
 			const res = await axios.delete(`http://localhost:8000/api/news/${id}`);
@@ -120,11 +128,6 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	const titleText = useRef();
 	const subTitleText = useRef();
 	const publisherRef = useRef([]);
-
-	async function saveOnClick() {
-		setIsSaving(true);
-		await onSubmitForm();
-	}
 
 	function activateEditMode(title) {
 		switch (title) {
@@ -245,7 +248,7 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 					</div>
 				</div>
 
-				<form className="flex" action="">
+				<form className="flex">
 					<section className="grid w-full grid-cols-4 gap-x-12">
 						<div className="col-span-2">
 							<div className="mb-4">
@@ -511,14 +514,15 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 							</div>
 						</div>
 					</section>
+					<ToastContainer transition={Slide} position="top-right" />
 				</form>
-				<div className="flex gap-4 mt-auto justify-end">
+				<div className="flex gap-4 mt-auto justify-end relative">
 					<button
-						className="bg-green-800 text-white font-bold py-1 px-4 rounded-md tracking-wide flex items-center gap-2 hover:bg-green-700"
-						onClick={saveOnClick}
+						onClick={onClickSubmitForm}
+						className="bg-green-800 text-white font-bold py-1 px-4 rounded-md tracking-wide flex items-center gap-2 hover:bg-green-700 duration-200"
 					>
 						SAVE
-						{isSaving ? (
+						{isSaving && (
 							<Oval
 								height={15}
 								width={15}
@@ -527,8 +531,6 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 								strokeWidth={5}
 								strokeWidthSecondary={4}
 							/>
-						) : (
-							''
 						)}
 					</button>
 					<button
