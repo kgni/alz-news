@@ -45,6 +45,10 @@ module.exports = {
 			filterKeyword = '';
 		}
 
+		if (!newsSource) {
+			newsSource = [];
+		}
+
 		const limit = parseInt(size);
 		const skip = (page - 1) * size;
 
@@ -53,11 +57,13 @@ module.exports = {
 		const allArticlesLength = await NewsArticle.find({
 			status: 'APPROVED',
 			title: { $regex: regexp },
+			publisher: { $in: [/ /] },
 		}).count();
 
 		const articles = await NewsArticle.find({
 			status: 'APPROVED',
 			title: { $regex: regexp },
+			publisher: { $in: [/ /] },
 		})
 			.sort({
 				publishDate: sortingOrder,
@@ -80,7 +86,7 @@ module.exports = {
 		};
 
 		console.log(totalPages);
-
+		console.log(newsSource);
 		res.json(data);
 	},
 	updateNewsArticle: async (req, res) => {
