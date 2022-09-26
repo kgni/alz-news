@@ -3,7 +3,12 @@ import FilterNewsSource from './Filters/FilterNewsSource';
 
 import { AiFillCaretUp, AiFillCaretDown } from 'react-icons/ai';
 
-const DropDownFilter = ({ children, newsSource, setNewsSource }) => {
+const DropDownFilter = ({
+	children,
+	newsSource,
+	setNewsSource,
+	onClickSetNewsSource,
+}) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	function onToggleOpen() {
@@ -25,6 +30,7 @@ const DropDownFilter = ({ children, newsSource, setNewsSource }) => {
 						setIsOpen={setIsOpen}
 						newsSource={newsSource}
 						setNewsSource={setNewsSource}
+						onClickSetNewsSource={onClickSetNewsSource}
 					/>
 				</>
 			) : (

@@ -160,6 +160,32 @@ export default function Page({
 		debouncedKeywordSearch(event.target.value);
 	};
 
+	async function onClickSetNewsSource(event) {
+		// if the box is checked
+		if (event.target.checked) {
+			//we add it to th current state of the NewsSources
+			setNewsSource((prevState) => [...prevState, event.target.value]);
+		} else {
+			// if the box was unchecked, we remove it from the current newsSources
+			setNewsSource((prevState) =>
+				prevState.filter((source) => source !== event.target.value)
+			);
+		}
+		const res = await axios.get(`http://localhost:8000/api/news/approved/`, {
+			params: {
+				page: currentPage + 1,
+				sortingOrder,
+				filterKeyword,
+				newsSource: !newsSource ? event.target.checked : newsSource,
+			},
+		});
+
+		const { articles, allArticlesLength, totalPages } = res.data;
+		setCurrentArticles(articles);
+		setArticlesLength(allArticlesLength);
+		setAllPages(totalPages);
+	}
+
 	return (
 		<>
 			<Head>
@@ -170,27 +196,25 @@ export default function Page({
 
 			<section className="news-section min-h-screen pb-8">
 				<div className="w-[90%] mx-auto py-8">
-					<div className="flex gap-x-8">
-						<div className="flex w-1/3"></div>
-						<div className="flex  mb-4 items-center w-2/3 mx-auto justify-center"></div>
-					</div>
 					<section className="flex gap-x-8">
-						<div className="flex flex-col basis-1/3 self-start">
+						<div className="flex flex-col w-1/3 self-start">
 							<RecommendedArticles
 								articles={recommendedArticles}
 								className=""
 							/>
 							<RecommendedResources className="" />
 						</div>
-						<NewsSourceTags
-							newsSource={newsSource}
-							onClickRemoveNewsSource={onClickRemoveNewsSource}
-						/>
-						<div className="flex flex-col">
-							<div className="flex items-center justify-center">
+
+						<div className="flex flex-col w-2/3">
+							<div className="flex items-center justify-center relative mb-4">
+								<NewsSourceTags
+									newsSource={newsSource}
+									onClickRemoveNewsSource={onClickRemoveNewsSource}
+								/>
 								<DropDownFilter
 									newsSource={newsSource}
 									setNewsSource={setNewsSource}
+									onClickSetNewsSource={onClickSetNewsSource}
 								/>
 								<SearchBar
 									placeholder="Enter Article Title..."

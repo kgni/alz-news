@@ -1,6 +1,11 @@
 import React from 'react';
 
-const FilterNewsSource = ({ newsSource, setNewsSource, setIsOpen }) => {
+const FilterNewsSource = ({
+	newsSource,
+	setNewsSource,
+	setIsOpen,
+	onClickSetNewsSource,
+}) => {
 	const newsSites = [
 		'alz.org',
 		'alzheimers.org.uk',
@@ -40,7 +45,7 @@ const FilterNewsSource = ({ newsSource, setNewsSource, setIsOpen }) => {
 								value={site}
 								// checking if the newsSource includes the site, if it does it is checked
 								checked={newsSource.includes(site)}
-								onChange={onChangeFilterNewsSource}
+								onChange={onClickSetNewsSource}
 							/>
 							<label htmlFor={site}>{site}</label>
 						</div>
