@@ -153,7 +153,7 @@ export default function Page({
 		setCurrentArticles(articles);
 		setArticlesLength(allArticlesLength);
 		setAllPages(totalPages);
-	}, 300);
+	}, 150);
 
 	const onChangeFilterKeyword = async (event, clear) => {
 		clear ? setFilterKeyword('') : setFilterKeyword(event.target.value);
@@ -197,7 +197,6 @@ export default function Page({
 									inputId="search"
 									onChangeFilterKeyword={onChangeFilterKeyword}
 									filterKeyword={filterKeyword}
-									debounce={debounce}
 								/>
 								<FilterByNewest
 									onToggleSort={onToggleSort}
