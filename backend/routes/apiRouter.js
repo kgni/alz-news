@@ -5,7 +5,11 @@ const newsArticlesController = require('../controllers/newsArticles');
 // news
 
 router.get('/news', newsArticlesController.getNewsArticles);
-router.get('/news/approved', newsArticlesController.getApprovedNewsArticles);
+// router.get('/news/approved', newsArticlesController.getApprovedNewsArticles);
+router.get(
+	'/news/approved',
+	newsArticlesController.getSpecificAmountOfApprovedNewsArticles
+);
 
 router.put('/news', newsArticlesController.updateNewsArticle);
 router.delete('/news/:id', newsArticlesController.deleteNewsArticle);

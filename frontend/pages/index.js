@@ -153,7 +153,7 @@ export default function Page({
 		setCurrentArticles(articles);
 		setArticlesLength(allArticlesLength);
 		setAllPages(totalPages);
-	}, 150);
+	}, 300);
 
 	const onChangeFilterKeyword = async (event, clear) => {
 		clear ? setFilterKeyword('') : setFilterKeyword(event.target.value);
