@@ -74,14 +74,19 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 			console.log(res);
 			if (res.status === 200) {
 				setIsSaving(false);
-				const newArticles = articles.filter(
-					(article) => currentShownArticle.id !== article.id
-				);
+				// const newArticles = articles.filter(
+				// 	(article) => currentShownArticle.id !== article.id
+				// );
+
+				const newArticles = articles.map((article) => {
+					return article.id === formData.id ? formData : article;
+				});
+
 				// TODO - THIS (LINE 81) IS FREEZING UP THE APPLICATION FOR QUITE SOME TIME WHEN SAVING, HOW DO WE FIX THIS SO THAT OUR DASHBOARD IS STILL SYNCED WITH THE BACKEND, WITHOUT DOING A RELOAD AND WITHOUT CAUSING SUCH A BIG RE-RENDER?
-				// setArticles([...newArticles, formData]);
+				setArticles(newArticles);
 				setUpdatedAt(Date.now());
 				toast.success('Article updated!', {
-					autoClose: 1500,
+					autoClose: 2500,
 					hideProgressBar: false,
 					closeOnClick: true,
 					pauseOnHover: true,
@@ -90,7 +95,7 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 			} else {
 				setIsSaving(false);
 				toast.error('Something went wrong, try again!', {
-					autoClose: 1500,
+					autoClose: 2500,
 					hideProgressBar: false,
 					closeOnClick: true,
 					pauseOnHover: true,
