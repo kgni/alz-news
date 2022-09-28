@@ -34,81 +34,79 @@ const DashboardAside = ({ currentPage, setCurrentPage, setIsAsideOpen }) => {
 	return (
 		<>
 			<IconContext.Provider value={{ size: '1.3em' }}>
-				<aside className="py-8 px-12 bg-black w-72 h-screen flex flex-col flex-shrink-0 relative z-50">
-					<div>
-						<AiFillCloseCircle
-							className="text-white absolute right-6 top-8 text-lg cursor-pointer hover:text-gray-200 duration-150"
-							onClick={() => setIsAsideOpen(false)}
-						/>
-						<Link href="/">
-							<h2 className="text-white font-bold text-3xl mb-32 cursor-pointer">
-								ALZ.news
-							</h2>
-						</Link>
-					</div>
-					<ul className="text-zinc-600 flex gap-8 font-semibold flex-col">
-						<li
-							onClick={onClickSetCurrentPage}
-							className={`${
-								currentPage === 'dashboard' ? 'text-white' : ''
-							} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
-						>
-							<RiDashboard2Fill />
-							Dashboard
-						</li>
-						<li
-							onClick={onClickSetCurrentPage}
-							className={`${
-								currentPage === 'news' ? 'text-white' : ''
-							} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
-						>
-							<IoNewspaperOutline />
-							News
-						</li>
-						<li
-							onClick={onClickSetCurrentPage}
-							className={`${
-								currentPage === 'journals' ? 'text-white' : ''
-							} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
-						>
-							<IoIosJournal />
-							Journals
-						</li>
-						<li
-							onClick={onClickSetCurrentPage}
-							className={`${
-								currentPage === 'settings' ? 'text-white' : ''
-							} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
-						>
-							<FaCog />
-							Settings
-						</li>
-					</ul>
-					<div className="mt-auto">
-						<div
-							onClick={() => setCurrentPage('settings')}
-							className="flex mb-12 gap-4 items-center cursor-pointer select-none"
-						>
-							<div className="rounded-full flex p-6 bg-white">
-								{/* <FaUserAlt color="white" size="1.4em" /> */}
-							</div>
-							<div>
-								<p className="text-zinc-200 text-sm font-semibold tracking-wider">
-									kgni
-								</p>
-								<p className="text-zinc-500 font-semibold text-xs tracking-wider">
-									Admin
-								</p>
-							</div>
+				<div>
+					<AiFillCloseCircle
+						className="text-white absolute right-6 top-8 text-lg cursor-pointer hover:text-gray-200 duration-150"
+						onClick={() => setIsAsideOpen(false)}
+					/>
+					<Link href="/">
+						<h2 className="text-white font-bold text-3xl mb-32 cursor-pointer">
+							ALZ.news
+						</h2>
+					</Link>
+				</div>
+				<ul className="text-zinc-600 flex gap-8 font-semibold flex-col">
+					<li
+						onClick={onClickSetCurrentPage}
+						className={`${
+							currentPage === 'dashboard' ? 'text-white' : ''
+						} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
+					>
+						<RiDashboard2Fill />
+						Dashboard
+					</li>
+					<li
+						onClick={onClickSetCurrentPage}
+						className={`${
+							currentPage === 'news' ? 'text-white' : ''
+						} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
+					>
+						<IoNewspaperOutline />
+						News
+					</li>
+					<li
+						onClick={onClickSetCurrentPage}
+						className={`${
+							currentPage === 'journals' ? 'text-white' : ''
+						} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
+					>
+						<IoIosJournal />
+						Journals
+					</li>
+					<li
+						onClick={onClickSetCurrentPage}
+						className={`${
+							currentPage === 'settings' ? 'text-white' : ''
+						} flex items-center gap-5 cursor-pointer hover:text-white duration-100 select-none`}
+					>
+						<FaCog />
+						Settings
+					</li>
+				</ul>
+				<div className="mt-auto">
+					<div
+						onClick={() => setCurrentPage('settings')}
+						className="flex mb-12 gap-4 items-center cursor-pointer select-none"
+					>
+						<div className="rounded-full flex p-6 bg-white">
+							{/* <FaUserAlt color="white" size="1.4em" /> */}
 						</div>
-						<button
-							href="/"
-							className="text-white flex justify-center w-full px-4 py-1 bg-red-800 font-semibold rounded-md hover:bg-red-700 duration-100 select-none"
-						>
-							LOGOUT
-						</button>
+						<div>
+							<p className="text-zinc-200 text-sm font-semibold tracking-wider">
+								kgni
+							</p>
+							<p className="text-zinc-500 font-semibold text-xs tracking-wider">
+								Admin
+							</p>
+						</div>
 					</div>
-				</aside>
+					<button
+						href="/"
+						className="text-white flex justify-center w-full px-4 py-1 bg-red-800 font-semibold rounded-md hover:bg-red-700 duration-100 select-none"
+					>
+						LOGOUT
+					</button>
+				</div>
 			</IconContext.Provider>
 		</>
 	);
