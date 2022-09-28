@@ -15,6 +15,7 @@ import DashboardNewsContent from '../components/Dashboard/News/DashboardNewsCont
 import { SkeletonTheme } from 'react-loading-skeleton';
 import DashboardHeaderSkeleton from '../components/Dashboard/Skeletons/DashboardHeaderSkeleton';
 import { NewsContext } from '../context/NewsContext';
+import { ToastContainer, Slide } from 'react-toastify';
 
 import { articleSort } from '../helper/articleSort';
 const Dashboard = () => {
@@ -104,6 +105,7 @@ const Dashboard = () => {
 				<section
 					className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-[#f8f8f8] px-12`}
 				>
+					<ToastContainer transition={Slide} position="top-right" />
 					{currentPage === 'dashboard' && <p>dashboard</p>}
 					{currentPage === 'news' && (
 						<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">
