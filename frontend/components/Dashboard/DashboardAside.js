@@ -5,9 +5,10 @@ import { RiDashboard2Fill } from 'react-icons/ri';
 import { IoNewspaperOutline } from 'react-icons/io5';
 import { IoIosJournal } from 'react-icons/io';
 import { FaCog, FaUserAlt } from 'react-icons/fa';
+import { AiFillCloseCircle } from 'react-icons/ai';
 import Link from 'next/link';
 
-const DashboardAside = ({ currentPage, setCurrentPage }) => {
+const DashboardAside = ({ currentPage, setCurrentPage, setIsAsideOpen }) => {
 	function onClickSetCurrentPage(event) {
 		// simply just returning if the page you clicked is already the currentPage (by doing this we are preventing that we are re-rendering if it is not necessary) - Not should if this should be kept, cause we might wanna do the refresh when clicking on the already selected page?
 		if (event.target.innerText.toLowerCase() === currentPage) {
@@ -33,12 +34,18 @@ const DashboardAside = ({ currentPage, setCurrentPage }) => {
 	return (
 		<>
 			<IconContext.Provider value={{ size: '1.3em' }}>
-				<aside className="py-8 px-12 bg-black w-72 h-screen flex flex-col flex-shrink-0">
-					<Link href="/">
-						<h2 className="text-white font-bold text-3xl mb-32 cursor-pointer">
-							ALZ.news
-						</h2>
-					</Link>
+				<aside className="py-8 px-12 bg-black w-72 h-screen flex flex-col flex-shrink-0 relative">
+					<div>
+						<AiFillCloseCircle
+							className="text-white absolute right-6 top-4 text-xl cursor-pointer hover:text-gray-200 duration-150"
+							onClick={() => setIsAsideOpen(false)}
+						/>
+						<Link href="/">
+							<h2 className="text-white font-bold text-3xl mb-32 cursor-pointer">
+								ALZ.news
+							</h2>
+						</Link>
+					</div>
 					<ul className="text-zinc-600 flex gap-8 font-semibold flex-col">
 						<li
 							onClick={onClickSetCurrentPage}

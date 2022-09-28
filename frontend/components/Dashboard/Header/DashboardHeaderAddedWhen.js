@@ -34,8 +34,6 @@ function getFirstDayOfCurrentMonth() {
 		0
 	);
 
-	console.log(firstDayOfCurrentMonth);
-
 	return { text: 'Added this month', range: firstDayOfCurrentMonth };
 }
 
@@ -46,7 +44,6 @@ function getFirstDayPreviousMonth() {
 		now.getMonth() - 1,
 		1
 	);
-	console.log(firstDayOfPreviousMonth);
 
 	return firstDayOfPreviousMonth;
 }
@@ -58,7 +55,6 @@ function getFirstDayThreePreviousMonth() {
 		now.getMonth() - 3,
 		1
 	);
-	console.log(firstDayOfThreePreviousMonth);
 
 	return firstDayOfThreePreviousMonth;
 }

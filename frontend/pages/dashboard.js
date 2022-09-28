@@ -3,6 +3,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
 
+import { GiHamburgerMenu } from 'react-icons/gi';
+
 // CSS
 import styles from '../styles/Dashboard.module.css';
 
@@ -18,14 +20,13 @@ const Dashboard = () => {
 	const [articles, setArticles] = useState([]);
 
 	// states used for filtering
-	const [filterKeyword, setFilterKeyword] = useState('');
 	const [sortingOrder, setSortingOrder] = useState('desc');
-	const [newsSource, setNewsSource] = useState([]);
 	const [status, setStatus] = useState('ALL');
 	const [isRecommendedActive, setIsRecommendedActive] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
-
 	const [currentPage, setCurrentPage] = useState('dashboard');
+
+	const [isAsideOpen, setIsAsideOpen] = useState(true);
 
 	// computed state, when state changes (like filtering keyword, we will applyfilters again - which is why it works)
 
@@ -74,10 +75,21 @@ const Dashboard = () => {
 				<title>ALZ.NEWS - DASHBOARD</title>
 			</Head>
 			<main className="flex max-h-screen w-full ">
-				<DashboardAside
-					currentPage={currentPage}
-					setCurrentPage={setCurrentPage}
-				/>
+				{isAsideOpen ? (
+					<DashboardAside
+						currentPage={currentPage}
+						setCurrentPage={setCurrentPage}
+						setIsAsideOpen={setIsAsideOpen}
+					/>
+				) : (
+					<aside className="w-20 h-screen bg-black flex justify-center">
+						<GiHamburgerMenu
+							className="text-white text-3xl cursor-pointer mt-8 hover:text-gray-200 duration-150"
+							onClick={() => setIsAsideOpen(true)}
+						/>
+					</aside>
+				)}
+
 				{currentPage === 'dashboard' && <p>dashboard</p>}
 				{currentPage === 'news' && (
 					<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">

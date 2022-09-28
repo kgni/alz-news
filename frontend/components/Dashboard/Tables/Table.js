@@ -147,10 +147,10 @@ const SortingBasicTable = () => {
 											type="checkbox"
 											id="recommended"
 											name="recommended"
-											checked={isRecommendedActive}
+											defaultChecked={isRecommendedActive}
 											onClick={(e) => setIsRecommendedActive(e.target.checked)}
 										/>
-										<label for="recommended"> Recommended</label>
+										<label htmlFor="recommended"> Recommended</label>
 									</div>
 								</div>
 							</div>
