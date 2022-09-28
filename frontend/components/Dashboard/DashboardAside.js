@@ -34,10 +34,10 @@ const DashboardAside = ({ currentPage, setCurrentPage, setIsAsideOpen }) => {
 	return (
 		<>
 			<IconContext.Provider value={{ size: '1.3em' }}>
-				<aside className="py-8 px-12 bg-black w-72 h-screen flex flex-col flex-shrink-0 relative">
+				<aside className="py-8 px-12 bg-black w-72 h-screen flex flex-col flex-shrink-0 relative z-50">
 					<div>
 						<AiFillCloseCircle
-							className="text-white absolute right-6 top-4 text-xl cursor-pointer hover:text-gray-200 duration-150"
+							className="text-white absolute right-6 top-8 text-lg cursor-pointer hover:text-gray-200 duration-150"
 							onClick={() => setIsAsideOpen(false)}
 						/>
 						<Link href="/">

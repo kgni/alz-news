@@ -82,30 +82,29 @@ const Dashboard = () => {
 						setIsAsideOpen={setIsAsideOpen}
 					/>
 				) : (
-					<aside className="w-20 h-screen bg-black flex justify-center">
+					<aside className="w-20 h-screen bg-black flex justify-center relative z-50">
 						<GiHamburgerMenu
 							className="text-white text-3xl cursor-pointer mt-8 hover:text-gray-200 duration-150"
 							onClick={() => setIsAsideOpen(true)}
 						/>
 					</aside>
 				)}
-
-				{currentPage === 'dashboard' && <p>dashboard</p>}
-				{currentPage === 'news' && (
-					<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">
-						<section
-							className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-[#f8f8f8]`}
-						>
+				<section
+					className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-[#f8f8f8] px-12`}
+				>
+					{currentPage === 'dashboard' && <p>dashboard</p>}
+					{currentPage === 'news' && (
+						<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">
 							{isLoading ? (
 								<DashboardHeaderSkeleton />
 							) : (
 								<DashboardNewsContent />
 							)}
-						</section>
-					</SkeletonTheme>
-				)}
-				{currentPage === 'journals' && <p>journals</p>}
-				{currentPage === 'settings' && <p>settings</p>}
+						</SkeletonTheme>
+					)}
+					{currentPage === 'journals' && <p>journals</p>}
+					{currentPage === 'settings' && <p>settings</p>}
+				</section>
 			</main>
 		</NewsContext.Provider>
 	);
