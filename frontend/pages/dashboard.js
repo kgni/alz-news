@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 
 import { GiHamburgerMenu } from 'react-icons/gi';
 
@@ -74,21 +75,32 @@ const Dashboard = () => {
 			<Head>
 				<title>ALZ.NEWS - DASHBOARD</title>
 			</Head>
+
 			<main className="flex max-h-screen w-full ">
-				{isAsideOpen ? (
-					<DashboardAside
-						currentPage={currentPage}
-						setCurrentPage={setCurrentPage}
-						setIsAsideOpen={setIsAsideOpen}
-					/>
-				) : (
-					<aside className="w-20 h-screen bg-black flex justify-center relative z-50">
-						<GiHamburgerMenu
-							className="text-white text-3xl cursor-pointer mt-8 hover:text-gray-200 duration-150"
-							onClick={() => setIsAsideOpen(true)}
+				<motion.aside
+					animate={isAsideOpen ? { width: 288 } : { width: 64 }}
+					transition={{ duration: 0.1 }}
+					className={`bg-black h-screen flex relative z-50 ${
+						isAsideOpen
+							? 'py-8 px-12 w-72  flex-col flex-shrink-0 '
+							: 'w-16 justify-center'
+					}`}
+				>
+					{isAsideOpen ? (
+						<DashboardAside
+							currentPage={currentPage}
+							setCurrentPage={setCurrentPage}
+							setIsAsideOpen={setIsAsideOpen}
 						/>
-					</aside>
-				)}
+					) : (
+						<>
+							<GiHamburgerMenu
+								className="text-white text-3xl cursor-pointer mt-8 hover:text-gray-200 duration-150"
+								onClick={() => setIsAsideOpen(true)}
+							/>
+						</>
+					)}
+				</motion.aside>
 				<section
 					className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-[#f8f8f8] px-12`}
 				>
