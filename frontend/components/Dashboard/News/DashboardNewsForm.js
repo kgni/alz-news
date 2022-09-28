@@ -89,7 +89,7 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 					autoClose: 2500,
 					hideProgressBar: false,
 					closeOnClick: true,
-					pauseOnHover: true,
+					pauseOnHover: false,
 					draggable: true,
 				});
 			} else {
@@ -98,7 +98,7 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 					autoClose: 2500,
 					hideProgressBar: false,
 					closeOnClick: true,
-					pauseOnHover: true,
+					pauseOnHover: false,
 					draggable: true,
 				});
 				throw new Error(res.status);

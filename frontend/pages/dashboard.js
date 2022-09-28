@@ -105,7 +105,11 @@ const Dashboard = () => {
 				<section
 					className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-[#f8f8f8] px-12`}
 				>
-					<ToastContainer transition={Slide} position="top-right" />
+					<ToastContainer
+						transition={Slide}
+						position="top-right"
+						pauseOnFocusLoss={false}
+					/>
 					{currentPage === 'dashboard' && <p>dashboard</p>}
 					{currentPage === 'news' && (
 						<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">
