@@ -20,7 +20,7 @@ import { BiEdit } from 'react-icons/bi';
 import ConfirmationPopup from '../../Confirmation/ConfirmationPopup';
 import ConfirmationBackdrop from '../../Confirmation/ConfirmationBackdrop';
 import TextareaAutosize from 'react-textarea-autosize';
-import { ToastContainer, toast, Slide } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
@@ -519,7 +519,6 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 							</div>
 						</div>
 					</section>
-					<ToastContainer transition={Slide} position="top-right" />
 				</form>
 				<div className="flex gap-4 mt-auto justify-end relative">
 					<button
