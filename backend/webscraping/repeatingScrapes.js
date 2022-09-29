@@ -149,7 +149,8 @@ async function repeatingScrapes() {
 
 			for (let i = 0; i < 6; i++) {
 				// clicking the button see more button
-				await page.click('#alz-mixed-content-news .see-more');
+				const button = await page.$('#alz-mixed-content-news .see-more');
+				await button.evaluate((b) => b.click());
 				// waiting for our AJAX request to return OK
 				await page.waitForResponse((response) => response.status() === 200);
 				await page.waitForTimeout(500);
