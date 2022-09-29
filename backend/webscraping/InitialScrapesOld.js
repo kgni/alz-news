@@ -1,5 +1,3 @@
-// TODO - Fill this out when allScrapes is done, this will be used to fetch all articles again, but it will check if the articles are already in the DB. Articles should also be set to PENDING instead of APPROVED, like they are in the allScrapes
-
 const cheerio = require('cheerio');
 const axios = require('axios');
 const parse = require('./scrape');
@@ -27,7 +25,7 @@ async function fetchArticles(url) {
 
 // INTIAL SCRAPE
 
-async function allScrape() {
+async function initialScrape() {
 	await connectDB();
 	const articlesDB = await NewsArticle.find({});
 	const newArticles = [];
@@ -63,24 +61,13 @@ async function allScrape() {
 				let categories = ["alzheimer's"];
 				let type = article.querySelector('.card-lead').textContent;
 
-				if (
-					articlesScraped.find(
-						(article) => article.title.toLowerCase() === title.toLowerCase()
-					) &&
-					title !== ''
-				) {
-					return;
-				}
-
-				// if the url has already been scraped, then we skip this article
-				if (articlesScraped.find((article) => article.url === url)) {
-					return;
-				}
-
+				let status = '';
 				if (publishDate == 'Invalid Date') {
 					publishDate = null;
+					status = 'PENDING';
 				} else {
 					publishDate = publishDate.toISOString().toString();
+					status = 'APPROVED';
 				}
 
 				let articleData = {
@@ -92,7 +79,7 @@ async function allScrape() {
 					publishDate,
 					categories,
 					type: 'news',
-					status: 'APPROVED',
+					status,
 				};
 				articlesScraped.push(articleData);
 			});
@@ -103,26 +90,9 @@ async function allScrape() {
 			return articlesScraped;
 		});
 
-		// filtering the articles, first we filter to check if the articles are in the the currently newly fetched article. then after we check if they are in the DB.
-
-		let filteredNewArticles = parse.filterPuppeteerArticlesTitleAndURL(
-			newFetchedArticles,
-			newArticles
-		);
-		// let filteredNewArticles = newFetchedArticles.filter(
-		// 	(article) => !newArticles.find(({ title }) => article.title === title)
-		// );
-
-		// filtering  articles already in DB
-
-		filteredNewArticles = parse.filterPuppeteerArticlesTitleAndURL(
-			filteredNewArticles,
-			articlesDB
-		);
-
-		newArticles.push(...filteredNewArticles);
+		newArticles.push(...newFetchedArticles);
 		console.log(
-			`${filteredNewArticles.length} articles added from https://www.alz.org/news/browse-by-news-type?newstype=ExternalNewsr`
+			`${newFetchedArticles.length} articles added from https://www.alz.org/news/browse-by-news-type?newstype=ExternalNewsr`
 		);
 		console.log('closing browser...');
 		await browser.close();
@@ -156,9 +126,7 @@ async function allScrape() {
 		while (await page.$('#alz-mixed-content-news .see-more')) {
 			try {
 				// clicking the button see more button
-				const button = await page.$('#alz-mixed-content-news .see-more');
-				await button.evaluate((b) => b.click());
-				// page.click('#alz-mixed-content-news .see-more');
+				page.click('#alz-mixed-content-news .see-more');
 				// waiting for our AJAX request to return OK
 				await page.waitForResponse((response) => response.status() === 200);
 			} catch (e) {
@@ -192,6 +160,7 @@ async function allScrape() {
 
 				let type = article.querySelector('span').textContent.toLowerCase();
 
+				// checking if the article title is already scraped and is NOT empty
 				if (
 					articlesScraped.find(
 						(article) => article.title.toLowerCase() === title.toLowerCase()
@@ -200,6 +169,8 @@ async function allScrape() {
 				) {
 					return;
 				}
+
+				// if url has already been scraped, we skip this article as well
 
 				if (articlesScraped.find((article) => article.url === url)) {
 					return;
@@ -227,16 +198,9 @@ async function allScrape() {
 			return articlesScraped;
 		});
 
-		let filteredNewArticles = parse.filterPuppeteerArticlesTitleAndURL(
+		const filteredNewArticles = parse.filterPuppeteerArticlesTitleAndURL(
 			newFetchedArticles,
 			newArticles
-		);
-
-		// filtering  articles already in DB
-
-		filteredNewArticles = parse.filterPuppeteerArticlesTitleAndURL(
-			filteredNewArticles,
-			articlesDB
 		);
 
 		console.log(filteredNewArticles);
@@ -277,28 +241,25 @@ async function allScrape() {
 					// cleaning up the publishedDate, removing published and trimming
 					publishDate = publishDate.split(' Published:').join('').trim();
 					publishDate = new Date([...new Set(publishDate.split(' '))]);
+
+					// checking if title has already been scraped, if it has and it was not empty, then we skip this article
 					if (
-						(articlesDB.find(
+						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
 							newArticles.find(
 								(article) => article.title.toLowerCase() === title.toLowerCase()
-							) ||
-							articlesScraped.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
 							)) &&
 						title !== ''
 					) {
-						// console.log(`article already exists: "${title}"`);
 						return;
 					}
 
 					// if the url has already been scraped, then we skip this article
 
 					if (
-						articlesDB.find((article) => article.url === url) ||
-						newArticles.find((article) => article.url === url) ||
-						articlesScraped.find((article) => article.url === url)
+						articlesScraped.find((article) => article.url === url) ||
+						newArticles.find((article) => article.url === url)
 					) {
 						return;
 					}
@@ -326,8 +287,10 @@ async function allScrape() {
 						status: 'PENDING',
 						// articleContent,
 					};
-					// console.log(article);
 					articlesScraped.push(article);
+					if (article.title === '') {
+						console.log(article);
+					}
 				});
 
 				// !PAGINATION
@@ -339,7 +302,7 @@ async function allScrape() {
 
 					// if the baseUrl is undefined, then we there are no next page and we want to just return
 					if (baseUrl === 'https://www.nia.nih.gov/news/allundefined') {
-						console.log(articlesScraped);
+						// console.log(articlesScraped);
 						console.log('done scraping...');
 						console.log(
 							`${articlesScraped.length} / ${articlesScrapedCount} articles were scraped from https://www.nia.nih.gov/news/all`
@@ -372,7 +335,6 @@ async function allScrape() {
 
 					// creating the properties for the
 					let title = $(this).find('h2').text().trim();
-
 					let subtitle = $(this).find('.field-items p').text().trim();
 					let url = `https://www.j-alz.com${$(this).find('h2 a').attr('href')}`;
 					let publisher = ['j-alz.com', "Journal Of Alzheimer's Disease"];
@@ -382,36 +344,34 @@ async function allScrape() {
 					publishDate = publishDate.split(' Published:').join('').trim();
 					publishDate = new Date([...new Set(publishDate.split(' '))]);
 
-					// check if we have an article already with the title name, if we have skip this iteration.
+					// check if we have an article already with the title name and if the title is not empty, if both are true we skip this iteration.
 					if (
-						(articlesDB.find(
+						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
 							newArticles.find(
 								(article) => article.title.toLowerCase() === title.toLowerCase()
-							) ||
-							articlesScraped.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
 							)) &&
 						title !== ''
 					) {
-						// console.log(`article already exists: "${title}"`);
 						return;
 					}
 
-					// if the url has already been scraped, or is already in the DB, then we skip this article
+					// if url has already been added, skip article
+
 					if (
-						articlesDB.find((article) => article.url === url) ||
-						newArticles.find((article) => article.url === url) ||
-						articlesScraped.find((article) => article.url === url)
+						articlesScraped.find((article) => article.url === url) ||
+						newArticles.find((article) => article.url === url)
 					) {
 						return;
 					}
 
 					if (publishDate == 'Invalid Date') {
 						publishDate = null;
+						status = 'PENDING';
 					} else {
 						publishDate = publishDate.toISOString();
+						status = 'APPROVED';
 					}
 
 					const article = {
@@ -423,7 +383,7 @@ async function allScrape() {
 						publishDate,
 						categories: ["alzheimer's"],
 						type: 'news',
-						status: 'APPROVED',
+						status,
 						// articleContent,
 					};
 					// console.log(article);
@@ -480,26 +440,22 @@ async function allScrape() {
 					let publishDate = $(this).find('.fc-timestamp__text').text();
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
-						(articlesDB.find(
+						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
 							newArticles.find(
 								(article) => article.title.toLowerCase() === title.toLowerCase()
-							) ||
-							articlesScraped.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
 							)) &&
 						title !== ''
 					) {
-						// console.log(`article already exists: "${title}"`);
 						return;
 					}
 
-					// if the url has already been scraped, or is already in the DB, then we skip this article
+					// if url has already been added, skip article.
+
 					if (
-						articlesDB.find((article) => article.url === url) ||
-						newArticles.find((article) => article.url === url) ||
-						articlesScraped.find((article) => article.url === url)
+						articlesScraped.find((article) => article.url === url) ||
+						newArticles.find((article) => article.url === url)
 					) {
 						return;
 					}
@@ -513,11 +469,12 @@ async function allScrape() {
 					publishDate = new Date([...new Set(publishDate.split(' '))]);
 
 					// If date couldn't be created, we need to add it manually
-					let status = '';
 					if (publishDate == 'Invalid Date') {
 						publishDate = null;
+						status = 'PENDING';
 					} else {
 						publishDate = publishDate.toISOString();
+						status = 'APPROVED';
 					}
 
 					const article = {
@@ -528,7 +485,7 @@ async function allScrape() {
 						publisherUrl,
 						publishDate,
 						categories: ["alzheimer's"],
-						status: 'APPROVED',
+						status,
 						// articleContent,
 					};
 					// console.log(article);
@@ -579,13 +536,10 @@ async function allScrape() {
 					let publishDate = $(this).find('.fc-timestamp__text').text();
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
-						(articlesDB.find(
+						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
 							newArticles.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
-							) ||
-							articlesScraped.find(
 								(article) => article.title.toLowerCase() === title.toLowerCase()
 							)) &&
 						title !== ''
@@ -594,11 +548,11 @@ async function allScrape() {
 						return;
 					}
 
-					// if the url has already been scraped, or is already in the DB, then we skip this article
+					// if url has already been added, skip article
+
 					if (
-						articlesDB.find((article) => article.url === url) ||
-						newArticles.find((article) => article.url === url) ||
-						articlesScraped.find((article) => article.url === url)
+						articlesScraped.find((article) => article.url === url) ||
+						newArticles.find((article) => article.url === url)
 					) {
 						return;
 					}
@@ -610,10 +564,14 @@ async function allScrape() {
 
 					publishDate = new Date([...new Set(publishDate.split(' '))]);
 
+					// If date couldn't be created, we need to add it manually
+					let status = '';
 					if (publishDate == 'Invalid Date') {
 						publishDate = null;
+						status = 'PENDING';
 					} else {
 						publishDate = publishDate.toISOString();
+						status = 'APPROVED';
 					}
 
 					const article = {
@@ -624,7 +582,7 @@ async function allScrape() {
 						publisherUrl,
 						publishDate,
 						categories: ['dementia'],
-						status: 'APPROVED',
+						status,
 						// articleContent,
 					};
 					// console.log(article);
@@ -690,36 +648,35 @@ async function allScrape() {
 					// cleaning up the publishedDate, removing published and trimming
 					publishDate = publishDate.trim();
 					publishDate = new Date(publishDate);
+
 					// If we already have an article with the same name, then we skip that article from being added
 					if (
-						(articlesDB.find(
+						(articlesScraped.find(
 							(article) => article.title.toLowerCase() === title.toLowerCase()
 						) ||
 							newArticles.find(
 								(article) => article.title.toLowerCase() === title.toLowerCase()
-							) ||
-							articlesScraped.find(
-								(article) => article.title.toLowerCase() === title.toLowerCase()
 							)) &&
 						title !== ''
 					) {
-						// console.log(`article already exists: "${title}"`);
 						return;
 					}
 
-					// if the url has already been scraped, or is already in the DB, then we skip this article
+					// if url has already been added, skip article.
 					if (
-						articlesDB.find((article) => article.url === url) ||
-						newArticles.find((article) => article.url === url) ||
-						articlesScraped.find((article) => article.url === url)
+						articlesScraped.find((article) => article.url === url) ||
+						newArticles.find((article) => article.url === url)
 					) {
 						return;
 					}
 
+					let status = '';
 					if (publishDate == 'Invalid Date') {
 						publishDate = null;
+						status = 'PENDING';
 					} else {
 						publishDate = publishDate.toISOString();
+						status = 'APPROVED';
 					}
 
 					const article = {
@@ -731,7 +688,7 @@ async function allScrape() {
 						publishDate,
 						categories: [],
 						type: 'news',
-						status: 'APPROVED',
+						status,
 						// articleContent,
 					};
 
@@ -766,14 +723,14 @@ async function allScrape() {
 		await scrape(baseUrl);
 	}
 
-	await alzOrgNewsScrape();
-	await neuroScienceNews();
-	await niaNihGovScrape();
-	await jAlzScrape();
-	await theGuardianAlzheimerScrape();
-	await theGuardianDementiaScrape();
-	// await alzheimersOrgUkScrape();
-	// console.log(`${newArticles.length} articles added`);
+	// await alzOrgNewsScrape();
+	// await neuroScienceNews();
+	// await niaNihGovScrape();
+	// await jAlzScrape();
+	// await theGuardianAlzheimerScrape();
+	// await theGuardianDementiaScrape();
+	await alzheimersOrgUkScrape();
+	console.log(`${newArticles.length} articles added`);
 	NewsArticle.insertMany(newArticles, (err) => {
 		if (err) return handleError(err);
 		console.log(`${newArticles.length} articles added to DB`);
@@ -782,4 +739,15 @@ async function allScrape() {
 	});
 }
 
-allScrape();
+initialScrape();
+
+// FIRST SCRAPES (THIS IS USED FOR WHEN WE WANT TO ADD A NEW WEBSITES ARTICLES (AFTER THE INITIAL SCRAPE HAS BEEN MADE))
+
+// * THIS SHOULD ONLY HAVE NEW SITES, ONCE THE SITES HAS BEEN SCRAPED WE CAN COMMENT THE FUNCTION OUT
+// * AFTER FIRST SCRAPE WE WILL ADD A FUNCTION FOR REPEATEDLY SCRAPING. THIS FUNCTION WILL BE ADDED TO THE repeatingScrapes.js file
+async function firstScrape() {
+	await connectDB();
+
+	const articlesDB = await NewsArticle.find({});
+	const newArticles = [];
+}

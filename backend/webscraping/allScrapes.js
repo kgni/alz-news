@@ -156,7 +156,8 @@ async function allScrape() {
 		while (await page.$('#alz-mixed-content-news .see-more')) {
 			try {
 				// clicking the button see more button
-				page.click('#alz-mixed-content-news .see-more');
+				const button = await page.$('#alz-mixed-content-news .see-more');
+				await button.evaluate((b) => b.click());
 				// waiting for our AJAX request to return OK
 				await page.waitForResponse((response) => response.status() === 200);
 			} catch (e) {
@@ -764,12 +765,12 @@ async function allScrape() {
 		await scrape(baseUrl);
 	}
 
-	await alzOrgNewsScrape();
-	await neuroScienceNews();
-	await niaNihGovScrape();
-	await jAlzScrape();
-	await theGuardianAlzheimerScrape();
-	await theGuardianDementiaScrape();
+	// await alzOrgNewsScrape();
+	// await neuroScienceNews();
+	// await niaNihGovScrape();
+	// await jAlzScrape();
+	// await theGuardianAlzheimerScrape();
+	// await theGuardianDementiaScrape();
 	await alzheimersOrgUkScrape();
 	// console.log(`${newArticles.length} articles added`);
 	NewsArticle.insertMany(newArticles, (err) => {
