@@ -7,17 +7,17 @@ import { motion } from 'framer-motion';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
 // CSS
-import styles from '../styles/Dashboard.module.css';
+import styles from '../../styles/Dashboard.module.css';
 
 // Modules
-import DashboardAside from '../components/Dashboard/DashboardAside';
-import DashboardNewsContent from '../components/Dashboard/News/DashboardNewsContent';
+import DashboardAside from '../../components/Dashboard/DashboardAside';
+import DashboardNewsContent from '../../components/Dashboard/News/DashboardNewsContent';
 import { SkeletonTheme } from 'react-loading-skeleton';
-import DashboardHeaderSkeleton from '../components/Dashboard/Skeletons/DashboardHeaderSkeleton';
-import { NewsContext } from '../context/NewsContext';
+import DashboardHeaderSkeleton from '../../components/Dashboard/Skeletons/DashboardHeaderSkeleton';
+import { NewsContext } from '../../context/NewsContext';
 import { ToastContainer, Slide } from 'react-toastify';
 
-import { articleSort } from '../helper/articleSort';
+import { articleSort } from '../../helper/articleSort';
 const Dashboard = () => {
 	const [articles, setArticles] = useState([]);
 
