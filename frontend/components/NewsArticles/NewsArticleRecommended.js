@@ -40,7 +40,6 @@ const NewsArticle = ({ article }) => {
 
 	return (
 		<a
-			// whileHover={{ scale: 1.01 }}
 			className={`${cardBgStyle} p-4 shadow-md flex bg-white mb-4 rounded-md`}
 			target="_blank"
 			href={article.url}
@@ -55,12 +54,7 @@ const NewsArticle = ({ article }) => {
 
 				<div className="flex items-center gap-x-4 mt-auto">
 					<p className="font-semibold">{publishDate}</p>
-					<a
-						whileHover={{ scale: 1.02 }}
-						className=""
-						href={article.publisherUrl}
-						target="_blank"
-					>
+					<a className="" href={article.publisherUrl} target="_blank">
 						<p className={`${tagStyle} text-sm px-2 rounded-full`}>
 							{article.publisher[0]}
 						</p>
