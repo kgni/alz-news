@@ -15,13 +15,11 @@ const AuthPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	console.log(authType);
-
 	function redirectToHome() {
-		const { pathname } = Router;
-
-		if (pathname === '/auth') Router.push('/dashboard');
+		Router.push('/dashboard');
 	}
+
+	// TODO - implement error handling, show error messages if user was not registered or validation didn't meet expectations. Show success on successfully created account
 
 	async function registerUser() {
 		const res = await axios
@@ -47,6 +45,8 @@ const AuthPage = () => {
 			.catch((error) => console.log(error));
 	}
 
+	// TODO - throw error and don't redirect if email or password isn't a match. Also sessions are not working at the moment, figure out how to make them work
+
 	async function loginUser() {
 		const res = await signIn('credentials', {
 			email,
@@ -58,13 +58,14 @@ const AuthPage = () => {
 		res.error ? console.log(res.error) : redirectToHome();
 	}
 
-	function onSubmitForm() {
+	function onSubmitForm(e) {
+		// e.preventDefault();
 		authType === 'Login' ? loginUser() : registerUser();
 	}
 
 	return (
 		<section className="bg-black h-screen w-full justify-center flex items-center px-8">
-			<div className="bg-white flex p-12 pb-8 rounded-lg  flex-col items-center w-[500px] min-h-[600px]">
+			<div className="bg-white flex p-12 pb-8 rounded-lg  flex-col items-center w-[500px] min-h-[800px]">
 				{authType === 'Login' && (
 					<LoginForm
 						email={email}
