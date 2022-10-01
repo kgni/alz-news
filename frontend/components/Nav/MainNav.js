@@ -7,7 +7,7 @@ import { FaUser } from 'react-icons/fa';
 import { AiOutlineCaretDown } from 'react-icons/ai';
 
 const MainNav = () => {
-	const { data: session, loading } = useSession();
+	const { data: session, status } = useSession();
 	console.log(session);
 	return (
 		<nav className="w-[90%] mx-auto py-4 flex justify-between items-center text-white">
