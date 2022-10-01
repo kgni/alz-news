@@ -4,6 +4,8 @@ import Link from 'next/link';
 import axios from 'axios';
 import { debounce } from 'lodash';
 
+import { useSession } from 'next-auth/react';
+
 // COMPONENTS
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
 import Layout from '../components/UI/Layout/Layout';
@@ -81,6 +83,11 @@ export default function Page({
 	const [filterKeyword, setFilterKeyword] = useState('');
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
+
+	// session
+
+	const { data: session, status } = useSession();
+	console.log(session, status);
 
 	// PAGINATION
 

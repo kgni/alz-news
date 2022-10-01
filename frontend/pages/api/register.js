@@ -34,6 +34,8 @@ const validateForm = async (firstName, lastName, email, password) => {
 
 export default async function handler(req, res) {
 	// validate if it is a POST
+
+	console.log(req.body);
 	if (req.method !== 'POST') {
 		return res
 			.status(200)

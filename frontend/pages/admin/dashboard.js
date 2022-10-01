@@ -8,6 +8,9 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 // CSS
 import styles from '../../styles/Dashboard.module.css';
 
+// session
+import { useSession } from 'next-auth/react';
+
 // Modules
 import DashboardAside from '../../components/Dashboard/DashboardAside';
 import DashboardNewsContent from '../../components/Dashboard/News/DashboardNewsContent';
@@ -17,7 +20,12 @@ import { NewsContext } from '../../context/NewsContext';
 import { ToastContainer, Slide } from 'react-toastify';
 
 import { articleSort } from '../../helper/articleSort';
+import { useRouter } from 'next/router';
+
 const AdminDashboard = () => {
+	const { data: session } = useSession();
+	const router = useRouter();
+
 	const [articles, setArticles] = useState([]);
 
 	// states used for filtering

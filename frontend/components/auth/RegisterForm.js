@@ -16,7 +16,7 @@ const RegisterForm = ({
 	return (
 		<>
 			<h1 className="font-bold text-3xl mb-16">Register</h1>
-			<form action="/" className="w-full">
+			<form className="w-full">
 				<div className="mb-16">
 					<div className="flex gap-8 justify-between">
 						<div className="w-1/2 flex flex-col">
@@ -30,9 +30,6 @@ const RegisterForm = ({
 								className="py-3 focus:outline-none border-b-2 border-b-gray placeholder:font-semibold placeholder:text-gray-300 mb-8 leading-tight"
 								id="firstName"
 								type="text"
-								placeholder="Type your first name"
-								onFocus={(e) => (e.target.placeholder = '')}
-								onBlur={(e) => (e.target.placeholder = 'Type your first name')}
 								value={firstName}
 								onChange={(e) => setFirstName(e.target.value)}
 							/>
@@ -48,15 +45,12 @@ const RegisterForm = ({
 								className="py-3 focus:outline-none border-b-2 border-b-gray placeholder:font-semibold placeholder:text-gray-300 mb-8 leading-tight"
 								id="lastName"
 								type="text"
-								placeholder="Type your last name"
-								onFocus={(e) => (e.target.placeholder = '')}
-								onBlur={(e) => (e.target.placeholder = 'Type your last name')}
 								value={lastName}
 								onChange={(e) => setLastName(e.target.value)}
 							/>
 						</div>
 					</div>
-					<div className="flex flex-col relative">
+					<div className="flex flex-col relative mb-8">
 						<label
 							htmlFor="email"
 							className="text-sm font-semibold text-zinc-700"
@@ -65,7 +59,7 @@ const RegisterForm = ({
 						</label>
 						<HiOutlineMail className="absolute top-8 left-2 text-xl text-gray-300" />
 						<input
-							className="p-3 pl-10 focus:outline-none border-b-2 border-b-gray placeholder:font-semibold placeholder:text-gray-300 mb-8 leading-tight"
+							className="p-3 pl-10 focus:outline-none border-b-2 border-b-gray placeholder:font-semibold placeholder:text-gray-300 leading-tight"
 							id="email"
 							type="email"
 							placeholder="Type your email"
@@ -75,7 +69,7 @@ const RegisterForm = ({
 							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</div>
-					<div className="flex flex-col relative">
+					<div className="flex flex-col relative mb-8">
 						<label
 							htmlFor="password"
 							className="text-sm font-semibold text-zinc-700"
@@ -91,6 +85,26 @@ const RegisterForm = ({
 							placeholder="Type your password"
 							onFocus={(e) => (e.target.placeholder = '')}
 							onBlur={(e) => (e.target.placeholder = 'Type your password')}
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+						/>
+					</div>
+					<div className="flex flex-col relative">
+						<label
+							htmlFor="password"
+							className="text-sm font-semibold text-zinc-700"
+						>
+							Repeat password
+						</label>
+
+						<HiOutlineLockClosed className="absolute top-[35px] left-2 text-xl text-gray-300" />
+						<input
+							className="p-3 pl-10 focus:outline-none border-b-2 border-b-gray placeholder:font-semibold placeholder:text-gray-300"
+							id="password"
+							type="password"
+							placeholder="Repeat your password"
+							onFocus={(e) => (e.target.placeholder = '')}
+							onBlur={(e) => (e.target.placeholder = 'Repeat your password')}
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>

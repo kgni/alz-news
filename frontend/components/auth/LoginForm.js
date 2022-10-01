@@ -12,7 +12,7 @@ const LoginForm = ({
 	return (
 		<>
 			<h1 className="font-bold text-3xl mb-16">Login</h1>
-			<form action="/" className="w-full">
+			<form onSubmit={onSubmitForm} action="/" className="w-full">
 				<div className="mb-16">
 					<div className="flex flex-col relative">
 						<label
@@ -55,10 +55,7 @@ const LoginForm = ({
 					</div>
 				</div>
 
-				<button
-					onClick={onSubmitForm}
-					className="bg-black text-white font-bold uppercase w-full rounded-full py-2 tracking-wider self-end"
-				>
+				<button className="bg-black text-white font-bold uppercase w-full rounded-full py-2 tracking-wider self-end">
 					Login
 				</button>
 			</form>
