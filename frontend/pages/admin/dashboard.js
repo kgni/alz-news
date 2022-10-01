@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-
 import { GiHamburgerMenu } from 'react-icons/gi';
 
 // CSS
@@ -18,7 +17,7 @@ import { NewsContext } from '../../context/NewsContext';
 import { ToastContainer, Slide } from 'react-toastify';
 
 import { articleSort } from '../../helper/articleSort';
-const Dashboard = () => {
+const AdminDashboard = () => {
 	const [articles, setArticles] = useState([]);
 
 	// states used for filtering
@@ -128,4 +127,4 @@ const Dashboard = () => {
 	);
 };
 
-export default Dashboard;
+export default AdminDashboard;
