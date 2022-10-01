@@ -772,7 +772,7 @@ async function allScrape() {
 	await jAlzScrape();
 	await theGuardianAlzheimerScrape();
 	await theGuardianDementiaScrape();
-	// await alzheimersOrgUkScrape();
+	await alzheimersOrgUkScrape();
 	// console.log(`${newArticles.length} articles added`);
 	NewsArticle.insertMany(newArticles, (err) => {
 		if (err) return handleError(err);
