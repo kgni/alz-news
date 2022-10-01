@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { Schema, model, models } from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
 	firstName: String,
 	lastName: String,
 	email: { type: String, unique: true },
@@ -12,9 +12,9 @@ const userSchema = new mongoose.Schema({
 		default: 'user',
 	},
 	image: String,
-	likedArticles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'NewsArticle' }],
+	likedArticles: [{ type: Schema.Types.ObjectId, ref: 'NewsArticle' }],
 });
 
-const User = mongoose.model('User', userSchema);
+const User = models.User || model('User', userSchema);
 
 export default User;
