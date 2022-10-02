@@ -24,6 +24,7 @@ export const authOptions = {
 		CredentialsProvider({
 			id: 'credentials',
 			name: 'Credentials',
+			type: 'credentials',
 			credentials: {
 				email: {
 					label: 'Email',
@@ -34,7 +35,7 @@ export const authOptions = {
 					type: 'password',
 				},
 			},
-			async authorize(credentials) {
+			async authorize(credentials, req) {
 				// Connect to MongoDB
 				await connectDB();
 
@@ -47,18 +48,18 @@ export const authOptions = {
 				// Email not found
 
 				if (!user) {
-					throw new Error('Email is not registered');
+					throw new Error('Email or password is incorrect');
 				}
 
 				// Check hashed password with DB hashed password
 
 				const isPasswordCorrect = await compare(
-					credentials?.password,
+					credentials.password,
 					user.password
 				);
 
 				if (!isPasswordCorrect) {
-					throw new Error('Password is incorrect');
+					throw new Error('Email or password is incorrect');
 				}
 
 				return user;
@@ -74,6 +75,17 @@ export const authOptions = {
 	session: { strategy: 'jwt' },
 	jwt: {
 		secret: process.env.NEXTAUTH_JWT_SECRET,
+	},
+
+	callbacks: {
+		jwt: async ({ token, user }) => {
+			user && (token.user = user);
+			return token;
+		},
+		session: async ({ session, token }) => {
+			session.user = token.user;
+			return session;
+		},
 	},
 	secret: process.env.NEXTAUTH_JWT_SECRET,
 };

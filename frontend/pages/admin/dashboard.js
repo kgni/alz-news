@@ -9,7 +9,7 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import styles from '../../styles/Dashboard.module.css';
 
 // session
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 
 // Modules
 import DashboardAside from '../../components/Dashboard/DashboardAside';
@@ -23,7 +23,6 @@ import { articleSort } from '../../helper/articleSort';
 import { useRouter } from 'next/router';
 
 const AdminDashboard = () => {
-	const { data: session } = useSession();
 	const router = useRouter();
 
 	const [articles, setArticles] = useState([]);

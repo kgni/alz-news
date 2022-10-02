@@ -26,7 +26,7 @@ const validateForm = async (firstName, lastName, email, password) => {
 	}
 
 	if (password.length < 5) {
-		return { error: 'Password must have 5 or more characters' };
+		return { error: 'Password must be at least 6 characters' };
 	}
 
 	return null;

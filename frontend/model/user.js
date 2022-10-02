@@ -12,7 +12,7 @@ const userSchema = new Schema(
 			enum: ['user', 'admin', 'owner'],
 			default: 'user',
 		},
-		image: String,
+		image: { type: String, default: null },
 		likedArticles: [{ type: Schema.Types.ObjectId, ref: 'NewsArticle' }],
 	},
 	{ timestamps: true }
