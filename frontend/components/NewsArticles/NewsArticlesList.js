@@ -7,11 +7,9 @@ const NewsArticlesList = ({ currentItems }) => {
 	return (
 		<>
 			<section className="basis-2/3">
-				<section className="">
-					{currentItems.map((article) => (
-						<NewsArticle key={article.id} article={article} />
-					))}
-				</section>
+				{currentItems.map((article) => (
+					<NewsArticle key={article.id} article={article} />
+				))}
 			</section>
 
 			<div className=""></div>

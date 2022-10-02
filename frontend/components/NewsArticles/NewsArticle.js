@@ -1,6 +1,7 @@
 import React from 'react';
 import format from 'date-fns/format';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const NewsArticle = ({ article }) => {
 	const publishDate = format(new Date(article.publishDate), 'MMMMPP');
@@ -39,12 +40,10 @@ const NewsArticle = ({ article }) => {
 	}
 
 	return (
-		<a
-			className={`p-4 shadow-md flex bg-white mb-4 ${cardBgStyle}`}
-			target="_blank"
-			href={article.url}
-		>
-			<article className="flex flex-col">
+		<Link target="_blank" href={article.url}>
+			<article
+				className={`flex flex-col p-4 shadow-md bg-white mb-4 ${cardBgStyle} cursor-pointer`}
+			>
 				<div className="mb-4">
 					<a className="" target="_blank" href={article.url}>
 						<h4 className="text-2xl mb-2 font-bold">{article.title}</h4>
@@ -61,7 +60,7 @@ const NewsArticle = ({ article }) => {
 					</a>
 				</div>
 			</article>
-		</a>
+		</Link>
 	);
 };
 
