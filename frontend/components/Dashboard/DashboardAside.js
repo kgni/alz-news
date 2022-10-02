@@ -8,7 +8,12 @@ import { FaCog, FaUserAlt } from 'react-icons/fa';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import Link from 'next/link';
 
+import { signOut, useSession } from 'next-auth/react';
+
 const DashboardAside = ({ currentPage, setCurrentPage, setIsAsideOpen }) => {
+	const { data: session } = useSession();
+
+	console.log(session.user);
 	function onClickSetCurrentPage(event) {
 		// simply just returning if the page you clicked is already the currentPage (by doing this we are preventing that we are re-rendering if it is not necessary) - Not should if this should be kept, cause we might wanna do the refresh when clicking on the already selected page?
 		if (event.target.innerText.toLowerCase() === currentPage) {
@@ -64,7 +69,7 @@ const DashboardAside = ({ currentPage, setCurrentPage, setIsAsideOpen }) => {
 						<IoNewspaperOutline />
 						News
 					</li>
-					<li
+					{/* <li
 						onClick={onClickSetCurrentPage}
 						className={`${
 							currentPage === 'journals' ? 'text-white' : ''
@@ -72,7 +77,7 @@ const DashboardAside = ({ currentPage, setCurrentPage, setIsAsideOpen }) => {
 					>
 						<IoIosJournal />
 						Journals
-					</li>
+					</li> */}
 					<li
 						onClick={onClickSetCurrentPage}
 						className={`${
@@ -93,15 +98,16 @@ const DashboardAside = ({ currentPage, setCurrentPage, setIsAsideOpen }) => {
 						</div>
 						<div>
 							<p className="text-zinc-200 text-sm font-semibold tracking-wider">
-								kgni
+								{session.user.firstName}
 							</p>
 							<p className="text-zinc-500 font-semibold text-xs tracking-wider">
-								Admin
+								{session.user.role === 'admin' && session.user.role}
 							</p>
 						</div>
 					</div>
 					<button
 						href="/"
+						onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })}
 						className="text-white flex justify-center w-full px-4 py-1 bg-red-800 font-semibold rounded-md hover:bg-red-700 duration-100 select-none"
 					>
 						LOGOUT

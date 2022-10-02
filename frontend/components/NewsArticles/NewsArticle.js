@@ -12,7 +12,7 @@ const NewsArticle = ({ article }) => {
 
 	switch (article.publisher[0]) {
 		case 'The Guardian':
-			tagStyle = 'bg-blue-800 text-white';
+			tagStyle = 'ring-2 ring-blue-800';
 			cardBgStyle = 'bg-blue-50 hover:bg-blue-100';
 			break;
 		case 'alz.org':
@@ -42,21 +42,28 @@ const NewsArticle = ({ article }) => {
 	return (
 		<Link target="_blank" href={article.url}>
 			<article
-				className={`flex flex-col p-4 shadow-md bg-white mb-4 ${cardBgStyle} cursor-pointer`}
+				className={`flex flex-col p-4 shadow-md bg-white mb-4 ${cardBgStyle} cursor-pointer rounded-md`}
 			>
 				<div className="mb-4">
 					<a className="" target="_blank" href={article.url}>
-						<h4 className="text-2xl mb-2 font-bold">{article.title}</h4>
+						<h4 className="text-xl mb-2 font-bold">{article.title}</h4>
 					</a>
-					<h6>{article.subtitle}</h6>
+					<h6 className="">{article.subtitle}</h6>
 				</div>
 
-				<div className="flex items-center gap-x-4 mt-auto">
-					<p className="font-semibold">{publishDate}</p>
+				<div className="flex items-center gap-x-2 mt-auto">
+					<time className="font-semibold text-sm">{publishDate}</time>
 					<a className="" href={article.publisherUrl} target="_blank">
-						<p className={`${tagStyle} text-sm px-2 rounded-full`}>
-							{article.publisher[0]}
-						</p>
+						<div
+							className={`flex text-sm py-1 px-3 rounded-full gap-2 items-center `}
+						>
+							<img
+								className="w-5"
+								src={`/img/newsSitesFavicons/${article.publisher[0]}.png`}
+								alt=""
+							/>
+							<p className="font-bold">{article.publisher[0]}</p>
+						</div>
 					</a>
 				</div>
 			</article>
