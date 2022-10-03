@@ -17,7 +17,7 @@ const LoginForm = ({ setAuthType }) => {
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 
-	async function loginUser(email, password, redirectPath) {
+	async function loginUser(email, password) {
 		setIsLoading(true);
 		const res = await signIn('credentials', {
 			email,
@@ -25,7 +25,7 @@ const LoginForm = ({ setAuthType }) => {
 			redirect: false,
 			callBackUrl: `${window.location.origin}`,
 		});
-
+		console.log(res);
 		if (res.error) {
 			setIsLoading(false);
 			setError(res.error);
@@ -44,7 +44,7 @@ const LoginForm = ({ setAuthType }) => {
 			});
 
 			setError(null);
-			Router.replace(`${redirectPath}`);
+			Router.replace(`/admin/dashboard`);
 		}
 	}
 
@@ -58,7 +58,7 @@ const LoginForm = ({ setAuthType }) => {
 			password: Yup.string().required('Required'),
 		}),
 		onSubmit: (values) => {
-			loginUser(values.email, values.password, '/dashboard');
+			loginUser(values.email, values.password);
 		},
 	});
 

@@ -66,6 +66,7 @@ const AdminDashboard = ({ session }) => {
 
 	return (
 		// TODO - HOW TO MAKE THIS BETTER, SEEMS WACK TO USE THE PROVIDER LIKE THIS AND THEN JUST ADDING ON TO IT...
+		// TODO - NO NEED TO SSR ARTICLES IN THE DASHBOARD. THESE SHOULD JUST BE FETCHED ON THE CLIENT INSTEAD
 		<NewsContext.Provider
 			value={{
 				articles,

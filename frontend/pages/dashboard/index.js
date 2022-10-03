@@ -113,15 +113,7 @@ const Dashboard = ({ session }) => {
 						pauseOnFocusLoss={false}
 					/>
 					{currentPage === 'dashboard' && <p>dashboard</p>}
-					{currentPage === 'news' && (
-						<SkeletonTheme baseColor="#C2C2C2" highlightColor="#DBDBDB">
-							{isLoading ? (
-								<DashboardHeaderSkeleton />
-							) : (
-								<DashboardNewsContent />
-							)}
-						</SkeletonTheme>
-					)}
+					{currentPage === 'news' && <p>news</p>}
 					{currentPage === 'journals' && <p>journals</p>}
 					{currentPage === 'settings' && <p>settings</p>}
 				</section>
