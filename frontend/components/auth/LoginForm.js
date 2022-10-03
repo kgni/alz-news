@@ -35,14 +35,14 @@ const LoginForm = ({ setAuthType }) => {
 				position: 'top-center',
 				autoClose: false,
 				hideProgressBar: true,
-				closeOnClick: false,
+				closeOnClick: true,
 				pauseOnHover: false,
 				draggable: false,
 				progress: undefined,
 				closeButton: false,
+				theme: 'colored',
 			});
 
-			// setSucces('Success!');
 			setError(null);
 			Router.replace(`${redirectPath}`);
 		}
@@ -70,12 +70,13 @@ const LoginForm = ({ setAuthType }) => {
 	return (
 		<>
 			<ToastContainer
-				className="absolute !top-32"
+				className="!absolute !-top-24"
 				limit={1}
 				transition={Zoom}
 			/>
 			<h1 className="font-bold text-3xl mb-16">Login</h1>
-			<form onSubmit={formik.handleSubmit} className="w-full">
+
+			<form onSubmit={formik.handleSubmit} className="w-full relative">
 				<div className="">
 					<div className="flex flex-col relative mb-8">
 						<label

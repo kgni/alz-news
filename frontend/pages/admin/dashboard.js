@@ -109,7 +109,7 @@ const AdminDashboard = () => {
 					)}
 				</motion.aside>
 				<section
-					className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-[#f8f8f8] px-12`}
+					className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-gray-200 px-12`}
 				>
 					<ToastContainer
 						transition={Slide}
