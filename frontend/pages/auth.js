@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSession, signIn, getProviders } from 'next-auth/react';
-import { Field, Form, Formik } from 'formik';
 import Router from 'next/router';
 import axios from 'axios';
 import LoginForm from '../components/auth/LoginForm';
 import RegisterForm from '../components/auth/RegisterForm';
 
 const AuthPage = () => {
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
 	const [authType, setAuthType] = useState('Login');
-
-	// TODO - if users are already logged in and try to access this page they should be redirected to the dashboard
+	console.log(status);
 
 	return (
 		<section className="bg-black h-screen w-full justify-center flex items-center px-8">

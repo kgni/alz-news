@@ -18,7 +18,9 @@ import { NewsContext } from '../../context/NewsContext';
 import { ToastContainer, Slide } from 'react-toastify';
 
 import { articleSort } from '../../helper/articleSort';
-const Dashboard = () => {
+import { getSession } from 'next-auth/react';
+
+const Dashboard = ({ session }) => {
 	const [articles, setArticles] = useState([]);
 
 	// states used for filtering
@@ -129,3 +131,22 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+export async function getServerSideProps({ req }) {
+	const session = await getSession({ req });
+
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/auth',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {
+			session,
+		},
+	};
+}
