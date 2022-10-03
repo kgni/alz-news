@@ -4,6 +4,8 @@ import Link from 'next/link';
 import axios from 'axios';
 import { debounce } from 'lodash';
 
+import { useSession } from 'next-auth/react';
+
 // COMPONENTS
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
 import Layout from '../components/UI/Layout/Layout';
@@ -81,6 +83,8 @@ export default function Page({
 	const [filterKeyword, setFilterKeyword] = useState('');
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
+
+	// session
 
 	// PAGINATION
 
@@ -194,10 +198,10 @@ export default function Page({
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<section className="news-section min-h-screen pb-8">
+			<section className="news-section min-h-screen pb-8 bg-gray-200">
 				<div className="w-[90%] mx-auto py-8">
 					<section className="flex gap-x-8">
-						<div className="flex flex-col w-1/3 self-start">
+						<div className="flex flex-col w-1/3 self-start bg-white rounded-md shadow-md">
 							<RecommendedArticles
 								articles={recommendedArticles}
 								className=""
@@ -205,7 +209,7 @@ export default function Page({
 							<RecommendedResources className="" />
 						</div>
 
-						<div className="flex flex-col w-2/3">
+						<div className="flex flex-col w-2/3  p-4 shadow-md bg-white rounded-md">
 							<div className="flex items-center justify-center relative mb-4">
 								<NewsSourceTags
 									newsSource={newsSource}

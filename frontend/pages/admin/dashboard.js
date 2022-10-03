@@ -3,22 +3,26 @@ import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-
 import { GiHamburgerMenu } from 'react-icons/gi';
 
 // CSS
-import styles from '../styles/Dashboard.module.css';
+import styles from '../../styles/Dashboard.module.css';
+
+// session
+import { getSession } from 'next-auth/react';
 
 // Modules
-import DashboardAside from '../components/Dashboard/DashboardAside';
-import DashboardNewsContent from '../components/Dashboard/News/DashboardNewsContent';
+import DashboardAside from '../../components/Dashboard/DashboardAside';
+import DashboardNewsContent from '../../components/Dashboard/News/DashboardNewsContent';
 import { SkeletonTheme } from 'react-loading-skeleton';
-import DashboardHeaderSkeleton from '../components/Dashboard/Skeletons/DashboardHeaderSkeleton';
-import { NewsContext } from '../context/NewsContext';
+import DashboardHeaderSkeleton from '../../components/Dashboard/Skeletons/DashboardHeaderSkeleton';
+import { NewsContext } from '../../context/NewsContext';
 import { ToastContainer, Slide } from 'react-toastify';
 
-import { articleSort } from '../helper/articleSort';
-const Dashboard = () => {
+import { articleSort } from '../../helper/articleSort';
+import { useRouter } from 'next/router';
+
+const AdminDashboard = ({ session }) => {
 	const [articles, setArticles] = useState([]);
 
 	// states used for filtering
@@ -62,6 +66,7 @@ const Dashboard = () => {
 
 	return (
 		// TODO - HOW TO MAKE THIS BETTER, SEEMS WACK TO USE THE PROVIDER LIKE THIS AND THEN JUST ADDING ON TO IT...
+		// TODO - NO NEED TO SSR ARTICLES IN THE DASHBOARD. THESE SHOULD JUST BE FETCHED ON THE CLIENT INSTEAD
 		<NewsContext.Provider
 			value={{
 				articles,
@@ -103,7 +108,7 @@ const Dashboard = () => {
 					)}
 				</motion.aside>
 				<section
-					className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-[#f8f8f8] px-12`}
+					className={`${styles.dashboardContent} relative py-8 w-full overflow-auto bg-gray-200 px-12`}
 				>
 					<ToastContainer
 						transition={Slide}
@@ -128,4 +133,32 @@ const Dashboard = () => {
 	);
 };
 
-export default Dashboard;
+export default AdminDashboard;
+
+export async function getServerSideProps({ req }) {
+	const session = await getSession({ req });
+
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/auth',
+				permanent: false,
+			},
+		};
+	}
+
+	if (session.user.role !== 'admin') {
+		return {
+			redirect: {
+				destination: '/dashboard',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {
+			session,
+		},
+	};
+}
