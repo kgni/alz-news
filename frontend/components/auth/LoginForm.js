@@ -44,6 +44,7 @@ const LoginForm = ({ setAuthType }) => {
 			});
 
 			setError(null);
+			// we setup a redirect in the actual /admin route, so that if the user is not an admin it will get redirected to just /dashboard.
 			Router.replace(`/admin/dashboard`);
 		}
 	}
