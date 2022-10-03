@@ -9,7 +9,7 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import styles from '../../styles/Dashboard.module.css';
 
 // session
-import { getSession, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 
 // Modules
 import DashboardAside from '../../components/Dashboard/DashboardAside';
@@ -22,9 +22,7 @@ import { ToastContainer, Slide } from 'react-toastify';
 import { articleSort } from '../../helper/articleSort';
 import { useRouter } from 'next/router';
 
-const AdminDashboard = () => {
-	const router = useRouter();
-
+const AdminDashboard = ({ session }) => {
 	const [articles, setArticles] = useState([]);
 
 	// states used for filtering
@@ -135,3 +133,31 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
+export async function getServerSideProps({ req }) {
+	const session = await getSession({ req });
+
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/auth',
+				permanent: false,
+			},
+		};
+	}
+
+	if (session.user.role !== 'admin') {
+		return {
+			redirect: {
+				destination: '/dashboard',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {
+			session,
+		},
+	};
+}

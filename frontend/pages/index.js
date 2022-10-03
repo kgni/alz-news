@@ -86,8 +86,6 @@ export default function Page({
 
 	// session
 
-	const { data: session, status } = useSession();
-
 	// PAGINATION
 
 	const [currentPage, setCurrentPage] = useState(page - 1);
