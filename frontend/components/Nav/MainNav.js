@@ -34,9 +34,9 @@ const MainNav = () => {
 		);
 
 	return (
-		<nav className="w-[90%] mx-auto py-4 flex justify-between items-center text-white">
+		<nav className="w-[90%] max-w-[1900px] mx-auto py-8 flex justify-between items-center text-black">
 			<Link href="/">
-				<span className="uppercase font-bold text-3xl cursor-pointer">
+				<span className="uppercase font-bold text-4xl cursor-pointer">
 					Alz<span>.</span>
 					<span className="text-xl">news</span>
 				</span>
@@ -49,62 +49,63 @@ const MainNav = () => {
 				</Link>
 			</ul> */}
 			<ul className="flex gap-x-8 font-semibold items-center text-lg">
-				{session ? (
-					<li
-						onClick={() => setIsDropDownOpen((prev) => !prev)}
-						className={`cursor-pointer duration-200 flex items-center gap-3 relative ${
-							isDropDownOpen ? '' : 'hover:text-gray-300'
-						}`}
-					>
-						{isDropDownOpen && (
-							<ul className="bg-black text-gray-400 p-8 rounded-md absolute  top-14 right-0 shadow-md flex flex-col z-50 gap-4 w-52 items-start">
-								{dashBoardLink}
-								<Link
-									href="/dashboard/liked-articles"
-									className="cursor-pointer"
-								>
-									<a className="flex items-center gap-2 hover:text-white">
-										<AiFillHeart className="" /> <p>My Articles</p>
-									</a>
-								</Link>
-								<Link href="/dashboard/settings" className="cursor-pointer">
-									<a className="flex items-center gap-2 w-full hover:text-white">
-										<FaCog className="" />
-										<p> Settings</p>
-									</a>
-								</Link>
+				{
+					session ? (
+						<li
+							onClick={() => setIsDropDownOpen((prev) => !prev)}
+							className={`cursor-pointer duration-200 flex items-center gap-3 relative ${
+								isDropDownOpen ? '' : 'hover:text-gray-300'
+							}`}
+						>
+							{isDropDownOpen && (
+								<ul className="bg-black text-gray-400 p-8 rounded-md absolute  top-14 right-0 shadow-md flex flex-col z-50 gap-4 w-52 items-start">
+									{dashBoardLink}
+									<Link
+										href="/dashboard/liked-articles"
+										className="cursor-pointer"
+									>
+										<a className="flex items-center gap-2 hover:text-white">
+											<AiFillHeart className="" /> <p>My Articles</p>
+										</a>
+									</Link>
+									<Link href="/dashboard/settings" className="cursor-pointer">
+										<a className="flex items-center gap-2 w-full hover:text-white">
+											<FaCog className="" />
+											<p> Settings</p>
+										</a>
+									</Link>
 
-								<li
-									className="flex items-center gap-2 hover:text-white"
-									onClick={signOut}
-								>
-									<IoLogOut className="text-xl" />
-									Logout
-								</li>
-							</ul>
-						)}
-						<p>{session.user.firstName}</p>
-						{session.user.image && (
-							<img
-								className="w-8 h-8 rounded-full"
-								src={session.user.image}
-								alt=""
-							/>
-						)}
-						{isDropDownOpen ? (
-							<AiOutlineCaretUp className="text-sm" />
-						) : (
-							<AiOutlineCaretDown className="text-sm" />
-						)}
-					</li>
-				) : (
-					<li
-						onClick={signIn}
-						className="cursor-pointer hover:text-gray-500 duration-200"
-					>
-						LOGIN
-					</li>
-				)}
+									<li
+										className="flex items-center gap-2 hover:text-white"
+										onClick={signOut}
+									>
+										<IoLogOut className="text-xl" />
+										Logout
+									</li>
+								</ul>
+							)}
+							<p>{session.user.firstName}</p>
+							{session.user.image && (
+								<img
+									className="w-8 h-8 rounded-full"
+									src={session.user.image}
+									alt=""
+								/>
+							)}
+							{isDropDownOpen ? (
+								<AiOutlineCaretUp className="text-sm" />
+							) : (
+								<AiOutlineCaretDown className="text-sm" />
+							)}
+						</li>
+					) : null
+					// <li
+					// 	onClick={signIn}
+					// 	className="cursor-pointer hover:text-gray-500 duration-200"
+					// >
+					// 	LOGIN
+					// </li>
+				}
 			</ul>
 		</nav>
 	);

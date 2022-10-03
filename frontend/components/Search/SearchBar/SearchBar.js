@@ -19,17 +19,16 @@ const SearchBar = ({
 	// select
 
 	return (
-		<div className="search">
-			<div className="searchInputs flex items-center relative">
+		<>
+			<div className="flex grow items-center relative">
 				<motion.input
-					whileFocus={{ width: '400px' }}
 					onFocus={(e) => {
 						e.target.placeholder = '';
 					}}
 					onBlur={(e) => {
 						e.target.placeholder = placeholder;
 					}}
-					className="py-1 px-4 border-0 bg-gray-100 focus:bg-white  duration-600 w-[400px]"
+					className="py-1 px-2 bg-gray-200 grow border-black duration-600 focus:outline-none"
 					placeholder={placeholder}
 					type="text"
 					id={inputId}
@@ -52,7 +51,7 @@ const SearchBar = ({
 					/>
 				)}
 			</div>
-		</div>
+		</>
 	);
 };
 

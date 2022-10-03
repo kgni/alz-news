@@ -20,7 +20,7 @@ const DropDownFilter = ({
 			{isOpen ? (
 				<>
 					<button
-						className="bg-black text-white p-2 rounded-tl-md rounded-bl-md"
+						className=" bg-black text-white p-2 rounded-tl-md rounded-bl-md"
 						onClick={onToggleOpen}
 					>
 						<AiFillCaretUp />

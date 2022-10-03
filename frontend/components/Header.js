@@ -3,7 +3,7 @@ import MainNav from './Nav/MainNav';
 
 const Header = () => {
 	return (
-		<header className=" border-black shadow-md bg-black">
+		<header className="shadow-md">
 			<MainNav />
 		</header>
 	);

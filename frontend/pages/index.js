@@ -198,19 +198,18 @@ export default function Page({
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<section className="news-section min-h-screen pb-8 bg-gray-200">
-				<div className="w-[90%] mx-auto py-8">
+			<section className="news-section min-h-screen pb-8 bg-white">
+				<div className="w-[90%] max-w-[1900px] mx-auto py-8">
 					<section className="flex gap-x-8">
-						<div className="flex flex-col w-1/3 self-start bg-white rounded-md shadow-md">
+						<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
 							<RecommendedArticles
 								articles={recommendedArticles}
 								className=""
 							/>
-							<RecommendedResources className="" />
 						</div>
 
-						<div className="flex flex-col w-2/3  p-4 shadow-md bg-white rounded-md">
-							<div className="flex items-center justify-center relative mb-4">
+						<div className="flex flex-col w-2/4  p-4 shadow-md bg-white rounded-md">
+							<div className="flex items-center justify-center relative mb-8">
 								<NewsSourceTags
 									newsSource={newsSource}
 									onClickRemoveNewsSource={onClickRemoveNewsSource}
@@ -268,6 +267,10 @@ export default function Page({
 								breakLinkClassName={'breakLink'}
 								renderOnZeroPageCount={null}
 							/>
+						</div>
+
+						<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
+							<RecommendedResources className="" />
 						</div>
 					</section>
 				</div>
