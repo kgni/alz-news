@@ -197,84 +197,83 @@ export default function Page({
 				<meta name="description" content="Alz.news, we have news for you" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
+			<section className="w-[90%] max-w-[1900px] mx-auto news-section min-h-screen bg-hero-img bg-no-repeat bg-right-top mt-20">
+				<h1 className="w-1/2 pt-48 text-9xl font-bold tracking-wide leading-[1.20]">
+					THE HEART NEVER FORGETS
+				</h1>
+			</section>{' '}
+			<div className="w-[90%] max-w-[1900px] mx-auto py-8">
+				<section className="flex gap-x-8">
+					<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
+						<RecommendedArticles articles={recommendedArticles} className="" />
+					</div>
 
-			<section className="news-section min-h-screen pb-8 bg-white">
-				<div className="w-[90%] max-w-[1900px] mx-auto py-8">
-					<section className="flex gap-x-8">
-						<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
-							<RecommendedArticles
-								articles={recommendedArticles}
-								className=""
+					<div className="flex flex-col w-2/4  p-4 shadow-md bg-white rounded-md">
+						<div className="flex items-center justify-center relative mb-8">
+							<NewsSourceTags
+								newsSource={newsSource}
+								onClickRemoveNewsSource={onClickRemoveNewsSource}
+							/>
+							<DropDownFilter
+								newsSource={newsSource}
+								setNewsSource={setNewsSource}
+								onClickSetNewsSource={onClickSetNewsSource}
+							/>
+							<SearchBar
+								placeholder="Enter Article Title..."
+								inputId="search"
+								onChangeFilterKeyword={onChangeFilterKeyword}
+								filterKeyword={filterKeyword}
+							/>
+							<FilterByNewest
+								onToggleSort={onToggleSort}
+								sortingOrder={sortingOrder}
 							/>
 						</div>
-
-						<div className="flex flex-col w-2/4  p-4 shadow-md bg-white rounded-md">
-							<div className="flex items-center justify-center relative mb-8">
-								<NewsSourceTags
-									newsSource={newsSource}
-									onClickRemoveNewsSource={onClickRemoveNewsSource}
-								/>
-								<DropDownFilter
-									newsSource={newsSource}
-									setNewsSource={setNewsSource}
-									onClickSetNewsSource={onClickSetNewsSource}
-								/>
-								<SearchBar
-									placeholder="Enter Article Title..."
-									inputId="search"
-									onChangeFilterKeyword={onChangeFilterKeyword}
-									filterKeyword={filterKeyword}
-								/>
-								<FilterByNewest
-									onToggleSort={onToggleSort}
-									sortingOrder={sortingOrder}
-								/>
-							</div>
-							<div className="mb-4 italic flex gap-2">
-								{currentArticles.length === 0 ? (
-									<p className="font-semibold">No articles found...</p>
-								) : (
-									<>
-										<p className="font-semibold">
-											{articlesLength} articles found
-										</p>
-										<span>&#8211;</span>
-										<p className="italic">
-											page {currentPage + 1} of {allPages}
-										</p>
-									</>
-								)}
-							</div>
-
-							<NewsArticlesList currentItems={currentArticles} />
-
-							<ReactPaginate
-								key="paginate2"
-								onClick={onClickScrollToTop}
-								forcePage={currentPage}
-								previousLabel={'<'}
-								breakLabel={'...'}
-								nextLabel={'>'}
-								pageCount={allPages}
-								onPageChange={handlePageClick}
-								pageRangeDisplayed={2}
-								marginPagesDisplayed={2}
-								containerClassName={'paginationBtns'}
-								previousLinkClassName={'previousBtn'}
-								nextLinkClassName={'nextBtn'}
-								disabledClassName={'paginationDisabled'}
-								activeClassName={'paginationActive'}
-								breakLinkClassName={'breakLink'}
-								renderOnZeroPageCount={null}
-							/>
+						<div className="mb-4 italic flex gap-2">
+							{currentArticles.length === 0 ? (
+								<p className="font-semibold">No articles found...</p>
+							) : (
+								<>
+									<p className="font-semibold">
+										{articlesLength} articles found
+									</p>
+									<span>&#8211;</span>
+									<p className="italic">
+										page {currentPage + 1} of {allPages}
+									</p>
+								</>
+							)}
 						</div>
 
-						<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
-							<RecommendedResources className="" />
-						</div>
-					</section>
-				</div>
-			</section>
+						<NewsArticlesList currentItems={currentArticles} />
+
+						<ReactPaginate
+							key="paginate2"
+							onClick={onClickScrollToTop}
+							forcePage={currentPage}
+							previousLabel={'<'}
+							breakLabel={'...'}
+							nextLabel={'>'}
+							pageCount={allPages}
+							onPageChange={handlePageClick}
+							pageRangeDisplayed={2}
+							marginPagesDisplayed={2}
+							containerClassName={'paginationBtns'}
+							previousLinkClassName={'previousBtn'}
+							nextLinkClassName={'nextBtn'}
+							disabledClassName={'paginationDisabled'}
+							activeClassName={'paginationActive'}
+							breakLinkClassName={'breakLink'}
+							renderOnZeroPageCount={null}
+						/>
+					</div>
+
+					<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
+						<RecommendedResources className="" />
+					</div>
+				</section>
+			</div>
 		</>
 	);
 }

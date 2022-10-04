@@ -34,27 +34,37 @@ const MainNav = () => {
 		);
 
 	return (
-		<nav className="w-[90%] max-w-[1900px] mx-auto py-8 flex justify-between items-center text-black">
+		<nav className="w-[90%] max-w-[1900px] mx-auto py-12 flex justify-between items-center text-black">
 			<Link href="/">
-				<span className="uppercase font-bold text-4xl cursor-pointer">
+				<span className="uppercase font-bold text-2xl cursor-pointer">
 					Alz<span>.</span>
 					<span className="text-xl">news</span>
 				</span>
 			</Link>
-			{/* <ul className="flex gap-x-8 font-semibold items-center">
+			<ul className="flex gap-x-8 items-center font-bold">
 				<Link href="/">
-					<li className="cursor-pointer hover:text-gray-300 duration-200">
+					<li className="cursor-pointer hover:text-gray-600 duration-200">
+						ALZHEIMER'S AND DEMENTIA
+					</li>
+				</Link>
+				<Link href="/">
+					<li className="cursor-pointer hover:text-gray-600 duration-200">
 						NEWS
 					</li>
 				</Link>
-			</ul> */}
+				<Link href="/">
+					<li className="cursor-pointer hover:text-gray-600 duration-200">
+						JOURNALS
+					</li>
+				</Link>
+			</ul>
 			<ul className="flex gap-x-8 font-semibold items-center text-lg">
 				{
 					session ? (
 						<li
 							onClick={() => setIsDropDownOpen((prev) => !prev)}
 							className={`cursor-pointer duration-200 flex items-center gap-3 relative ${
-								isDropDownOpen ? '' : 'hover:text-gray-300'
+								isDropDownOpen ? '' : ''
 							}`}
 						>
 							{isDropDownOpen && (
