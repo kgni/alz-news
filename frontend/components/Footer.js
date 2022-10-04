@@ -1,10 +1,11 @@
 import React from 'react';
 
 const Footer = () => {
+	const currentYear = new Date().getFullYear();
 	return (
 		<footer className="bg-black text-white">
-			<div className="max-w-[1600px] py-16 w-[90%] mx-auto flex items-center">
-				<h6 className="">alz.news</h6>
+			<div className="max-w-[1600px] py-8 w-[90%] mx-auto flex items-center justify-center">
+				<h6 className="font-bold">alz.news &#169; {currentYear}</h6>
 			</div>
 		</footer>
 	);

@@ -6,7 +6,7 @@ const About = () => {
 			<img className="w-1/2" src="/img/synapse-brain.png" alt="" />
 			<div className="w-1/2">
 				<h2 className="text-6xl font-semibold mb-12 ">What Is Alz.news?</h2>
-				<div className="leading-loose flex flex-col gap-4">
+				<div className="leading-loose flex flex-col gap-4 w-">
 					<p>
 						Alz.news is a simple, <em className="font-bold">easy-to-use</em>,
 						non-profit platform for anyone who has an interest in Alzheimer's or
@@ -20,8 +20,9 @@ const About = () => {
 						patients advocacy groups in any way.
 					</p>
 					<p>
-						If you have any relevant information or suggestions, please contact
-						us at <address className="font-bold">info@alz.news</address>
+						If you have any relevant information or suggestions for content or
+						improvements, <br /> please contact us at{' '}
+						<address className="inline font-bold">info@alz.news</address>
 					</p>
 				</div>
 			</div>
