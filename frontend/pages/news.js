@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { debounce } from 'lodash';
 
@@ -12,7 +12,6 @@ import SearchBar from '../components/Search/SearchBar/SearchBar';
 import FilterByNewest from '../components/Search/Filters/FilterByNewest';
 import ReactPaginate from 'react-paginate';
 import NewsSourceTags from '../components/NewsArticles/NewsSourceTags';
-import Hero from '../components/Hero';
 
 // SSR function
 export async function getServerSideProps() {
