@@ -18,7 +18,8 @@ import SearchBar from '../components/Search/SearchBar/SearchBar';
 import FilterByNewest from '../components/Search/Filters/FilterByNewest';
 import ReactPaginate from 'react-paginate';
 import NewsSourceTags from '../components/NewsArticles/NewsSourceTags';
-import Hero from '../components/Hero';
+import Hero from '../components/Hero/Hero';
+import About from '../components/About/About';
 
 // SSR function
 export async function getServerSideProps() {
@@ -83,6 +84,7 @@ export default function Page() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Hero />
+			<About />
 		</>
 	);
 }

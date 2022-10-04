@@ -6,7 +6,7 @@ import ProfileItem from './ProfileItem';
 
 const MainNav = () => {
 	return (
-		<nav className="w-[90%] mx-auto py-8 flex justify-between items-center text-black border-b-2 border-black">
+		<nav className="mx-auto py-8 flex justify-between items-center text-black border-b-2 border-black">
 			<Link href="/">
 				<span className="uppercase font-bold text-2xl cursor-pointer select-none">
 					Alz<span>.</span>

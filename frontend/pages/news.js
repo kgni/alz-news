@@ -12,6 +12,7 @@ import SearchBar from '../components/Search/SearchBar/SearchBar';
 import FilterByNewest from '../components/Search/Filters/FilterByNewest';
 import ReactPaginate from 'react-paginate';
 import NewsSourceTags from '../components/NewsArticles/NewsSourceTags';
+import Head from 'next/head';
 
 // SSR function
 export async function getServerSideProps() {
@@ -186,76 +187,86 @@ export default function Page({
 		setAllPages(totalPages);
 	}
 	return (
-		<div className="w-[90%] max-w-[1900px] mx-auto py-8">
-			<section className="flex gap-x-8">
-				<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
-					<RecommendedArticles articles={recommendedArticles} className="" />
-				</div>
+		<>
+			<Head>
+				<title>ALZ.NEWS - NEWS</title>
+				<meta name="description" content="Alz.news, we have news for you" />
+				<link rel="icon" href="/favicon.ico" />
+			</Head>
 
-				<div className="flex flex-col w-2/4  p-4 shadow-md bg-white rounded-md">
-					<div className="flex items-center justify-center relative mb-8">
-						<NewsSourceTags
-							newsSource={newsSource}
-							onClickRemoveNewsSource={onClickRemoveNewsSource}
-						/>
-						<DropDownFilter
-							newsSource={newsSource}
-							setNewsSource={setNewsSource}
-							onClickSetNewsSource={onClickSetNewsSource}
-						/>
-						<SearchBar
-							placeholder="Enter Article Title..."
-							inputId="search"
-							onChangeFilterKeyword={onChangeFilterKeyword}
-							filterKeyword={filterKeyword}
-						/>
-						<FilterByNewest
-							onToggleSort={onToggleSort}
-							sortingOrder={sortingOrder}
-						/>
-					</div>
-					<div className="mb-4 italic flex gap-2">
-						{currentArticles.length === 0 ? (
-							<p className="font-semibold">No articles found...</p>
-						) : (
-							<>
-								<p className="font-semibold">{articlesLength} articles found</p>
-								<span>&#8211;</span>
-								<p className="italic">
-									page {currentPage + 1} of {allPages}
-								</p>
-							</>
-						)}
+			<div className=" mx-auto py-8">
+				<section className="flex gap-x-8">
+					<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
+						<RecommendedArticles articles={recommendedArticles} className="" />
 					</div>
 
-					<NewsArticlesList currentItems={currentArticles} />
+					<div className="flex flex-col w-2/4  p-4 shadow-md bg-white rounded-md">
+						<div className="flex items-center justify-center relative mb-2">
+							<NewsSourceTags
+								newsSource={newsSource}
+								onClickRemoveNewsSource={onClickRemoveNewsSource}
+							/>
+							<DropDownFilter
+								newsSource={newsSource}
+								setNewsSource={setNewsSource}
+								onClickSetNewsSource={onClickSetNewsSource}
+							/>
+							<SearchBar
+								placeholder="Enter Article Title..."
+								inputId="search"
+								onChangeFilterKeyword={onChangeFilterKeyword}
+								filterKeyword={filterKeyword}
+							/>
+							<FilterByNewest
+								onToggleSort={onToggleSort}
+								sortingOrder={sortingOrder}
+							/>
+						</div>
+						<div className="mb-4 italic flex gap-2">
+							{currentArticles.length === 0 ? (
+								<p className="font-semibold">No articles found...</p>
+							) : (
+								<>
+									<p className="font-semibold">
+										{articlesLength} articles found
+									</p>
+									<span>&#8211;</span>
+									<p className="italic">
+										page {currentPage + 1} of {allPages}
+									</p>
+								</>
+							)}
+						</div>
 
-					<ReactPaginate
-						key="paginate2"
-						onClick={onClickScrollToTop}
-						forcePage={currentPage}
-						previousLabel={'<'}
-						breakLabel={'...'}
-						nextLabel={'>'}
-						pageCount={allPages}
-						onPageChange={handlePageClick}
-						pageRangeDisplayed={2}
-						marginPagesDisplayed={2}
-						containerClassName={'paginationBtns'}
-						previousLinkClassName={'previousBtn'}
-						nextLinkClassName={'nextBtn'}
-						disabledClassName={'paginationDisabled'}
-						activeClassName={'paginationActive'}
-						breakLinkClassName={'breakLink'}
-						renderOnZeroPageCount={null}
-					/>
-				</div>
+						<NewsArticlesList currentItems={currentArticles} />
 
-				<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
-					<RecommendedResources className="" />
-				</div>
-			</section>
-		</div>
+						<ReactPaginate
+							key="paginate2"
+							onClick={onClickScrollToTop}
+							forcePage={currentPage}
+							previousLabel={'<'}
+							breakLabel={'...'}
+							nextLabel={'>'}
+							pageCount={allPages}
+							onPageChange={handlePageClick}
+							pageRangeDisplayed={2}
+							marginPagesDisplayed={2}
+							containerClassName={'paginationBtns'}
+							previousLinkClassName={'previousBtn'}
+							nextLinkClassName={'nextBtn'}
+							disabledClassName={'paginationDisabled'}
+							activeClassName={'paginationActive'}
+							breakLinkClassName={'breakLink'}
+							renderOnZeroPageCount={null}
+						/>
+					</div>
+
+					<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
+						<RecommendedResources className="" />
+					</div>
+				</section>
+			</div>
+		</>
 	);
 }
 

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const Hero = () => {
 	return (
-		<section className="w-[90%] relative mx-auto news-section min-h-screen flex items-center">
+		<section className=" relative mx-auto news-section min-h-screen w-full flex items-center">
 			<h1 className="w-1/2 -mt-80 text-9xl font-bold tracking-wide leading-[1.20]">
 				THE HEART NEVER FORGETS
 			</h1>
