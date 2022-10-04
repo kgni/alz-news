@@ -19,11 +19,13 @@ const About = () => {
 						Alz.news is not affiliated with any Alzheimer's organizations or
 						patients advocacy groups in any way.
 					</p>
-					<p>
-						If you have any relevant information or suggestions for content or
-						improvements, <br /> please contact us at{' '}
+					<div>
+						<p className="inline">
+							If you have any relevant information or suggestions for content or
+							improvements, <br /> please contact us at{' '}
+						</p>
 						<address className="inline font-bold">info@alz.news</address>
-					</p>
+					</div>
 				</div>
 			</div>
 		</div>
