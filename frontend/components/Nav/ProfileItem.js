@@ -51,7 +51,7 @@ const ProfileItem = () => {
 										<AiFillHeart className="" /> <p>My Articles</p>
 									</a>
 								</Link>
-								<Link href="/dashboard/settings" className="cursor-pointer">
+								<Link href="/dashboard" className="cursor-pointer">
 									<a className="flex items-center gap-2 w-full hover:text-white">
 										<FaCog className="" />
 										<p> Settings</p>

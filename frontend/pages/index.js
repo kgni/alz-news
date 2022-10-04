@@ -20,6 +20,8 @@ import ReactPaginate from 'react-paginate';
 import NewsSourceTags from '../components/NewsArticles/NewsSourceTags';
 import Hero from '../components/Hero/Hero';
 import About from '../components/About/About';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 // SSR function
 export async function getServerSideProps() {
@@ -75,7 +77,7 @@ function applyFilters(articles, sortingOrder, filterKeyword, newsSource) {
 	return sortedArticles;
 }
 
-export default function Page() {
+export default function HomePage() {
 	return (
 		<>
 			<Head>
@@ -83,12 +85,14 @@ export default function Page() {
 				<meta name="description" content="Alz.news, we have news for you" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<Hero />
-			<About />
+			<div className="max-w-[1600px] mx-auto pb-8 w-[90%]">
+				<div className=" min-h-screen flex flex-col ">
+					<Header />
+					<Hero />
+				</div>
+				<About />
+			</div>
+			<Footer />
 		</>
 	);
 }
-
-Page.getLayout = function getLayout(page) {
-	return <Layout>{page}</Layout>;
-};

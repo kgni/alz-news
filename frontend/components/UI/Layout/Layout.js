@@ -5,13 +5,13 @@ import Header from '../../Header';
 const Layout = ({ children }) => {
 	return (
 		<>
-			<div className="overflow-x-hidden">
-				<div className="min-h-screen max-w-[1600px] mx-auto pb-8 w-[90%]">
+			<div className="overflow-x-hidden min-h-screen flex flex-col">
+				<div className="grow max-w-[1600px] mx-auto pb-8 w-[90%]">
 					<Header />
-					<main className="min-h-full">{children}</main>
+					{children}
 				</div>
+				<Footer />
 			</div>
-			<Footer />
 		</>
 	);
 };
