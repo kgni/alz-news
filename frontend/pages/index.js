@@ -6,6 +6,8 @@ import { debounce } from 'lodash';
 
 import { useSession } from 'next-auth/react';
 
+import { motion } from 'framer-motion';
+
 // COMPONENTS
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
 import Layout from '../components/UI/Layout/Layout';
@@ -16,6 +18,7 @@ import SearchBar from '../components/Search/SearchBar/SearchBar';
 import FilterByNewest from '../components/Search/Filters/FilterByNewest';
 import ReactPaginate from 'react-paginate';
 import NewsSourceTags from '../components/NewsArticles/NewsSourceTags';
+import Hero from '../components/Hero';
 
 // SSR function
 export async function getServerSideProps() {
@@ -197,11 +200,7 @@ export default function Page({
 				<meta name="description" content="Alz.news, we have news for you" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<section className="w-[90%] max-w-[1900px] mx-auto news-section min-h-screen bg-hero-img bg-no-repeat bg-right-top mt-20">
-				<h1 className="w-1/2 pt-48 text-9xl font-bold tracking-wide leading-[1.20]">
-					THE HEART NEVER FORGETS
-				</h1>
-			</section>{' '}
+			<Hero />
 			<div className="w-[90%] max-w-[1900px] mx-auto py-8">
 				<section className="flex gap-x-8">
 					<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">

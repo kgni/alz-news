@@ -34,7 +34,7 @@ const MainNav = () => {
 		);
 
 	return (
-		<nav className="w-[90%] max-w-[1900px] mx-auto py-12 flex justify-between items-center text-black">
+		<nav className="w-[90%] mx-auto py-8 flex justify-between items-center text-black border-b-2 border-black">
 			<Link href="/">
 				<span className="uppercase font-bold text-2xl cursor-pointer">
 					Alz<span>.</span>
@@ -43,8 +43,9 @@ const MainNav = () => {
 			</Link>
 			<ul className="flex gap-x-8 items-center font-bold">
 				<Link href="/">
-					<li className="cursor-pointer hover:text-gray-600 duration-200">
+					<li className="cursor-pointer hover:text-gray-600 duration-200 flex items-center gap-2">
 						ALZHEIMER'S AND DEMENTIA
+						<AiOutlineCaretDown className="text-sm" />
 					</li>
 				</Link>
 				<Link href="/">
@@ -58,12 +59,12 @@ const MainNav = () => {
 					</li>
 				</Link>
 			</ul>
-			<ul className="flex gap-x-8 font-semibold items-center text-lg">
+			<ul className="flex gap-x-8 items-center font-bold">
 				{
 					session ? (
 						<li
 							onClick={() => setIsDropDownOpen((prev) => !prev)}
-							className={`cursor-pointer duration-200 flex items-center gap-3 relative ${
+							className={`cursor-pointer duration-200 flex items-center gap-2 relative ${
 								isDropDownOpen ? '' : ''
 							}`}
 						>
