@@ -196,16 +196,12 @@ export default function Page({
 
 			<div className=" mx-auto py-8">
 				<section className="flex gap-x-8">
-					<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
+					<div className="flex flex-col w-1/3 self-start bg-white rounded-md shadow-md">
 						<RecommendedArticles articles={recommendedArticles} className="" />
 					</div>
 
-					<div className="flex flex-col w-2/4  p-4 shadow-md bg-white rounded-md">
-						<div className="flex items-center justify-center relative mb-2">
-							<NewsSourceTags
-								newsSource={newsSource}
-								onClickRemoveNewsSource={onClickRemoveNewsSource}
-							/>
+					<div className="flex flex-col w-2/3  p-4 shadow-md bg-white rounded-md">
+						<div className="flex items-center justify-center relative mb-3">
 							<DropDownFilter
 								newsSource={newsSource}
 								setNewsSource={setNewsSource}
@@ -222,7 +218,12 @@ export default function Page({
 								sortingOrder={sortingOrder}
 							/>
 						</div>
-						<div className="mb-4 italic flex gap-2">
+						<NewsSourceTags
+							newsSource={newsSource}
+							onClickRemoveNewsSource={onClickRemoveNewsSource}
+						/>
+
+						<div className=" italic flex gap-2 mb-3">
 							{currentArticles.length === 0 ? (
 								<p className="font-semibold">No articles found...</p>
 							) : (
@@ -261,9 +262,9 @@ export default function Page({
 						/>
 					</div>
 
-					<div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
+					{/* <div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">
 						<RecommendedResources className="" />
-					</div>
+					</div> */}
 				</section>
 			</div>
 		</>

@@ -3,7 +3,11 @@ import React from 'react';
 const NewsSourceTags = ({ newsSource, onClickRemoveNewsSource }) => {
 	return (
 		<>
-			<ul className="absolute left-[350px] top-[45px] flex gap-2 flex-wrap">
+			<ul
+				className={`flex gap-2 flex-wrap select-none ${
+					newsSource.length > 0 ? 'mb-2' : ''
+				} `}
+			>
 				{newsSource.map((source) => {
 					let tagStyle;
 
