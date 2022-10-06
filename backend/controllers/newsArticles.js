@@ -57,13 +57,13 @@ module.exports = {
 		const allArticlesLength = await NewsArticle.find({
 			status: 'APPROVED',
 			title: { $regex: regexp },
-			publisher: { $in: [/ /] },
+			publisher: { $in: newsSource },
 		}).count();
 
 		const articles = await NewsArticle.find({
 			status: 'APPROVED',
 			title: { $regex: regexp },
-			publisher: { $in: [/ /] },
+			publisher: { $in: newsSource },
 		})
 			.sort({
 				publishDate: sortingOrder,
@@ -85,8 +85,9 @@ module.exports = {
 			recommendedArticles,
 		};
 
-		console.log(totalPages);
-		console.log(newsSource);
+		console.log(
+			`keyword: ${filterKeyword}\nnewsSources: ${newsSource}\narticles: ${allArticlesLength}\ntotal pages: ${totalPages}\n`
+		);
 		res.json(data);
 	},
 	updateNewsArticle: async (req, res) => {

@@ -11,30 +11,21 @@ const NavDropDown = () => {
 					<div className="flex gap-8">
 						<div className="flex flex-col gap-2">
 							<li>
-								<Link
-									href="/dashboard/liked-articles"
-									className="cursor-pointer"
-								>
+								<Link href="/" className="cursor-pointer">
 									<a className="flex items-center gap-2 hover:text-gray-400">
 										<p className="">What is Alzheimer's Disease?</p>
 									</a>
 								</Link>
 							</li>
 							<li>
-								<Link
-									href="/dashboard/liked-articles"
-									className="cursor-pointer"
-								>
+								<Link href="/" className="cursor-pointer">
 									<a className="flex items-center gap-2 hover:text-gray-400">
 										<p className="">How is Alzheimer's Disease Diagnosed?</p>
 									</a>
 								</Link>
 							</li>
 							<li>
-								<Link
-									href="/dashboard/liked-articles"
-									className="cursor-pointer"
-								>
+								<Link href="/" className="cursor-pointer">
 									<a className="flex items-center gap-2 hover:text-gray-400">
 										<p className="">Know the 10 Signs</p>
 									</a>
@@ -42,10 +33,7 @@ const NavDropDown = () => {
 							</li>
 
 							<li>
-								<Link
-									href="/dashboard/liked-articles"
-									className="cursor-pointer"
-								>
+								<Link href="/" className="cursor-pointer">
 									<a className="flex items-center gap-2 hover:text-gray-400">
 										<p>Treatments</p>
 									</a>
@@ -54,10 +42,7 @@ const NavDropDown = () => {
 						</div>
 						<div className="flex flex-col gap-2">
 							<li>
-								<Link
-									href="/dashboard/liked-articles"
-									className="cursor-pointer"
-								>
+								<Link href="/" className="cursor-pointer">
 									<a className="flex items-center gap-2 hover:text-gray-400">
 										<p>What is Dementia?</p>
 									</a>

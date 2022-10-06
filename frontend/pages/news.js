@@ -1,12 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { debounce } from 'lodash';
 
 // COMPONENTS
 import NewsArticlesList from '../components/NewsArticles/NewsArticlesList';
 import Layout from '../components/UI/Layout/Layout';
 import RecommendedArticles from '../components/NewsArticles/RecommendedArticles';
-import RecommendedResources from '../components/RecommendedResources';
 import DropDownFilter from '../components/Search/DropDownFilter';
 import SearchBar from '../components/Search/SearchBar/SearchBar';
 import FilterByNewest from '../components/Search/Filters/FilterByNewest';
@@ -90,18 +88,6 @@ export default function Page({
 
 	const handlePageClick = async (event) => {
 		try {
-			const res = await axios.get(`http://localhost:8000/api/news/approved/`, {
-				params: {
-					page: event.selected + 1,
-					sortingOrder,
-					filterKeyword,
-					newsSource,
-				},
-			});
-
-			const { articles, allArticlesLength, totalPages } = res.data;
-			setCurrentArticles(articles);
-			setArticlesLength(allArticlesLength);
 			setCurrentPage(event.selected);
 			setAllPages(totalPages);
 		} catch (e) {
@@ -120,45 +106,14 @@ export default function Page({
 	const onClickScrollToTop = () => window.scrollTo({ top: 0, left: 0 });
 
 	async function onToggleSort() {
-		const negatedSortingOrder = sortingOrder === 'desc' ? 'asc' : 'desc';
-		const res = await axios.get(`http://localhost:8000/api/news/approved/`, {
-			params: {
-				page: currentPage + 1,
-				sortingOrder: negatedSortingOrder,
-				filterKeyword,
-				newsSource,
-			},
-		});
-
-		const { articles, allArticlesLength, totalPages } = res.data;
-		setCurrentArticles(articles);
-		setArticlesLength(allArticlesLength);
-		setAllPages(totalPages);
 		setSortingOrder((prevState) => {
 			return prevState === 'desc' ? 'asc' : 'desc';
 		});
 	}
 
-	// debouncing our onchange keyword input
-	const debouncedKeywordSearch = debounce(async (keyword) => {
-		const res = await axios.get(`http://localhost:8000/api/news/approved/`, {
-			params: {
-				page: currentPage + 1,
-				sortingOrder,
-				filterKeyword: keyword,
-				newsSource,
-			},
-		});
-
-		const { articles, allArticlesLength, totalPages } = res.data;
-		setCurrentArticles(articles);
-		setArticlesLength(allArticlesLength);
-		setAllPages(totalPages);
-	}, 300);
-
 	const onChangeFilterKeyword = async (event, clear) => {
 		clear ? setFilterKeyword('') : setFilterKeyword(event.target.value);
-		debouncedKeywordSearch(event.target.value);
+		setCurrentPage(0);
 	};
 
 	async function onClickSetNewsSource(event) {
@@ -172,20 +127,38 @@ export default function Page({
 				prevState.filter((source) => source !== event.target.value)
 			);
 		}
-		const res = await axios.get(`http://localhost:8000/api/news/approved/`, {
-			params: {
-				page: currentPage + 1,
-				sortingOrder,
-				filterKeyword,
-				newsSource: !newsSource ? event.target.checked : newsSource,
-			},
-		});
-
-		const { articles, allArticlesLength, totalPages } = res.data;
-		setCurrentArticles(articles);
-		setArticlesLength(allArticlesLength);
-		setAllPages(totalPages);
 	}
+
+	// useEffect for querying DB
+	useEffect(() => {
+		axios
+			.get(`http://localhost:8000/api/news/approved/`, {
+				params: {
+					page: currentPage + 1,
+					sortingOrder,
+					filterKeyword,
+					// TODO - quick fix to get all articles when newsSources array is empty - fix this in the future
+					newsSource:
+						newsSource.length === 0
+							? [
+									'alz.org',
+									'nia.gov',
+									'Neuroscience News',
+									'alzheimers.org.uk',
+									'j-alz.com',
+									'The Guardian',
+							  ]
+							: newsSource,
+				},
+			})
+			.then((res) => {
+				const { articles, allArticlesLength, totalPages } = res.data;
+				setCurrentArticles(articles);
+				setArticlesLength(allArticlesLength);
+				setAllPages(totalPages);
+			});
+	}, [currentPage, sortingOrder, filterKeyword, newsSource]);
+
 	return (
 		<>
 			<Head>
