@@ -1,0 +1,27 @@
+import { useRouter } from 'next/router';
+import React from 'react';
+import Footer from '../../Nav/Footer';
+import Header from '../../Nav/Header';
+import SideBarNavAlzheimers from '../../Nav/SideBarNavAlzheimers';
+const InfoPageLayout = ({ children }) => {
+	const router = useRouter();
+
+	console.log(router.pathname);
+
+	return (
+		<>
+			<div className="overflow-x-hidden min-h-screen flex flex-col">
+				<div className="grow flex flex-col max-w-[1600px] mx-auto pb-8 w-[90%]">
+					<Header />
+					<section className="flex grow pt-8">
+						{/* <SideBarNavAlzheimers path={router.pathname} /> */}
+						<div className="px-8">{children}</div>
+					</section>
+				</div>
+				<Footer />
+			</div>
+		</>
+	);
+};
+
+export default InfoPageLayout;
