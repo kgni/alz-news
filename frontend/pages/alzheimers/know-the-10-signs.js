@@ -268,7 +268,7 @@ export default function Page({}) {
 								<li className="py-4 px-4 bg-gray-200">
 									Difficulty having a conversation
 								</li>
-								<li className="pt-4 px-4">
+								<li className="py-4 px-4">
 									Misplacing things and being unable to retrace steps to find
 									them
 								</li>
@@ -291,7 +291,7 @@ export default function Page({}) {
 								<li className="py-4 pl-4 bg-gray-200">
 									Sometimes forgetting which word to use
 								</li>
-								<li className="pt-4 pl-4">Losing things from time to time</li>
+								<li className="py-4 pl-4">Losing things from time to time</li>
 							</ul>
 						</div>
 					</div>

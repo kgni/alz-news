@@ -137,7 +137,7 @@ export default function Page({
 					page: currentPage + 1,
 					sortingOrder,
 					filterKeyword,
-					// TODO - quick fix to get all articles when newsSources array is empty - fix this in the future
+					// TODO - quick fix to get all articles when newsSources array is empty - fix this in the future. This does not scale, as we would have to manually add new sources in here in order to make querying for the new added newsSource work. The same goes for the frontend when we are rendering stuff in the "FilterNewsSource" component, here we also have the values hardcoded. Might want to query all the newsSources names from the DB in some way. This way we can also create a function, where we as admins can manually add articles. Right now it is only the webscraper that is adding articles.
 					newsSource:
 						newsSource.length === 0
 							? [
