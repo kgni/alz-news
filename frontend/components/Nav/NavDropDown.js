@@ -20,16 +20,7 @@ const NavDropDown = () => {
 									</a>
 								</Link>
 							</li>
-							<li>
-								<Link
-									href="/alzheimers/how-is-alzheimers-diagnosed"
-									className="cursor-pointer"
-								>
-									<a className="flex items-center gap-2 hover:text-gray-400">
-										<p className="">How is Alzheimer's Disease Diagnosed?</p>
-									</a>
-								</Link>
-							</li>
+
 							<li>
 								<Link
 									href="/alzheimers/know-the-10-signs"

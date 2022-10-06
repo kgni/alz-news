@@ -8,14 +8,15 @@ const InfoPageLayout = ({ children }) => {
 
 	console.log(router.pathname);
 
+	// section classes: flex grow pt-8 (to style sidebar and make it fill screen vertically)
 	return (
 		<>
 			<div className="overflow-x-hidden min-h-screen flex flex-col">
 				<div className="grow flex flex-col max-w-[1600px] mx-auto pb-8 w-[90%]">
 					<Header />
-					<section className="flex grow pt-8">
+					<section className="py-12">
 						{/* <SideBarNavAlzheimers path={router.pathname} /> */}
-						<div className="px-8">{children}</div>
+						<div className="max-w-[100ch] mx-auto">{children}</div>
 					</section>
 				</div>
 				<Footer />
