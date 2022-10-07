@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { AiOutlineCaretDown, AiOutlineCaretRight } from 'react-icons/ai';
 import { BiBrain } from 'react-icons/bi';
+import { IoMdClose } from 'react-icons/io';
 
 const MobileSideBarNav = ({
 	alzOpen,
@@ -13,6 +14,10 @@ const MobileSideBarNav = ({
 	return (
 		<>
 			<nav className="w-96 left-0 top-0 fixed h-screen py-12 bg-black z-20 shadow-md px-16 text-white flex flex-col">
+				<IoMdClose
+					onClick={closeNav}
+					className="text-white font-bold absolute cursor-pointer text-3xl right-6 top-6 hover:text-gray-400"
+				/>
 				<Link href="/">
 					<div className="uppercase font-bold text-3xl cursor-pointer select-none text-center mb-7">
 						Alz<span>.</span>
@@ -24,7 +29,7 @@ const MobileSideBarNav = ({
 					<Link href="/">
 						<li
 							onClick={closeNav}
-							className="cursor-pointer hover:text-gray-600 flex items-center gap-2 select-none"
+							className="cursor-pointer hover:text-gray-500 flex items-center gap-2 select-none"
 						>
 							HOME
 						</li>
@@ -32,14 +37,14 @@ const MobileSideBarNav = ({
 					<Link href="/news">
 						<li
 							onClick={closeNav}
-							className="cursor-pointer hover:text-gray-600"
+							className="cursor-pointer hover:text-gray-500"
 						>
 							NEWS
 						</li>
 					</Link>
 					<li
 						onClick={() => setAlzOpen((prev) => !prev)}
-						className="cursor-pointer hover:text-gray-600 flex items-center gap-2 select-none"
+						className="cursor-pointer hover:text-gray-500 flex items-center gap-2 select-none"
 					>
 						ALZHEIMER'S
 						{alzOpen ? (
@@ -86,7 +91,7 @@ const MobileSideBarNav = ({
 					)}
 					<li
 						onClick={() => setDemOpen((prev) => !prev)}
-						className="cursor-pointer hover:text-gray-600 flex items-center gap-2 select-none"
+						className="cursor-pointer hover:text-gray-500 flex items-center gap-2 select-none"
 					>
 						DEMENTIA
 						{demOpen ? (
