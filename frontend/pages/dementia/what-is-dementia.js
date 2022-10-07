@@ -8,9 +8,9 @@ export default function Page({}) {
 				<meta name="description" content="Alz.news, we have news for you" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<article className="leading-relaxed text-lg">
+			<article className="leading-relaxed text-md">
 				<div className="mb-16">
-					<h1 className="text-center text-5xl font-bold leading-normal">
+					<h1 className="text-center text-5xl font-bold leading-normal md:text-4xl md:mb-2">
 						What Is Dementia?
 					</h1>
 					<span className="block italic text-center">
@@ -31,7 +31,9 @@ export default function Page({}) {
 					dementia.
 				</p>
 				<section className="mb-12">
-					<h2 className="text-3xl font-bold mb-4">About dementia</h2>
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">
+						About dementia
+					</h2>
 					<p
 						className="mb-6
 				"
@@ -60,7 +62,7 @@ export default function Page({}) {
 					</p>
 				</section>
 				<section className="mb-6">
-					<h2 className="text-3xl font-bold mb-4">
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">
 						Symptoms and signs of dementia
 					</h2>
 					<p className="mb-6">
@@ -87,7 +89,7 @@ export default function Page({}) {
 					</p>
 				</section>
 				<section className="mb-12">
-					<h2 className="text-3xl font-bold mb-4">Causes</h2>
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">Causes</h2>
 					<p className="mb-6">
 						Dementia is caused by damage to brain cells. This damage interferes
 						with the ability of brain cells to communicate with each other. When
@@ -126,7 +128,9 @@ export default function Page({}) {
 					</ul>
 				</section>
 				<section className="mb-12">
-					<h2 className="text-3xl font-bold mb-4">Diagnosis of dementia</h2>
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">
+						Diagnosis of dementia
+					</h2>
 					<p className="">
 						There is no one test to determine if someone has dementia. Doctors
 						diagnose Alzheimer's and other types of dementia based on a careful
@@ -142,7 +146,7 @@ export default function Page({}) {
 					</p>
 				</section>
 				<section className="mb-12">
-					<h2 className="text-3xl font-bold mb-4">
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">
 						Dementia treatment and care
 					</h2>
 					<p className="mb-6">
@@ -167,8 +171,8 @@ export default function Page({}) {
 						other dementias.
 					</p>
 				</section>
-				<section className="mb-12">
-					<h2 className="text-3xl font-bold mb-4">
+				<section className="">
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">
 						Dementia risk and prevention
 					</h2>
 					<p className="mb-6">

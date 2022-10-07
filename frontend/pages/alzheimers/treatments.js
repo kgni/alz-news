@@ -9,12 +9,12 @@ export default function Page() {
 				<meta name="description" content="Alz.news, we have news for you" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<article className="leading-relaxed text-lg">
+			<article className="leading-relaxed text-md">
 				<div className="mb-16">
-					<h1 className="text-center text-5xl font-bold leading-normal">
+					<h1 className="text-center text-5xl font-bold leading-normal md:text-4xl md:mb-2">
 						Treatments
 					</h1>
-					<span className="block italic text-center">
+					<span className="block italic text-center ">
 						Source:{' '}
 						<a
 							className="underline hover:text-gray-500 "
@@ -25,7 +25,7 @@ export default function Page() {
 						</a>
 					</span>
 				</div>
-				<p className="mb-12">
+				<p className="mb-12 text-lg">
 					There's no cure for Alzheimer’s, but there are treatments that may
 					change disease progression, and drug and non-drug options that may
 					help treat symptoms. Understanding available options can help
@@ -35,7 +35,7 @@ export default function Page() {
 				<div className="bg-black bg-opacity-20 w-full h-[2px] mb-12"></div>
 
 				<section className="">
-					<h2 className="text-center text-4xl font-bold mb-8">
+					<h2 className="text-center text-4xl font-bold mb-8 md:text-2xl">
 						Select a Topic
 					</h2>
 					<div className="grid grid-cols-3 gap-6 auto-rows-[1fr] xl:gap-4 xl:grid-cols-2 sm:grid-cols-1 sm:gap-8">
