@@ -3,9 +3,9 @@ import React from 'react';
 import Footer from '../../Nav/Footer';
 import Header from '../../Nav/Header';
 import SideBarNavAlzheimers from '../../Nav/SideBarNavAlzheimers';
-const InfoPageLayout = ({ children }) => {
+const InfoPageLayout = ({ containerWidth = 'max-w-[100ch]', children }) => {
 	const router = useRouter();
-
+	console.log(`containerWidth: ${containerWidth}`);
 	console.log(router.pathname);
 
 	// section classes: flex grow pt-8 (to style sidebar and make it fill screen vertically)
@@ -16,7 +16,7 @@ const InfoPageLayout = ({ children }) => {
 					<Header />
 					<section className="py-12">
 						{/* <SideBarNavAlzheimers path={router.pathname} /> */}
-						<div className="max-w-[100ch] mx-auto">{children}</div>
+						<div className={` ${containerWidth} mx-auto`}>{children}</div>
 					</section>
 				</div>
 				<Footer />
