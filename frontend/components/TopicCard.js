@@ -9,7 +9,7 @@ const TopicCard = ({ title, img, link, alt = '' }) => {
 					src={img}
 					alt={alt}
 				/>
-				<h3 className="text-center text-xl hover:text-gray-600 font-bold p-4 ">
+				<h3 className="text-center text-xl hover:text-gray-600 font-bold p-4 lg:text-lg md:text-md">
 					{title}
 				</h3>
 			</a>

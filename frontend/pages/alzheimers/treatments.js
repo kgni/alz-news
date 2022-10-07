@@ -38,7 +38,7 @@ export default function Page() {
 					<h2 className="text-center text-4xl font-bold mb-8">
 						Select a Topic
 					</h2>
-					<div className="grid grid-cols-3 gap-8 auto-rows-[1fr]">
+					<div className="grid grid-cols-3 gap-6 auto-rows-[1fr] xl:gap-4 xl:grid-cols-2 sm:grid-cols-1 sm:gap-8">
 						<TopicCard
 							link="https://www.alz.org/alzheimers-dementia/treatments/aducanumab"
 							img="/img/treatments/aducanumab.jpg"
@@ -82,5 +82,9 @@ export default function Page() {
 }
 
 Page.getLayout = function getLayout(page) {
-	return <InfoPageLayout containerWidth="w-[80%]">{page}</InfoPageLayout>;
+	return (
+		<InfoPageLayout containerWidth="w-[80%] xl:w-[90%] lg:w-full">
+			{page}
+		</InfoPageLayout>
+	);
 };

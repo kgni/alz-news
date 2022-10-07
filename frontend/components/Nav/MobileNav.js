@@ -43,10 +43,12 @@ const MobileNav = () => {
 			</div>
 			{!isOpen && (
 				<Link href="/">
-					<span className="uppercase font-bold text-3xl cursor-pointer select-none absolute right-1/2 translate-x-1/2">
-						Alz<span>.</span>
-						<span className="text-2xl">news</span>
-					</span>
+					<div className="cursor-pointer select-none absolute right-1/2 translate-x-1/2">
+						<span className="uppercase font-bold text-3xl">
+							Alz<span>.</span>
+							<span className="text-2xl">news</span>
+						</span>
+					</div>
 				</Link>
 			)}
 
