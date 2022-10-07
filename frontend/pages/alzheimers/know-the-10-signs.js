@@ -1,7 +1,9 @@
 import InfoPageLayout from '../../components/UI/Layout/InfoPageLayout';
 import Head from 'next/head';
 import CountDownBox from '../../components/CountDownBox';
+import useMediaQuery from '../../hooks/useMediaQuery';
 export default function Page({}) {
+	const tableBreak = useMediaQuery('(max-width: 750px)');
 	return (
 		<>
 			<Head>
@@ -9,9 +11,9 @@ export default function Page({}) {
 				<meta name="description" content="Alz.news, we have news for you" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<article className="leading-relaxed text-lg">
+			<article className="leading-relaxed text-md">
 				<div className="mb-16">
-					<h1 className="text-center text-5xl font-bold leading-normal">
+					<h1 className="text-center text-5xl font-bold leading-normal md:text-4xl md:mb-2">
 						10 Early Signs and Symptoms of Alzheimer's
 					</h1>
 					<span className="block italic text-center">
@@ -247,17 +249,17 @@ export default function Page({}) {
 						when a routine is disrupted.
 					</p>
 				</section>
-				<section className="mb-24">
-					<h2 className="text-3xl font-bold mb-6">
+				<section className="mb-12">
+					<h2 className="text-3xl font-bold mb-6 md:text-2xl">
 						What is the difference between Alzheimer’s and typical age-related
 						changes?
 					</h2>
-					<div className="grid grid-cols-2">
+					<div className={`grid grid-cols-2 ${tableBreak && 'grid-cols-1'}`}>
 						<div className="border-r-[1px] border-white">
 							<h3 className="text-center py-4 bg-black text-white font-bold">
 								Signs of Alzheimer's and Dementia
 							</h3>
-							<ul className="flex flex-col">
+							<ul className="flex flex-col lg:text-sm">
 								<li className="py-4 px-4">Poor judgment and decision-making</li>
 								<li className="py-4 px-4 bg-gray-200">
 									Inability to manage a budget
@@ -278,7 +280,7 @@ export default function Page({}) {
 							<h3 className="text-center py-4 bg-black text-white font-bold">
 								Typical Age-Related Changes
 							</h3>
-							<ul className="flex flex-col">
+							<ul className="flex flex-col lg:text-sm">
 								<li className="py-4 pl-4 ">
 									Making a bad decision once in a while
 								</li>
@@ -297,7 +299,7 @@ export default function Page({}) {
 					</div>
 				</section>
 				<section className="">
-					<h2 className="text-3xl font-bold mb-6">
+					<h2 className="text-3xl font-bold mb-6 md:text-2xl">
 						What to do if you notice these signs?
 					</h2>
 					<p

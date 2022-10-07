@@ -59,7 +59,7 @@ export default function Page({}) {
 						belief that serious mental decline is a normal part of aging.
 					</p>
 				</section>
-				<section className="mb-12">
+				<section className="mb-6">
 					<h2 className="text-3xl font-bold mb-4">
 						Symptoms and signs of dementia
 					</h2>

@@ -1,6 +1,9 @@
 import InfoPageLayout from '../../components/UI/Layout/InfoPageLayout';
 import Head from 'next/head';
+import useMediaQuery from '../../hooks/useMediaQuery';
 export default function Page({}) {
+	const isHeadingBreaking = useMediaQuery('(max-width: 560px');
+
 	return (
 		<>
 			<Head>
@@ -8,10 +11,10 @@ export default function Page({}) {
 				<meta name="description" content="Alz.news, we have news for you" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<article className="leading-relaxed text-lg">
+			<article className="leading-relaxed text-md">
 				<div className="mb-16">
-					<h1 className="text-center text-5xl font-bold leading-normal">
-						What is Alzheimer’s Disease?
+					<h1 className="text-center text-5xl font-bold leading-normal md:text-4xl md:mb-2">
+						What is {isHeadingBreaking && <br />} Alzheimer’s Disease?
 					</h1>
 					<span className="block italic text-center">
 						Source:{' '}
@@ -30,7 +33,7 @@ export default function Page({}) {
 					daily tasks.
 				</p>
 				<section className="mb-12">
-					<h2 className="text-3xl font-bold mb-4">
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">
 						Understanding Alzheimer's and dementia
 					</h2>
 					<p
@@ -80,7 +83,9 @@ export default function Page({}) {
 					</p>
 				</section>
 				<section className="mb-12">
-					<h2 className="text-3xl font-bold mb-4">Symptoms of Alzheimer's</h2>
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">
+						Symptoms of Alzheimer's
+					</h2>
 					<p className="mb-6">
 						The most common early symptom of Alzheimer's is difficulty
 						remembering newly learned information.
@@ -119,7 +124,9 @@ export default function Page({}) {
 					</p>
 				</section>
 				<section className="mb-12">
-					<h2 className="text-3xl font-bold mb-4">Alzheimer's and the brain</h2>
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">
+						Alzheimer's and the brain
+					</h2>
 					<p className="mb-6">
 						Microscopic changes in the brain begin long before the first signs
 						of memory loss.
@@ -147,7 +154,7 @@ export default function Page({}) {
 					</p>
 				</section>
 				<section className="mb-12">
-					<h2 className="text-3xl font-bold mb-4">
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">
 						The role of plaques and tangles
 					</h2>
 					<p className="mb-6">
@@ -183,8 +190,10 @@ export default function Page({}) {
 						and other symptoms of Alzheimer's disease.
 					</p>
 				</section>
-				<section className="mb-12">
-					<h2 className="text-3xl font-bold mb-4">Research and progress</h2>
+				<section className=" md:mb-0">
+					<h2 className="text-3xl font-bold mb-4 md:text-2xl">
+						Research and progress
+					</h2>
 					<p className="mb-6">
 						In 1906, German physician Dr. Alois Alzheimer first described "a
 						peculiar disease" — one of profound memory loss and microscopic

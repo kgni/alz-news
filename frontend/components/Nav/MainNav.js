@@ -3,7 +3,6 @@ import Link from 'next/link';
 
 import MenuItems from './MenuItems';
 import ProfileItem from './ProfileItem';
-import useMediaQuery from '../../hooks/useMediaQuery';
 
 const MainNav = () => {
 	return (
