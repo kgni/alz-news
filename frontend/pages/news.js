@@ -12,6 +12,8 @@ import ReactPaginate from 'react-paginate';
 import NewsSourceTags from '../components/NewsArticles/NewsSourceTags';
 import Head from 'next/head';
 
+import useMediaQuery from '../hooks/useMediaQuery';
+
 // SSR function
 export async function getServerSideProps() {
 	const res = await axios.get('http://localhost:8000/api/news/approved');
@@ -79,7 +81,7 @@ export default function Page({
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
 
-	// session
+	const isDesktop = useMediaQuery('(min-width: 990px)');
 
 	// PAGINATION
 
@@ -169,11 +171,14 @@ export default function Page({
 
 			<div className=" mx-auto py-8">
 				<section className="flex gap-x-8">
-					<div className="flex flex-col w-1/3 self-start bg-white rounded-md shadow-md">
-						<RecommendedArticles articles={recommendedArticles} className="" />
+					<div className="flex flex-col w-1/3 self-start bg-gray-200 rounded-md shadow-md lg:hidden">
+						<RecommendedArticles
+							className="grow"
+							articles={recommendedArticles}
+						/>
 					</div>
 
-					<div className="flex flex-col w-2/3  p-4 shadow-md bg-white rounded-md">
+					<div className="flex flex-col w-2/3  p-4 shadow-md bg-white rounded-md lg:w-full">
 						<div className="flex items-center justify-center relative mb-3">
 							<DropDownFilter
 								newsSource={newsSource}
