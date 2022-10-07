@@ -6,7 +6,7 @@ const CountDownBox = ({ number, title }) => {
 			<span className="absolute -top-7 w-14 h-10 rounded-lg flex items-center justify-center bg-black text-white font-bold">
 				{number}
 			</span>
-			<h2 className="text-3xl font-bold">{title}</h2>
+			<h2 className="text-3xl font-bold text-center">{title}</h2>
 		</div>
 	);
 };
