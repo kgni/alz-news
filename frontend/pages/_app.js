@@ -2,26 +2,20 @@ import { useState, useEffect } from 'react';
 import '../styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
 import Router from 'next/router';
+import { motion } from 'framer-motion';
 
 import Loader from '../components/Loader';
 export default function App({
 	Component,
 	pageProps: { session, ...pageProps },
+	router,
 }) {
 	const [isLoading, setIsLoading] = useState(false);
-
-	useEffect(() => {
-		setIsLoading(true);
-		window.addEventListener('load', () => {
-			setTimeout(() => {
-				setIsLoading(false);
-			}, 500);
-		});
-	}, []);
 
 	Router.events.on('routeChangeStart', (url) => {
 		setIsLoading(true);
 	});
+
 	Router.events.on('routeChangeComplete', (url) => {
 		setIsLoading(false);
 	});
@@ -33,7 +27,21 @@ export default function App({
 			{isLoading && <Loader />}
 			{!isLoading && (
 				<SessionProvider session={pageProps.session} refetchInterval={5 * 60}>
-					{getLayout(<Component {...pageProps} />)}
+					<motion.div
+						key={router.route}
+						initial="pageInitial"
+						animate="pageAnimate"
+						variants={{
+							pageInitial: {
+								opacity: 0,
+							},
+							pageAnimate: {
+								opacity: 1,
+							},
+						}}
+					>
+						{getLayout(<Component {...pageProps} />)}
+					</motion.div>
 				</SessionProvider>
 			)}
 		</>

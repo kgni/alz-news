@@ -10,6 +10,9 @@
 	},
 	"dependencies": {
 		"@next-auth/mongodb-adapter": "^1.1.0",
+		"@react-three/cannon": "^6.4.0",
+		"@react-three/drei": "^9.34.3",
+		"@react-three/fiber": "^8.8.9",
 		"@tanstack/react-table": "^8.5.11",
 		"axios": "^0.27.2",
 		"bcrypt": "^5.0.1",
@@ -33,6 +36,7 @@
 		"react-table": "^7.8.0",
 		"react-textarea-autosize": "^8.3.4",
 		"react-toastify": "^9.0.8",
+		"three": "^0.145.0",
 		"yup": "^0.32.11"
 	},
 	"devDependencies": {

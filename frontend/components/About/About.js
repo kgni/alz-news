@@ -1,5 +1,4 @@
 import React from 'react';
-import useWindowSize from '@rooks/use-window-size';
 import ParticleImage, {
 	ParticleOptions,
 	Vector,
@@ -50,17 +49,16 @@ const particleOptions = {
 };
 
 const About = () => {
-	const { innerWidth, innerHeight } = useWindowSize();
 	const isDesktop = useMediaQuery('(max-width: 900px)');
 	return (
-		<div className="flex items-center justify-between gap-36 xl:gap-14 pb-12 w-full">
+		<div className="flex items-center justify-between gap-36 xl:gap-14 py-24 grow max-w-[1600px] mx-auto  w-[90%]">
 			{!isDesktop && (
 				<ParticleImage
 					className="w-1/2"
 					src={'/img/synapse01.png'}
 					scale={0.35}
 					entropy={20}
-					maxParticles={5000}
+					maxParticles={1000}
 					particleOptions={particleOptions}
 					backgroundColor="transparent"
 				/>

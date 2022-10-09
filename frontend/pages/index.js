@@ -5,8 +5,15 @@ import Script from 'next/script';
 
 import Hero from '../components/Hero/Hero';
 import About from '../components/About/About';
-import Header from '../components/Nav/Header';
 import Footer from '../components/Nav/Footer';
+import HeroHeader from '../components/Nav/HeroHeader';
+import useMediaQuery from '../hooks/useMediaQuery';
+import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const NextParticle = dynamic(() => import('../components/NextParticle'), {
+	ssr: false,
+});
 
 // SSR function
 export async function getServerSideProps() {
@@ -29,6 +36,42 @@ export async function getServerSideProps() {
 }
 
 export default function HomePage() {
+	const is16By9 = useMediaQuery('(min-aspect-ratio: 16/9)');
+
+	const isDesktop = useMediaQuery('(min-width: 1220px)');
+	const isSmallerDevices = useMediaQuery('(max-width: 1445px)');
+	const isTwelveHundred = useMediaQuery('(max-width: 1220px)');
+	const isElevenHundred = useMediaQuery('(max-width: 1150px)');
+	const isNineHundred = useMediaQuery('(max-width: 950px)');
+	const isSevenHundred = useMediaQuery('(max-width: 767px)');
+
+	const [settings, setSettings] = useState(null);
+	useEffect(() => {
+		setSettings({
+			renderer: 'webgl',
+			colorArr: undefined,
+			imageUrl: '/img/brain06-nobgsmall.png',
+			particleGap: 3,
+			gravity: 0.08,
+			noise: 3,
+			width: '100%',
+			height: '100%',
+			maxWidth: '100%',
+			maxHeight: '32%',
+			mouseForce: 8,
+			clickStrength: 0,
+			particleSize: 4,
+			layerCount: 1,
+			layerDistance: 1,
+			depth: 1,
+			lifeCycle: true,
+			growDuration: 50,
+			waitDuration: 100,
+			shrinkDuration: 50,
+			shrinkDistance: 2,
+			disableInteraction: true,
+		});
+	}, []);
 	return (
 		<>
 			<Head>
@@ -37,18 +80,25 @@ export default function HomePage() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			{/* this is just to fix the image from overflowing */}
-			<div className="overflow-x-hidden">
-				<div className="absolute -z-10 w-full top-[50%] h-[900px] bg-gradient-to-t from-white via-white to-transparent"></div>
-				<div className="max-w-[1600px] mx-auto pb-8 w-[90%]">
+			<div className=" relative max-w-[1600px] mx-auto overflow-hidden">
+				{settings && (
+					<NextParticle
+						{...settings}
+						className={`absolute top-20 -z-20 right-0 overflow-hidden xl:max-h-screen ${
+							isSmallerDevices && '-right-[5%] translate-x-[50%] max-w[1600px]'
+						} md:right-[50%]`}
+					/>
+				)}
+				<div className="absolute top-[15%] -z-10 w-full h-screen bg-gradient-to-t from-white  to-transparent"></div>
+				<div className="">
 					<div className="min-h-screen flex flex-col">
-						<Header />
+						<HeroHeader />
 						<Hero />
 					</div>
 					<About />
 				</div>
-				<Footer />
 			</div>
-			{/* <Script src="./js/nextparticle.js" /> */}
+			<Footer />
 		</>
 	);
 }
