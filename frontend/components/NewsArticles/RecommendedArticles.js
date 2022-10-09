@@ -17,7 +17,9 @@ const RecommendedArticles = ({ className, articles }) => {
 			{recommendedArticles.length > 0 &&
 				recommendedArticles
 					.map((article) => {
-						return <NewsArticleRecommended article={article} />;
+						return (
+							<NewsArticleRecommended key={article.id} article={article} />
+						);
 					})
 					.slice(0, 5)}
 		</div>

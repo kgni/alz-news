@@ -118,6 +118,7 @@ const Hero = () => {
 					maxParticles={4000}
 					particleOptions={particleOptions}
 					backgroundColor="transparent"
+					creationDuration={5000}
 				/>
 			) : (
 				<ParticleImage
@@ -130,6 +131,7 @@ const Hero = () => {
 					maxParticles={4000}
 					particleOptions={particleOptionsSmall}
 					backgroundColor="transparent"
+					creationDuration={3000}
 				/>
 			)}
 		</main>

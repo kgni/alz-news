@@ -35,7 +35,7 @@ const FilterNewsSource = ({
 			<div className="bg-white z-10 p-4 shadow-md mt-4 absolute">
 				<ul className="grid grid-cols-2 text-xs gap-2 mb-4">
 					{newsSites.map((site) => (
-						<div className="flex items-center gap-2">
+						<div key={site.id} className="flex items-center gap-2">
 							<input
 								autoComplete="off"
 								type="checkbox"
