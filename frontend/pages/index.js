@@ -38,9 +38,9 @@ export default function HomePage() {
 			</Head>
 			{/* this is just to fix the image from overflowing */}
 			<div className="overflow-x-hidden">
+				<div className="absolute -z-10 w-full top-[50%] h-[900px] bg-gradient-to-t from-white via-white to-transparent"></div>
 				<div className="max-w-[1600px] mx-auto pb-8 w-[90%]">
-					<div className="min-h-screen flex flex-col ">
-						<div className="absolute -z-10 w-screen h-screen top-[50%] left-0 bg-gradient-to-t from-white via-white to-transparent"></div>
+					<div className="min-h-screen flex flex-col">
 						<Header />
 						<Hero />
 					</div>
