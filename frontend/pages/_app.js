@@ -10,7 +10,7 @@ export default function App({
 	pageProps: { session, ...pageProps },
 	router,
 }) {
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	Router.events.on('routeChangeStart', (url) => {
 		setIsLoading(true);
@@ -19,6 +19,12 @@ export default function App({
 	Router.events.on('routeChangeComplete', (url) => {
 		setIsLoading(false);
 	});
+
+	useEffect(() => {
+		setTimeout(() => {
+			window.addEventListener('load', setIsLoading(false));
+		}, 500);
+	}, []);
 
 	const getLayout = Component.getLayout || ((page) => page);
 

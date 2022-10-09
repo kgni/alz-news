@@ -18,9 +18,14 @@ const Loader = () => {
 			// 		},
 			// 	},
 			// }}
-			className="w-screen h-screen flex justify-center items-center select-none"
+			className="w-screen h-screen flex justify-center items-center select-none py-8"
 		>
-			<h1 className="text-9xl font-bold">ALZ.news</h1>
+			<div>
+				<span className=" animate text-4xl uppercase font-bold cursor-pointer select-none">
+					Alz<span>.</span>
+					<span className="text-xl self-end">news</span>
+				</span>
+			</div>
 		</motion.div>
 	);
 };

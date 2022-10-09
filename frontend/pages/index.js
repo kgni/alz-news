@@ -15,35 +15,10 @@ const NextParticle = dynamic(() => import('../components/NextParticle'), {
 	ssr: false,
 });
 
-// SSR function
-export async function getServerSideProps() {
-	const res = await axios.get('http://localhost:8000/api/news/approved');
-
-	const { articles, allArticlesLength, page, totalPages, recommendedArticles } =
-		await res.data;
-
-	console.log(allArticlesLength, page, totalPages);
-
-	return {
-		props: {
-			articles,
-			allArticlesLength,
-			page,
-			totalPages,
-			recommendedArticles,
-		},
-	};
-}
-
 export default function HomePage() {
 	const is16By9 = useMediaQuery('(min-aspect-ratio: 16/9)');
 
-	const isDesktop = useMediaQuery('(min-width: 1220px)');
 	const isSmallerDevices = useMediaQuery('(max-width: 1445px)');
-	const isTwelveHundred = useMediaQuery('(max-width: 1220px)');
-	const isElevenHundred = useMediaQuery('(max-width: 1150px)');
-	const isNineHundred = useMediaQuery('(max-width: 950px)');
-	const isSevenHundred = useMediaQuery('(max-width: 767px)');
 
 	const [settings, setSettings] = useState(null);
 	useEffect(() => {
