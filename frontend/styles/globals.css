@@ -56,3 +56,9 @@
 .breakLink {
 	border: none;
 }
+
+/* heading drop-shadow */
+
+.heading-shadow {
+	text-shadow: -7px 7px 4px rgba(0, 0, 0, 0.15);
+}

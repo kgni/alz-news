@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import axios from 'axios';
-
+import Script from 'next/script';
 // COMPONENTS
 
 import Hero from '../components/Hero/Hero';
@@ -39,7 +39,8 @@ export default function HomePage() {
 			{/* this is just to fix the image from overflowing */}
 			<div className="overflow-x-hidden">
 				<div className="max-w-[1600px] mx-auto pb-8 w-[90%]">
-					<div className=" min-h-screen flex flex-col ">
+					<div className="min-h-screen flex flex-col ">
+						<div className="absolute -z-10 w-screen h-screen top-[50%] left-0 bg-gradient-to-t from-white via-white to-transparent"></div>
 						<Header />
 						<Hero />
 					</div>
@@ -47,6 +48,7 @@ export default function HomePage() {
 				</div>
 				<Footer />
 			</div>
+			{/* <Script src="./js/nextparticle.js" /> */}
 		</>
 	);
 }
