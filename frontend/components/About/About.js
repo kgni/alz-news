@@ -51,7 +51,7 @@ const particleOptions = {
 const About = () => {
 	const isDesktop = useMediaQuery('(max-width: 900px)');
 	return (
-		<div className="flex items-center justify-between gap-36 xl:gap-14 pb-12 w-full">
+		<div className="flex items-center justify-between gap-36 xl:gap-14 pb-12 max-w-[1600px] mx-auto w-[90%]">
 			{!isDesktop && (
 				<ParticleImage
 					className="w-1/2"
