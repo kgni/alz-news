@@ -61,7 +61,7 @@ export default function Page() {
 						/>
 						<TopicCard
 							link="https://www.alz.org/alzheimers-dementia/treatments/for-sleep-changes"
-							img="/img/treatments/compressed/sleep.jpg"
+							img="/img/treatments/sleep.jpg"
 							title="Treatments for Sleep Changes"
 						/>
 						<TopicCard
