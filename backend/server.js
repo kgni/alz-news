@@ -30,8 +30,6 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 app.use('/api/', apiRouter);
-// app.use('/api/users', usersRouter);
-// app.use('/api/login', loginRouter);
 
 app.use(middleware.unknownEndpoint);
 
