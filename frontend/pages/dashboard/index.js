@@ -42,7 +42,9 @@ const Dashboard = ({ session }) => {
 
 	useEffect(() => {
 		async function fetchArticles() {
-			const res = await axios.get('http://localhost:8000/api/news/');
+			const res = await axios.get(
+				'https://alz-news-api.up.railway.app/api/news'
+			);
 
 			const data = await res.data;
 

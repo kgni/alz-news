@@ -16,8 +16,10 @@ import useMediaQuery from '../hooks/useMediaQuery';
 
 // SSR function
 export async function getServerSideProps() {
-	const res = await axios.get(`${process.env.API_BASEURL}/api/news/approved`);
-
+	const res = await axios.get(
+		`https://alz-news-api.up.railway.app/api/news/approved`
+	);
+	console.log(process.env.API_BASEURL);
 	const { articles, allArticlesLength, page, totalPages, recommendedArticles } =
 		await res.data;
 
@@ -134,7 +136,7 @@ export default function Page({
 	// useEffect for querying DB
 	useEffect(() => {
 		axios
-			.get(`${API_BASEURL}/api/news/approved/`, {
+			.get(`https://alz-news-api.up.railway.app/api/news/approved`, {
 				params: {
 					page: currentPage + 1,
 					sortingOrder,
