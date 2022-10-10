@@ -1,5 +1,5 @@
 import connectDB from '../../helper/connectDB';
-import User from '../../model/user';
+import User from '../../models/user';
 import bcrypt from 'bcrypt';
 
 // TODO - IMPLEMENT VALIDATION LIBRARY

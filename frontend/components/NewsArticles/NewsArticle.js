@@ -70,7 +70,7 @@ const NewsArticle = ({ article }) => {
 					</div>
 				</article>
 			</Link>
-			<p className="mb-2 h-[1px] bg-black w-full"></p>
+			<div className="mb-2 h-[1px] bg-black w-full"></div>
 		</>
 	);
 };
