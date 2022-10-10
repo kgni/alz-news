@@ -41,37 +41,37 @@ export default function Page() {
 					<div className="grid grid-cols-3 gap-6 auto-rows-[1fr] xl:gap-4 xl:grid-cols-2 sm:grid-cols-1 sm:gap-8">
 						<TopicCard
 							link="https://www.alz.org/alzheimers-dementia/treatments/aducanumab"
-							img="/img/treatments/aducanumab.jpg"
+							img="/img/treatments/compressed/aducanumab.jpg"
 							title="Aducanumab Approved for Treatment of Alzheimer’s Disease"
 						/>
 						<TopicCard
 							link="https://www.alz.org/alzheimers-dementia/treatments/cms-medicare-coverage"
-							img="/img/treatments/CMS.jpg"
+							img="/img/treatments/compressed/CMS.jpg"
 							title="CMS Decision on Treatment Coverage: What It Means for People Living with Alzheimer's"
 						/>
 						<TopicCard
 							link="https://www.alz.org/alzheimers-dementia/treatments/medications-for-memory"
-							img="/img/treatments/medication.jpg"
+							img="/img/treatments/compressed/medication.jpg"
 							title="Medications for Memory, Cognition and Dementia-Related Behaviors"
 						/>
 						<TopicCard
 							link="https://www.alz.org/alzheimers-dementia/treatments/treatments-for-behavior"
-							img="/img/treatments/behavior.jpg"
+							img="/img/treatments/compressed/behavior.jpg"
 							title="Treatments for Behavior"
 						/>
 						<TopicCard
 							link="https://www.alz.org/alzheimers-dementia/treatments/for-sleep-changes"
-							img="/img/treatments/sleep.jpg"
+							img="/img/treatments/compressed/sleep.jpg"
 							title="Treatments for Sleep Changes"
 						/>
 						<TopicCard
 							link="https://www.alz.org/alzheimers-dementia/treatments/alternative-treatments"
-							img="/img/treatments/alternative-treatments.jpg"
+							img="/img/treatments/compressed/alternative-treatments.jpg"
 							title="Alternative Treatments"
 						/>
 						<TopicCard
 							link="https://www.alz.org/alzheimers-dementia/treatments/questions-for-your-doctor"
-							img="/img/treatments/questions-doctor.jpg"
+							img="/img/treatments/compressed/questions-doctor.jpg"
 							title="Questions for Your Doctor"
 						/>
 					</div>
