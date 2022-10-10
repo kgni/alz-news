@@ -16,7 +16,7 @@ import useMediaQuery from '../hooks/useMediaQuery';
 
 // SSR function
 export async function getServerSideProps() {
-	const res = await axios.get('http://localhost:8000/api/news/approved');
+	const res = await axios.get(`${process.env.API_BASEURL}/api/news/approved`);
 
 	const { articles, allArticlesLength, page, totalPages, recommendedArticles } =
 		await res.data;
@@ -134,7 +134,7 @@ export default function Page({
 	// useEffect for querying DB
 	useEffect(() => {
 		axios
-			.get(`http://localhost:8000/api/news/approved/`, {
+			.get(`${API_BASEURL}/api/news/approved/`, {
 				params: {
 					page: currentPage + 1,
 					sortingOrder,
