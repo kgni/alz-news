@@ -15,12 +15,20 @@ const MenuItems = () => {
 		}
 	}
 
+	function openNavDropDownEnter(event) {
+		if (event.key === 'Enter') {
+			setIsOpen((prev) => !prev);
+		}
+	}
+
 	useEventListener('keydown', navDropDownEscape);
 
 	return (
 		<ul className="flex grow justify-center gap-x-8 items-center font-bold select-none relative">
 			<li
+				tabIndex={1}
 				onClick={() => setIsOpen((prev) => !prev)}
+				onKeyDown={openNavDropDownEnter}
 				className="cursor-pointer hover:text-gray-600 duration-200 flex items-center gap-2"
 			>
 				ALZHEIMER'S AND DEMENTIA
@@ -31,12 +39,9 @@ const MenuItems = () => {
 				)}
 				{isOpen && <NavDropDown />}
 			</li>
-
-			<Link href="/news">
-				<li className="cursor-pointer hover:text-gray-600 duration-200">
-					NEWS
-				</li>
-			</Link>
+			<li className="cursor-pointer hover:text-gray-600 duration-200">
+				<Link href="/news">NEWS</Link>
+			</li>
 			{/* <Link href="/">
 				<li className="cursor-pointer hover:text-gray-600 duration-200">
 					JOURNALS
