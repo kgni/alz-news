@@ -129,8 +129,6 @@ I learned how to dynamically import components with the dynamic API in Next, so 
            <img src="https://user-images.githubusercontent.com/84397151/195383078-5686a818-0824-4ac4-acb1-56b3a7e8ecdb.png" width="100%"  alt="Sign up page"/>
         </p>
         <br />
-
-
     </td>
   </tr>
   </table>
