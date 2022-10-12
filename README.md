@@ -6,8 +6,7 @@ The purpose is to make resources including articles, journals, practical informa
 Alzh.info is not affiliated with any Alzheimer's organizations or patients advocacy groups in any way.
 
 **Link to project:** https://www.alzh.info/
-
-![Alzh info-homepage](https://user-images.githubusercontent.com/84397151/195356267-0c414ae2-846b-4948-a4cd-1cd6c80484a9.png)
+![Alzh info-homepage](https://user-images.githubusercontent.com/84397151/195405928-5f765e9c-c4fd-470d-98fc-df110c89cd17.png)
 _FOR MORE IMAGES OF THE APPLICATION GO TO THE [EXAMPLES](#examples) SECTION_
 
 ## How It's Made:
