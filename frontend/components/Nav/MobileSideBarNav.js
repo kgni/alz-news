@@ -116,7 +116,7 @@ const MobileSideBarNav = ({
 						</ul>
 					)}
 				</ul>
-				<span className="mt-auto text-center">alz.news © 2022</span>
+				<span className="mt-auto text-center">alzh.info © 2022</span>
 			</nav>
 			<div
 				onClick={closeNav}

@@ -8,7 +8,10 @@ export default function Page({}) {
 		<>
 			<Head>
 				<title>Alzheimers - Know the 10 Signs</title>
-				<meta name="description" content="Alz.news, we have news for you" />
+				<meta
+					name="description"
+					content="Alzh.info, Alzheimer's and dementia information"
+				/>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<article className="leading-relaxed text-md">

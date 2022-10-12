@@ -81,7 +81,7 @@ const AdminDashboard = ({ session }) => {
 			}}
 		>
 			<Head>
-				<title>ALZ.NEWS - DASHBOARD</title>
+				<title>ALZH.INFO - DASHBOARD</title>
 			</Head>
 
 			<main className="flex max-h-screen w-full ">

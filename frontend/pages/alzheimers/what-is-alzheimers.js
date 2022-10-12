@@ -7,8 +7,11 @@ export default function Page({}) {
 	return (
 		<>
 			<Head>
-				<title>Alzheimers - What Is Alzheimers?</title>
-				<meta name="description" content="Alz.news, we have news for you" />
+				<title>Alzheimer's - What Is Alzheimer's?</title>
+				<meta
+					name="description"
+					content="Alzh.info - Alzheimer's and dementia information"
+				/>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<article className="leading-relaxed text-md">

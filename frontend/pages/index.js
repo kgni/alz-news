@@ -50,8 +50,11 @@ export default function HomePage() {
 	return (
 		<>
 			<Head>
-				<title>ALZ.NEWS</title>
-				<meta name="description" content="Alz.news, we have news for you" />
+				<title>ALZH.INFO</title>
+				<meta
+					name="description"
+					content="Alzh.info - Alzheimer's and dementia information"
+				/>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			{/* this is just to fix the image from overflowing */}

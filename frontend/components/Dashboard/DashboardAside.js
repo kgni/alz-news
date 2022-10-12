@@ -45,7 +45,7 @@ const DashboardAside = ({ currentPage, setCurrentPage, setIsAsideOpen }) => {
 					/>
 					<Link href="/">
 						<h2 className="text-white font-bold text-3xl mb-32 cursor-pointer">
-							ALZ.news
+							ALZH.info
 						</h2>
 					</Link>
 				</div>

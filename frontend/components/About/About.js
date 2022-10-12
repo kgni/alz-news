@@ -66,11 +66,11 @@ const About = () => {
 
 			<div className={`w-full`}>
 				<h2 className="text-6xl font-semibold mb-12 xl:text-center ">
-					What Is Alz.news?
+					What Is Alzh.info?
 				</h2>
 				<div className="leading-loose flex flex-col gap-4 w-">
 					<p>
-						Alz.news is a simple, <em className="font-bold">easy-to-use</em>,
+						Alzh.info is a simple, <em className="font-bold">easy-to-use</em>,
 						non-profit platform for anyone who has an interest in Alzheimer's or
 						Dementia. <br />
 						The purpose is to make resources including articles, journals,
@@ -78,7 +78,7 @@ const About = () => {
 						by gathering it all in one place.
 					</p>
 					<p>
-						Alz.news is not affiliated with any Alzheimer's organizations or
+						Alzh.info is not affiliated with any Alzheimer's organizations or
 						patients advocacy groups in any way.
 					</p>
 					<div>
@@ -86,7 +86,7 @@ const About = () => {
 							If you have any relevant information or suggestions for content or
 							improvements, <br /> please contact us at{' '}
 						</p>
-						<address className="inline font-bold">info@alz.news</address>
+						<address className="inline font-bold">mail@alzh.info</address>
 					</div>
 				</div>
 			</div>

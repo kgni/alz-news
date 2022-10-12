@@ -166,8 +166,11 @@ export default function Page({
 	return (
 		<>
 			<Head>
-				<title>ALZ.NEWS - NEWS</title>
-				<meta name="description" content="Alz.news, we have news for you" />
+				<title>ALZH.INFO - NEWS</title>
+				<meta
+					name="description"
+					content="Alzh.info - Alzheimer's and dementia information"
+				/>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
