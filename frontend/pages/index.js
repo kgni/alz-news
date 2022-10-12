@@ -55,6 +55,18 @@ export default function HomePage() {
 					name="description"
 					content="Alzh.info - Alzheimer's and dementia information"
 				/>
+				<meta property="og:url" content="https://www.alzh.info/" />
+				<meta property="og:type" content="website" />
+				<meta
+					property="og:title"
+					content="Easy access to Alzheimer's and dementia research"
+				/>
+				<meta name="twitter:card" content="summary" />
+				<meta
+					property="og:description"
+					content="Easy access to Alzheimer's and dementia research"
+				/>
+				<meta property="og:image" content={'url of image'} />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			{/* this is just to fix the image from overflowing */}
