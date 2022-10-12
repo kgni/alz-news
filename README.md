@@ -1,1 +1,1 @@
-# alz.news
+# alzh.info
