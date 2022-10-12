@@ -67,10 +67,7 @@ export default function HomePage() {
 					content="Alzh.info is a simple, easy-to-use, non-profit platform for anyone who has an interest in Alzheimer's or Dementia.
 					The purpose is to make resources including articles, journals, practical information and all kinds of knowledge, easily accessible by gathering it all in one place."
 				/>
-				<meta
-					property="og:image"
-					content="https://user-images.githubusercontent.com/84397151/195356267-0c414ae2-846b-4948-a4cd-1cd6c80484a9.png"
-				/>
+				<meta property="og:image" content="https://prnt.sc/SGI1t9mbFkTi" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			{/* this is just to fix the image from overflowing */}
