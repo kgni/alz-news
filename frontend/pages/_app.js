@@ -31,25 +31,24 @@ export default function App({
 	return (
 		<>
 			{isLoading && <Loader />}
-			{!isLoading && (
-				<SessionProvider session={pageProps.session} refetchInterval={5 * 60}>
-					<motion.div
-						key={router.route}
-						initial="pageInitial"
-						animate="pageAnimate"
-						variants={{
-							pageInitial: {
-								opacity: 0,
-							},
-							pageAnimate: {
-								opacity: 1,
-							},
-						}}
-					>
-						{getLayout(<Component {...pageProps} />)}
-					</motion.div>
-				</SessionProvider>
-			)}
+
+			<SessionProvider session={pageProps.session} refetchInterval={5 * 60}>
+				<motion.div
+					key={router.route}
+					initial="pageInitial"
+					animate="pageAnimate"
+					variants={{
+						pageInitial: {
+							opacity: 0,
+						},
+						pageAnimate: {
+							opacity: 1,
+						},
+					}}
+				>
+					{getLayout(<Component {...pageProps} />)}
+				</motion.div>
+			</SessionProvider>
 		</>
 	);
 }
