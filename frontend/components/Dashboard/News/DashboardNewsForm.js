@@ -71,7 +71,7 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	async function onSubmitForm() {
 		try {
 			const res = await axios.put(
-				'https://alz-news-api.up.railway.app/api/news',
+				'https://alzh-info-api.up.railway.app/api/news',
 				formData
 			);
 			console.log(res);
@@ -119,7 +119,7 @@ const DashboardNewsForm = ({ currentShownArticle, setIsModalShown }) => {
 	async function onDeleteArticle(id, articles, setArticles) {
 		try {
 			const res = await axios.delete(
-				`https://alz-news-api.up.railway.app/api/news/${id}`
+				`https://alzh-info-api.up.railway.app/api/news/${id}`
 			);
 
 			if (res.status === 200) {
