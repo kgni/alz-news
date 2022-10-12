@@ -209,8 +209,6 @@ export default function Page({}) {
 						progress has shed light on how Alzheimer's affects the brain. The
 						hope is this better understanding will lead to new treatments. Many
 						potential approaches are currently under investigation worldwide.
-						Sign up for our weekly E-News to receive updates about Alzheimer’s
-						and dementia care and research.
 					</p>
 
 					<span className="block italic">

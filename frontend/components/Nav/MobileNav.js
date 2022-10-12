@@ -45,8 +45,8 @@ const MobileNav = () => {
 				<Link href="/">
 					<div className="cursor-pointer select-none absolute right-1/2 translate-x-1/2">
 						<span className="uppercase font-bold text-3xl">
-							Alz<span>.</span>
-							<span className="text-2xl">news</span>
+							Alzh<span>.</span>
+							<span className="text-2xl">info</span>
 						</span>
 					</div>
 				</Link>

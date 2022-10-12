@@ -22,8 +22,8 @@ const Loader = () => {
 		>
 			<div>
 				<span className=" animate text-4xl uppercase font-bold cursor-pointer select-none">
-					Alz<span>.</span>
-					<span className="text-xl self-end">news</span>
+					Alzh<span>.</span>
+					<span className="text-xl self-end">info</span>
 				</span>
 			</div>
 		</motion.div>

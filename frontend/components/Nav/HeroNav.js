@@ -9,8 +9,8 @@ const HeroNav = () => {
 		<nav className="relative z-50 mx-auto py-8 flex justify-between items-center text-black border-b-2 border-black md:w-[90%]">
 			<Link href="/">
 				<span className="uppercase font-bold text-2xl cursor-pointer select-none">
-					Alz<span>.</span>
-					<span className="text-xl">news</span>
+					Alzh<span>.</span>
+					<span className="text-xl">info</span>
 				</span>
 			</Link>
 			<MenuItems />

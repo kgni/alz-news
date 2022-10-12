@@ -20,8 +20,8 @@ const MobileSideBarNav = ({
 				/>
 				<Link href="/">
 					<div className="uppercase font-bold text-3xl cursor-pointer select-none text-center mb-7">
-						Alz<span>.</span>
-						<span className="text-2xl">news</span>
+						Alzh<span>.</span>
+						<span className="text-2xl">info</span>
 					</div>
 				</Link>
 				<div className="w-full h-[2px] mb-7 bg-white"></div>
