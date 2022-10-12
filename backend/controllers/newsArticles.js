@@ -73,6 +73,8 @@ module.exports = {
 
 		const recommendedArticles = await NewsArticle.find({
 			recommended: true,
+		}).sort({
+			publishDate: 'desc',
 		});
 
 		const totalPages = Math.ceil(allArticlesLength / size);
