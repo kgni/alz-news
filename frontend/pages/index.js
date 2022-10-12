@@ -53,13 +53,13 @@ export default function HomePage() {
 				<title>ALZH.INFO</title>
 				<meta
 					name="description"
-					content="Alzh.info - Alzheimer's and dementia information"
+					content="Alzh.info - Alzheimer's and Dementia information"
 				/>
 				<meta property="og:url" content="https://www.alzh.info/" />
 				<meta property="og:type" content="website" />
 				<meta
 					property="og:title"
-					content="Easy access to Alzheimer's and dementia research"
+					content="Easy access to Alzheimer's and Dementia research"
 				/>
 				<meta name="twitter:card" content="summary" />
 				<meta
