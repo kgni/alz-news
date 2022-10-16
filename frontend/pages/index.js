@@ -10,6 +10,7 @@ import HeroHeader from '../components/Nav/HeroHeader';
 import useMediaQuery from '../hooks/useMediaQuery';
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+import useWindowSize from '../hooks/useWindowSize';
 
 const NextParticle = dynamic(() => import('../components/NextParticle'), {
 	ssr: false,
@@ -17,8 +18,11 @@ const NextParticle = dynamic(() => import('../components/NextParticle'), {
 
 export default function HomePage() {
 	const is16By9 = useMediaQuery('(min-aspect-ratio: 16/9)');
+	const windowSize = useWindowSize();
 
 	const isSmallerDevices = useMediaQuery('(max-width: 1445px)');
+	const isMobile = useMediaQuery('(max-width: 639px');
+	console.log(isMobile);
 
 	const [settings, setSettings] = useState(null);
 	useEffect(() => {
@@ -29,10 +33,10 @@ export default function HomePage() {
 			particleGap: 3,
 			gravity: 0.08,
 			noise: 3,
-			width: '100%',
-			height: '100%',
+			width: windowSize.width,
+			height: windowSize.height,
 			maxWidth: '100%',
-			maxHeight: '32%',
+			maxHeight: isMobile ? '15%' : '30%',
 			mouseForce: 8,
 			clickStrength: 0,
 			particleSize: 4,
@@ -46,7 +50,7 @@ export default function HomePage() {
 			shrinkDistance: 2,
 			disableInteraction: true,
 		});
-	}, []);
+	}, [isMobile, windowSize]);
 	return (
 		<>
 			<Head>
@@ -74,24 +78,24 @@ export default function HomePage() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			{/* this is just to fix the image from overflowing */}
-			<div className=" relative max-w-[1600px] mx-auto overflow-hidden">
+			<div className="relative max-w-[1600px] mx-auto overflow-hidden">
 				{settings && (
 					<NextParticle
 						{...settings}
-						className={`absolute top-20 -z-20 right-0 overflow-hidden xl:max-h-screen ${
+						className={`absolute -z-20 overflow-hidden xl:max-h-screen ${
 							isSmallerDevices && '-right-[5%] translate-x-[50%] max-w[1600px]'
-						} md:right-[50%]`}
+						} md:right-[50%] sm:top-0`}
 					/>
 				)}
 				<div className="absolute top-[15%] -z-10 w-full h-screen bg-gradient-to-t from-white  to-transparent"></div>
-				<div className="">
-					<div className="min-h-screen flex flex-col">
-						<HeroHeader />
-						<Hero />
-					</div>
-					<About />
+
+				<div className="min-h-screen flex flex-col">
+					<HeroHeader />
+					<Hero />
 				</div>
+				<About />
 			</div>
+
 			<Footer />
 		</>
 	);
