@@ -34,8 +34,8 @@ export default function HomePage() {
 			gravity: 0.08,
 			noise: 3,
 			width: windowSize.width,
-			height: isMobile ? '50%' : '100%',
-			maxWidth: isMobile ? '30%' : '100%',
+			height: windowSize.height,
+			maxWidth: isSmallerDevices ? '30%' : isMobile ? '60%' : '100%',
 			maxHeight: isMobile ? '100%' : 400,
 			mouseForce: 8,
 			clickStrength: 0,
@@ -88,7 +88,7 @@ export default function HomePage() {
 						{settings && (
 							<NextParticle
 								{...settings}
-								className={`w-full max-h-full text-center flex-col pt-12 -z-20 overflow-hidden -right-8 md:right-0 justify-start relative`}
+								className={`w-full max-h-full text-center flex-col pt-12 md:pt-0 md:absolute lg:-top-20 md:top-0 -z-20 overflow-hidden -right-8 lg:right-0 justify-start relative`}
 							/>
 						)}
 					</main>
