@@ -7,7 +7,7 @@ import useMediaQuery from '../../hooks/useMediaQuery';
 const HeroHeader = () => {
 	const isDesktop = useMediaQuery('(min-width: 900px)');
 	return (
-		<header className="max-w-[1600px] mx-auto w-[90%]">
+		<header className="relative mx-auto max-w-[1600px] w-[90%]">
 			{isDesktop ? <HeroNav /> : <MobileNav />}
 		</header>
 	);

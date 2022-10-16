@@ -30,13 +30,13 @@ export default function HomePage() {
 			renderer: 'webgl',
 			colorArr: undefined,
 			imageUrl: '/img/brain06-nobgsmall.png',
-			particleGap: 3,
+			particleGap: 2,
 			gravity: 0.08,
 			noise: 3,
 			width: windowSize.width,
-			height: windowSize.height,
-			maxWidth: '100%',
-			maxHeight: isMobile ? '15%' : '30%',
+			height: isMobile ? '50%' : '100%',
+			maxWidth: isMobile ? '30%' : '100%',
+			maxHeight: isMobile ? '100%' : 400,
 			mouseForce: 8,
 			clickStrength: 0,
 			particleSize: 4,
@@ -77,21 +77,21 @@ export default function HomePage() {
 				/>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			{/* this is just to fix the image from overflowing */}
-			<div className="relative max-w-[1600px] mx-auto overflow-hidden">
-				{settings && (
-					<NextParticle
-						{...settings}
-						className={`absolute -z-20 overflow-hidden xl:max-h-screen ${
-							isSmallerDevices && '-right-[5%] translate-x-[50%] max-w[1600px]'
-						} md:right-[50%] sm:top-0`}
-					/>
-				)}
-				<div className="absolute top-[15%] -z-10 w-full h-screen bg-gradient-to-t from-white  to-transparent"></div>
+			<div className=" mx-auto overflow-hidden">
+				<div className="absolute top-[10%] -z-10 w-full h-screen bg-gradient-to-t from-white  to-transparent"></div>
 
-				<div className="min-h-screen flex flex-col">
+				<div className="min-h-screen max-h-screen flex flex-col">
 					<HeroHeader />
-					<Hero />
+					{/* <Hero /> */}
+
+					<main className="md:pt-0 grow overflow-hidden">
+						{settings && (
+							<NextParticle
+								{...settings}
+								className={`w-full max-h-full text-center flex-col pt-12 -z-20 overflow-hidden -right-8 md:right-0 justify-start relative`}
+							/>
+						)}
+					</main>
 				</div>
 				<About />
 			</div>
