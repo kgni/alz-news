@@ -16,15 +16,15 @@ export default function App({
 		setIsLoading(true);
 	});
 
-	Router.events.on('routeChangeComplete', (url) => {
-		setIsLoading(false);
-	});
+	// Router.events.on('routeChangeComplete', (url) => {
+	// 	setIsLoading(false);
+	// });
 
-	useEffect(() => {
-		setTimeout(() => {
-			window.addEventListener('load', setIsLoading(false));
-		}, 500);
-	}, []);
+	// useEffect(() => {
+	// 	setTimeout(() => {
+	// 		window.addEventListener('load', setIsLoading(false));
+	// 	}, 500);
+	// }, []);
 
 	const getLayout = Component.getLayout || ((page) => page);
 
