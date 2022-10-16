@@ -13,7 +13,7 @@ const MobileSideBarNav = ({
 }) => {
 	return (
 		<>
-			<nav className="w-96 left-0 top-0 fixed h-screen py-12 bg-black z-20 shadow-md px-16 text-white flex flex-col">
+			<nav className="w-5/12 lg:w-96 sm:w-full left-0 top-0 fixed h-screen py-12 bg-black z-20 shadow-md px-16 text-white flex flex-col">
 				<IoMdClose
 					onClick={closeNav}
 					className="text-white font-bold absolute cursor-pointer text-3xl right-6 top-6 hover:text-gray-400"
