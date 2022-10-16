@@ -7,10 +7,10 @@ export default function Page({}) {
 	return (
 		<>
 			<Head>
-				<title>Alzheimers - Know the 10 Signs</title>
+				<title>Alzheimer's - Know the 10 Signs</title>
 				<meta
 					name="description"
-					content="Alzh.info, Alzheimer's and dementia information"
+					content="Alzh.info - Alzheimer's and dementia information"
 				/>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>

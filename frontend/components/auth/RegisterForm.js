@@ -115,7 +115,7 @@ const RegisterForm = ({ setAuthType }) => {
 	return (
 		<>
 			<h1 className="font-bold text-3xl mb-16">Register</h1>
-			{/* <span className="absolute top-6 left-6 text-xs">alz.news</span> */}
+			{/* <span className="absolute top-6 left-6 text-xs">alzh.info</span> */}
 			<form onSubmit={formik.handleSubmit} className="w-full">
 				<div className="">
 					<div className="flex gap-8 justify-between mb-8">
