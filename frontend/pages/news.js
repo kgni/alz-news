@@ -12,7 +12,10 @@ import ReactPaginate from 'react-paginate';
 import NewsSourceTags from '../components/NewsArticles/NewsSourceTags';
 import Head from 'next/head';
 
+import { Oval } from 'react-loader-spinner';
+
 import useMediaQuery from '../hooks/useMediaQuery';
+import useDebounce from '../hooks/useDebounce';
 
 // SSR function
 export async function getServerSideProps() {
@@ -83,6 +86,8 @@ export default function Page({
 	const [sortingOrder, setSortingOrder] = useState('desc');
 	const [newsSource, setNewsSource] = useState([]);
 
+	const [isLoading, setIsLoading] = useState(true);
+
 	const isDesktop = useMediaQuery('(min-width: 990px)');
 
 	// PAGINATION
@@ -133,8 +138,13 @@ export default function Page({
 		}
 	}
 
+	const debouncedFilterKeyword = useDebounce(filterKeyword, 300);
+
 	// useEffect for querying DB
+
 	useEffect(() => {
+		setIsLoading(true);
+		console.log('debounce search');
 		axios
 			.get(`https://alzh-info-api.up.railway.app/api/news/approved`, {
 				params: {
@@ -160,8 +170,41 @@ export default function Page({
 				setCurrentArticles(articles);
 				setArticlesLength(allArticlesLength);
 				setAllPages(totalPages);
+				setIsLoading(false);
 			});
-	}, [currentPage, sortingOrder, filterKeyword, newsSource]);
+	}, [debouncedFilterKeyword]);
+
+	useEffect(() => {
+		setIsLoading(true);
+		console.log('no debounce search');
+		axios
+			.get(`https://alzh-info-api.up.railway.app/api/news/approved`, {
+				params: {
+					page: currentPage + 1,
+					sortingOrder,
+					filterKeyword,
+					// TODO - quick fix to get all articles when newsSources array is empty - fix this in the future. This does not scale, as we would have to manually add new sources in here in order to make querying for the new added newsSource work. The same goes for the frontend when we are rendering stuff in the "FilterNewsSource" component, here we also have the values hardcoded. Might want to query all the newsSources names from the DB in some way. This way we can also create a function, where we as admins can manually add articles. Right now it is only the webscraper that is adding articles.
+					newsSource:
+						newsSource.length === 0
+							? [
+									'alz.org',
+									'nia.gov',
+									'Neuroscience News',
+									'alzheimers.org.uk',
+									'j-alz.com',
+									'The Guardian',
+							  ]
+							: newsSource,
+				},
+			})
+			.then((res) => {
+				const { articles, allArticlesLength, totalPages } = res.data;
+				setCurrentArticles(articles);
+				setArticlesLength(allArticlesLength);
+				setAllPages(totalPages);
+				setIsLoading(false);
+			});
+	}, [currentPage, sortingOrder, newsSource]);
 
 	return (
 		<>
@@ -206,43 +249,62 @@ export default function Page({
 							onClickRemoveNewsSource={onClickRemoveNewsSource}
 						/>
 
-						<div className=" italic flex gap-2 mb-3">
-							{currentArticles.length === 0 ? (
-								<p className="font-semibold">No articles found...</p>
-							) : (
-								<>
-									<p className="font-semibold">
-										{articlesLength} articles found
-									</p>
-									<span>&#8211;</span>
-									<p className="italic">
-										page {currentPage + 1} of {allPages}
-									</p>
-								</>
-							)}
-						</div>
+						{isLoading ? (
+							<div className="mt-2 flex justify-center">
+								<Oval
+									height={30}
+									width={30}
+									color="#000"
+									wrapperStyle={{}}
+									wrapperClass=""
+									visible={true}
+									ariaLabel="oval-loading"
+									secondaryColor="#e5e7eb"
+									strokeWidth={4}
+									strokeWidthSecondary={4}
+								/>
+							</div>
+						) : (
+							<>
+								<div className=" italic flex gap-2 mb-3">
+									{currentArticles.length === 0 ? (
+										<p className="font-semibold">No articles found...</p>
+									) : (
+										<>
+											<p className="font-semibold">
+												{articlesLength} articles found
+											</p>
+											<span>&#8211;</span>
+											<p className="italic">
+												page {currentPage + 1} of {allPages}
+											</p>
+										</>
+									)}
+								</div>
 
-						<NewsArticlesList currentItems={currentArticles} />
+								<NewsArticlesList currentItems={currentArticles} />
 
-						<ReactPaginate
-							key="paginate2"
-							onClick={onClickScrollToTop}
-							forcePage={currentPage}
-							previousLabel={'<'}
-							breakLabel={'...'}
-							nextLabel={'>'}
-							pageCount={allPages}
-							onPageChange={handlePageClick}
-							pageRangeDisplayed={2}
-							marginPagesDisplayed={2}
-							containerClassName={'paginationBtns'}
-							previousLinkClassName={'previousBtn'}
-							nextLinkClassName={'nextBtn'}
-							disabledClassName={'paginationDisabled'}
-							activeClassName={'paginationActive'}
-							breakLinkClassName={'breakLink'}
-							renderOnZeroPageCount={null}
-						/>
+								<ReactPaginate
+									key="paginate2"
+									onClick={onClickScrollToTop}
+									forcePage={currentPage}
+									previousLabel={'<'}
+									breakLabel={'...'}
+									nextLabel={'>'}
+									pageCount={allPages}
+									onPageChange={handlePageClick}
+									pageRangeDisplayed={2}
+									marginPagesDisplayed={2}
+									containerClassName={'paginationBtns'}
+									previousLinkClassName={'previousBtn'}
+									nextLinkClassName={'nextBtn'}
+									disabledClassName={'paginationDisabled'}
+									activeClassName={'paginationActive'}
+									breakLinkClassName={'breakLink'}
+									renderOnZeroPageCount={null}
+								/>
+							</>
+						)}
 					</div>
 
 					{/* <div className="flex flex-col w-1/4 self-start bg-white rounded-md shadow-md">

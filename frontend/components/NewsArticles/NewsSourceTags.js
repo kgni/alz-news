@@ -40,6 +40,7 @@ const NewsSourceTags = ({ newsSource, onClickRemoveNewsSource }) => {
 					}
 					return (
 						<li
+							key={source}
 							onClick={onClickRemoveNewsSource}
 							className={`${tagStyle} rounded-full text-xs px-4 py-1 cursor-pointer`}
 						>
