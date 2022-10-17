@@ -268,7 +268,7 @@ export default function Page({
 							<>
 								<div className=" italic flex gap-2 mb-3">
 									{currentArticles.length === 0 ? (
-										<p className="font-semibold">No articles found...</p>
+										<p className="">No articles found...</p>
 									) : (
 										<>
 											<p className="font-semibold">

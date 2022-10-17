@@ -14,15 +14,14 @@ const NewsSourceTags = ({ newsSource, onClickRemoveNewsSource }) => {
 					switch (source) {
 						case 'The Guardian':
 							tagStyle =
-								'bg-blue-800 text-white hover:bg-blue-700 duration-150';
+								'bg-[#052962] text-white hover:bg-[#0948AD] duration-100';
 							break;
 						case 'alz.org':
 							tagStyle =
-								'bg-purple-800 text-white hover:bg-purple-700 duration-150';
+								'bg-purple-400 text-black hover:bg-purple-300 duration-100';
 							break;
 						case 'Neuroscience News':
-							tagStyle =
-								'bg-yellow-400 text-black hover:bg-yellow-300 duration-150';
+							tagStyle = 'bg-gray-300 hover:bg-gray-200 duration-100';
 							break;
 
 						case 'j-alz.com':
@@ -35,14 +34,14 @@ const NewsSourceTags = ({ newsSource, onClickRemoveNewsSource }) => {
 							break;
 
 						case 'nia.gov':
-							tagStyle = 'bg-red-800 text-white hover:bg-red-700 duration-150';
+							tagStyle = 'bg-red-800 text-white hover:bg-red-700 duration-100';
 							break;
 					}
 					return (
 						<li
 							key={source}
 							onClick={onClickRemoveNewsSource}
-							className={`${tagStyle} rounded-full text-xs px-4 py-1 cursor-pointer`}
+							className={`${tagStyle} rounded-full text-xs px-4 py-1 cursor-pointer font-semibold`}
 						>
 							{source}
 						</li>

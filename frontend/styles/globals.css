@@ -2,6 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+	font-family: 'Lora';
+	font-weight: 700;
+	font-style: normal;
+	src: url('/fonts/google/serif/Lora/Lora-Bold.ttf') format('truetype');
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Lora';
+	font-weight: 400;
+	font-style: normal;
+	src: url('/fonts/google/serif/Lora/Lora-Regular.ttf') format('truetype');
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Lora';
+	font-weight: 300;
+	font-style: normal;
+	src: url('/fonts/google/serif/Lora/Lora-Light.ttf') format('truetype');
+	font-display: swap;
+}
+/* 
+@layer base {
+	p {
+		font-family: 'Lora', serif;
+	}
+} */
+
 /* CENTER DASHBOARD MODALS */
 
 .center-dashboard-popup-modal {
