@@ -234,7 +234,7 @@ export default function Page({
 								onClickSetNewsSource={onClickSetNewsSource}
 							/>
 							<SearchBar
-								placeholder="Enter Article Title..."
+								placeholder="Search..."
 								inputId="search"
 								onChangeFilterKeyword={onChangeFilterKeyword}
 								filterKeyword={filterKeyword}
