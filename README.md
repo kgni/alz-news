@@ -8,7 +8,7 @@ Alzh.info is not affiliated with any Alzheimer's organizations or patient advoca
 Alzh.info is not affiliated with any Alzheimer's organizations or patients advocacy groups in any way.
 
 **Link to project:** https://www.alzh.info/
-![image](https://user-images.githubusercontent.com/84397151/196161411-1e56893b-3000-4388-8c6b-f7cfdbd81ca4.png)
+![image](https://user-images.githubusercontent.com/84397151/196162654-7d7bb8d0-4a2f-4e27-b44f-3c7754d109a2.png)
 _FOR MORE IMAGES OF THE APPLICATION GO TO THE [EXAMPLES](#examples) SECTION_
 
 ## How It's Made:
