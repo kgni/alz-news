@@ -10,6 +10,7 @@ const NewsArticle = ({ article }) => {
 	let tagStyle;
 	let cardBgStyle;
 
+	// publisher colors
 	switch (article.publisher[0]) {
 		case 'The Guardian':
 			tagStyle = 'bg-[#052962] text-white';
